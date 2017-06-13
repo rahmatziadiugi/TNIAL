@@ -5,12 +5,16 @@
  */
 package Driver;
 
+import View.*;
+
 /**
  *
  * @author Someone
  */
-public class Main {
+public class Main{    
     public static void main(String[] args) {
-        
+        MDI mdi = new MDI();
+        mdi.setTitle("NAMA APLIKASI");
+        mdi.setVisible(true);
     }
 }
