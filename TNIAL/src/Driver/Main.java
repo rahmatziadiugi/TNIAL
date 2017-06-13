@@ -13,9 +13,6 @@ import View.*;
  */
 public class Main{    
     public static void main(String[] args) {
-        Login login = new Login();
-        login.setTitle("NAMA APLIKASI");
-        login.setVisible(true);
         
         MDI mdi = new MDI();
         mdi.setTitle("NAMA APLIKASI");
