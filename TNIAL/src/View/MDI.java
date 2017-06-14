@@ -53,16 +53,7 @@ public class MDI extends JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        javax.swing.GroupLayout InsertPanelHereLayout = new javax.swing.GroupLayout(InsertPanelHere);
-        InsertPanelHere.setLayout(InsertPanelHereLayout);
-        InsertPanelHereLayout.setHorizontalGroup(
-            InsertPanelHereLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 380, Short.MAX_VALUE)
-        );
-        InsertPanelHereLayout.setVerticalGroup(
-            InsertPanelHereLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 320, Short.MAX_VALUE)
-        );
+        InsertPanelHere.setLayout(new java.awt.CardLayout());
 
         mFile.setText("File");
 
@@ -157,10 +148,11 @@ public class MDI extends JFrame {
 
     private void TunDinasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TunDinasActionPerformed
         // TODO add your handling code here:
-        InsertPanelHere.removeAll();
-        InsertPanelHere.add(new PanelTunDinas());        
-        InsertPanelHere.validate();
-        InsertPanelHere.repaint();
+        InsertPanelHere.setVisible(false);
+        JPanel pane = new PanelTunDinas();
+        InsertPanelHere.removeAll();        
+        InsertPanelHere.add(pane);
+        InsertPanelHere.setVisible(true);
     }//GEN-LAST:event_TunDinasActionPerformed
 
     private void TunPersonelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TunPersonelActionPerformed
