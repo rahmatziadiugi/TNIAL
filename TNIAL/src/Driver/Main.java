@@ -15,10 +15,11 @@ import View.*;
 public class Main{    
     public static void main(String[] args) {
         
-        ControlLogin logon = new ControlLogin();
+//        ControlLogin logon = new ControlLogin();
         
-//        MDI mdi = new MDI();
-//        mdi.setTitle("NAMA APLIKASI");
-//        mdi.setVisible(true);
+        MDI mdi = new MDI();
+        mdi.setTitle("NAMA APLIKASI");
+        mdi.setVisible(true);        
+        
     }
 }

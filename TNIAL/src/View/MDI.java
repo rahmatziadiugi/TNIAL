@@ -49,7 +49,11 @@ public class MDI extends JFrame {
         PerKasus = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(600, 400));
+        setPreferredSize(new java.awt.Dimension(600, 400));
 
+        InsertPanelHere.setMinimumSize(new java.awt.Dimension(550, 350));
+        InsertPanelHere.setPreferredSize(new java.awt.Dimension(550, 450));
         InsertPanelHere.setLayout(new java.awt.CardLayout());
 
         mFile.setText("File");
@@ -129,7 +133,7 @@ public class MDI extends JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(InsertPanelHere, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(InsertPanelHere, javax.swing.GroupLayout.DEFAULT_SIZE, 570, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
