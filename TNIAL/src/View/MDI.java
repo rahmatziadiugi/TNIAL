@@ -5,6 +5,8 @@
  */
 package View;
 
+import java.awt.CardLayout;
+import java.awt.Point;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -13,7 +15,7 @@ import javax.swing.SwingUtilities;
  *
  * @author Someone
  */
-public class MDI extends javax.swing.JFrame {
+public class MDI extends JFrame {
 
     /**
      * Creates new form MDI
@@ -55,7 +57,7 @@ public class MDI extends javax.swing.JFrame {
         InsertPanelHere.setLayout(InsertPanelHereLayout);
         InsertPanelHereLayout.setHorizontalGroup(
             InsertPanelHereLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 376, Short.MAX_VALUE)
+            .addGap(0, 380, Short.MAX_VALUE)
         );
         InsertPanelHereLayout.setVerticalGroup(
             InsertPanelHereLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -155,7 +157,10 @@ public class MDI extends javax.swing.JFrame {
 
     private void TunDinasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TunDinasActionPerformed
         // TODO add your handling code here:
-        
+        InsertPanelHere.removeAll();
+        InsertPanelHere.add(new PanelTunDinas());        
+        InsertPanelHere.validate();
+        InsertPanelHere.repaint();
     }//GEN-LAST:event_TunDinasActionPerformed
 
     private void TunPersonelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TunPersonelActionPerformed
