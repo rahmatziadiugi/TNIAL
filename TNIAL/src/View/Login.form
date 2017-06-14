@@ -37,8 +37,8 @@
                       </Group>
                       <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="username" max="32767" attributes="0"/>
-                          <Component id="password" pref="132" max="32767" attributes="0"/>
+                          <Component id="username" pref="132" max="32767" attributes="0"/>
+                          <Component id="password" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
@@ -93,7 +93,10 @@
     </Component>
     <Component class="javax.swing.JTextField" name="username">
     </Component>
-    <Component class="javax.swing.JTextField" name="password">
+    <Component class="javax.swing.JPasswordField" name="password">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="jPasswordField1"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="masuk">
       <Properties>

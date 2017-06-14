@@ -17,47 +17,62 @@ import jxl.Cell;
  * @author Someone
  */
 public class DB4Excel {
-    public int rows;
-    public int cols;
+    private int[] rows;
+    private int[] cols;
     private File f;
-    public Sheet s;
-    public Workbook wb;
+    private Sheet[] s;
+    private Workbook wb;
 
-    public DB4Excel() throws Exception {
-        f = new File("./DB/Diskum/diskumal.xls");
-        wb = Workbook.getWorkbook(f);
-        s = wb.getSheet(0);
-        rows = s.getRows();
-        cols = s.getColumns();
+    public void getDBpengguna() throws Exception {
+        f = new File("./DB/Diskum/pengguna.xls");
+        wb = Workbook.getWorkbook(f);        
+        setExcelInfo();
     }
-
     
-    public boolean FindWord(String word) {
-        boolean ada = false;
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                Cell c = s.getCell(j, i);
-                if (c.getContents().equals(word)) {
-                    ada = true;
-                    break;
-                }
-            }
-        }
-        return ada;
+    public void getDBdiskumal() throws Exception {
+        f = new File("./DB/Diskum/diskumal.xls");
+        wb = Workbook.getWorkbook(f);        
+        setExcelInfo();
     }
-
-    public int FindCol(String word) {
-        int x = 0, y = 0;
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                Cell c = s.getCell(j, i);
-                if (c.getContents().equals(word)) {
-                    x=i;
-                    y=j;
-                    break;
-                }
-            }
+    
+    public void setExcelInfo(){
+        int n = wb.getNumberOfSheets();
+        s = new Sheet[n];
+        cols = new int[n];
+        rows = new int[n];
+        for(int i=0; i<n; i++){
+            s[i] = wb.getSheet(0);
+            rows[i] = s[i].getRows();
+            cols[i] = s[i].getColumns();
         }
-        return y;
     }
+    
+//    public boolean FindWord(String word) {
+//        boolean ada = false;
+//        for (int i = 0; i < rows; i++) {
+//            for (int j = 0; j < cols; j++) {
+//                Cell c = s.getCell(j, i);
+//                if (c.getContents().equals(word)) {
+//                    ada = true;
+//                    break;
+//                }
+//            }
+//        }
+//        return ada;
+//    }
+//
+//    public int FindCol(String word) {
+//        int x = 0, y = 0;
+//        for (int i = 0; i < rows; i++) {
+//            for (int j = 0; j < cols; j++) {
+//                Cell c = s.getCell(j, i);
+//                if (c.getContents().equals(word)) {
+//                    x=i;
+//                    y=j;
+//                    break;
+//                }
+//            }
+//        }
+//        return y;
+//    }
 }
