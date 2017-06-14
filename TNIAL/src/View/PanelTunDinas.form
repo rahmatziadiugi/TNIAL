@@ -65,7 +65,6 @@
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="jXDatePicker1" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="txDasar" alignment="0" max="32767" attributes="0"/>
                       <Component id="txNoSurat" alignment="0" max="32767" attributes="0"/>
                       <Component id="jScrollPane2" alignment="0" max="32767" attributes="0"/>
@@ -101,10 +100,7 @@
                       <Component id="jLabel4" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jXDatePicker1" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabel6" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
-                  </Group>
+                  <Component id="jLabel6" min="-2" pref="20" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jScrollPane2" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -165,8 +161,6 @@
         <Component class="javax.swing.JTextField" name="txDasar">
         </Component>
         <Component class="javax.swing.JTextField" name="txNoSurat">
-        </Component>
-        <Component class="org.jdesktop.swingx.JXDatePicker" name="jXDatePicker1">
         </Component>
         <Container class="javax.swing.JScrollPane" name="jScrollPane2">
           <AuxValues>
