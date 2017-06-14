@@ -5,11 +5,8 @@
  */
 package View;
 
-import java.awt.CardLayout;
-import java.awt.Point;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 /**
  *

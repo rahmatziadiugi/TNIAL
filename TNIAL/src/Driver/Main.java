@@ -5,6 +5,7 @@
  */
 package Driver;
 
+import Controller.*;
 import View.*;
 
 /**
@@ -14,8 +15,10 @@ import View.*;
 public class Main{    
     public static void main(String[] args) {
         
-        MDI mdi = new MDI();
-        mdi.setTitle("NAMA APLIKASI");
-        mdi.setVisible(true);
+        ControlLogin logon = new ControlLogin();
+        
+//        MDI mdi = new MDI();
+//        mdi.setTitle("NAMA APLIKASI");
+//        mdi.setVisible(true);
     }
 }

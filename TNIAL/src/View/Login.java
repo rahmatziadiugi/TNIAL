@@ -5,6 +5,13 @@
  */
 package View;
 
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.JButton;
+import javax.swing.JPasswordField;
+
 /**
  *
  * @author aldebaran
@@ -16,6 +23,13 @@ public class Login extends javax.swing.JFrame {
      */
     public Login() {
         initComponents();
+        
+        password.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+                password.setText(null);
+            }
+        });
     }
 
     /**
@@ -31,8 +45,8 @@ public class Login extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         username = new javax.swing.JTextField();
-        password = new javax.swing.JPasswordField();
         masuk = new javax.swing.JButton();
+        password = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -43,9 +57,14 @@ public class Login extends javax.swing.JFrame {
 
         jLabel3.setText("password");
 
-        password.setText("jPasswordField1");
-
         masuk.setText("masuk");
+
+        password.setText("password");
+        password.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                passwordFocusGained(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -91,6 +110,29 @@ public class Login extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void passwordFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_passwordFocusGained
+        // TODO add your handling code here:
+        
+        password.setText(null);
+        
+    }//GEN-LAST:event_passwordFocusGained
+
+    public void addListener(ActionListener e) {
+        masuk.addActionListener(e);
+    }
+    
+    public JButton getBtnLogin(){
+        return masuk;
+    }
+    
+    public String getUsername(){
+        return username.getText();
+    }
+    
+    public String getPassword(){
+        return password.getSelectedText();
+    }
+        
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;

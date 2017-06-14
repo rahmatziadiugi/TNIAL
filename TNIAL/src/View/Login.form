@@ -93,15 +93,18 @@
     </Component>
     <Component class="javax.swing.JTextField" name="username">
     </Component>
-    <Component class="javax.swing.JPasswordField" name="password">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="jPasswordField1"/>
-      </Properties>
-    </Component>
     <Component class="javax.swing.JButton" name="masuk">
       <Properties>
         <Property name="text" type="java.lang.String" value="masuk"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JPasswordField" name="password">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="password"/>
+      </Properties>
+      <Events>
+        <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="passwordFocusGained"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
