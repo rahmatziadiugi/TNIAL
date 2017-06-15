@@ -6,6 +6,7 @@
 package Controller;
 
 import Database.DB4MySQL;
+import java.util.ArrayList;
 
 /**
  *
@@ -13,6 +14,19 @@ import Database.DB4MySQL;
  */
 public class ControlTunDinas {
     DB4MySQL db = new DB4MySQL();
+    private ArrayList<String> data = new ArrayList<>();
     
+    public void getDataDB(){
+        ArrayList<String> temp = new ArrayList<>();
+        db.connect();
+        
+        
+        
+        db.disconnect();
+        this.data = temp;
+    }
     
+    public ArrayList<String> getDatanya(){
+        return this.data;
+    }
 }

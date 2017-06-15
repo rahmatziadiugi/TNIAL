@@ -6,6 +6,7 @@
 package View;
 
 import Controller.ControlTunDinas;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -20,7 +21,22 @@ public class PanelTunDinas extends javax.swing.JPanel {
         initComponents();
         this.setVisible(true);
         
-        ControlTunDinas control = new ControlTunDinas();
+        //get DB
+        control = new ControlTunDinas();
+        control.getDataDB();
+        
+        //set button
+        if(control.getDatanya().size()<1){
+            btAdd.setName("Tambah");
+        }
+        btCancel.setVisible(false);
+        btDelete.setVisible(false);
+        
+        //set Table
+        setIsiTable();
+        
+        //set format tanggal
+        jXDatePicker1.setFormats("MM/dd/yyyy");
     }
 
     /**
@@ -48,16 +64,17 @@ public class PanelTunDinas extends javax.swing.JPanel {
         btAdd = new javax.swing.JButton();
         btCancel = new javax.swing.JButton();
         btDelete = new javax.swing.JButton();
+        jXDatePicker1 = new org.jdesktop.swingx.JXDatePicker();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        TableTunDinasTYWARRIOR = new javax.swing.JTable();
+        TableTunDinas = new javax.swing.JTable();
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setText("TUN DINAS");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jLabel2.setText("Lokasi & data tanah");
+        jLabel2.setText("<html>Lokasi dan<br />data tanah</html>");
 
         jLabel3.setText("Dasar");
 
@@ -77,6 +94,11 @@ public class PanelTunDinas extends javax.swing.JPanel {
 
         btAdd.setText("Tambah");
         btAdd.setPreferredSize(new java.awt.Dimension(100, 35));
+        btAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btAddActionPerformed(evt);
+            }
+        });
 
         btCancel.setText("batal");
         btCancel.setPreferredSize(new java.awt.Dimension(100, 35));
@@ -94,8 +116,8 @@ public class PanelTunDinas extends javax.swing.JPanel {
                     .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE))
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -108,7 +130,8 @@ public class PanelTunDinas extends javax.swing.JPanel {
                         .addComponent(txDasar)
                         .addComponent(txNoSurat)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1)))
+                        .addComponent(jScrollPane1))
+                    .addComponent(jXDatePicker1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(14, 14, 14))
         );
         jPanel1Layout.setVerticalGroup(
@@ -116,8 +139,8 @@ public class PanelTunDinas extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txDasar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -127,7 +150,9 @@ public class PanelTunDinas extends javax.swing.JPanel {
                     .addComponent(txNoSurat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jXDatePicker1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -142,7 +167,7 @@ public class PanelTunDinas extends javax.swing.JPanel {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        TableTunDinasTYWARRIOR.setModel(new javax.swing.table.DefaultTableModel(
+        TableTunDinas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -153,7 +178,8 @@ public class PanelTunDinas extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane3.setViewportView(TableTunDinasTYWARRIOR);
+        TableTunDinas.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        jScrollPane3.setViewportView(TableTunDinas);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -161,7 +187,7 @@ public class PanelTunDinas extends javax.swing.JPanel {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 442, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 470, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -183,7 +209,7 @@ public class PanelTunDinas extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
+                .addGap(18, 18, 18)
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -196,13 +222,47 @@ public class PanelTunDinas extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(66, Short.MAX_VALUE))
+                .addContainerGap(64, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAddActionPerformed
+        // TODO add your handling code here:
+        btAdd.setName("Simpan");
+    }//GEN-LAST:event_btAddActionPerformed
+
+    public void setIsiTable(){
+        control.getDataDB();
+        resetTable(control.getDatanya().size());
+        TableTunDinas.setModel(resetTable);  
+        //set column width
+        //w=300, h=64
+        TableTunDinas.getColumnModel().getColumn(0).setPreferredWidth(50);        
+        TableTunDinas.getColumnModel().getColumn(1).setPreferredWidth(275);
+        TableTunDinas.getColumnModel().getColumn(2).setPreferredWidth(100);
+        TableTunDinas.getColumnModel().getColumn(3).setPreferredWidth(120);
+        TableTunDinas.getColumnModel().getColumn(4).setPreferredWidth(100);
+        TableTunDinas.getColumnModel().getColumn(5).setPreferredWidth(80);
+        TableTunDinas.getColumnModel().getColumn(6).setPreferredWidth(75);
+        for(int i=0; i<control.getDatanya().size(); i++){
+//            TableBarangGudang.setValueAt(app.getAllObat().get(i).getIdObat(), i, 0);
+//            TableBarangGudang.setValueAt(app.getAllObat().get(i).getNamaObat(), i, 1);
+//            TableBarangGudang.setValueAt(app.getAllObat().get(i).getStock(), i, 2);
+//            TableBarangGudang.setValueAt(app.getAllObat().get(i).getHargaObat(), i, 3);
+        }        
+    }
+    
+    public void resetTable(int i){
+        String[] header = {"No","Lokasi & Data Tanah","Dasar","Permasalahan","Tingkat","Status","Data Tingkat"};
+        resetTable = new DefaultTableModel(null, header);
+        resetTable.setRowCount(i);        
+    }
+    
+    private DefaultTableModel resetTable;
+    private ControlTunDinas control;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTable TableTunDinasTYWARRIOR;
+    private javax.swing.JTable TableTunDinas;
     private javax.swing.JButton btAdd;
     private javax.swing.JButton btCancel;
     private javax.swing.JButton btDelete;
@@ -217,6 +277,7 @@ public class PanelTunDinas extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private org.jdesktop.swingx.JXDatePicker jXDatePicker1;
     private javax.swing.JTextField txDasar;
     private javax.swing.JTextArea txLokasiNTanah;
     private javax.swing.JTextField txNoSurat;
