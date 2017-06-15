@@ -22,6 +22,13 @@ public class MDI extends JFrame {
         setVisible(true);
         
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        
+        //shortcut
+        InsertPanelHere.setVisible(false);
+        JPanel pane = new PanelTunDinas();
+        InsertPanelHere.removeAll();        
+        InsertPanelHere.add(pane);
+        InsertPanelHere.setVisible(true);
     }
 
     /**
@@ -52,9 +59,11 @@ public class MDI extends JFrame {
         setMinimumSize(new java.awt.Dimension(600, 400));
         setPreferredSize(new java.awt.Dimension(600, 400));
 
-        InsertPanelHere.setMinimumSize(new java.awt.Dimension(550, 350));
-        InsertPanelHere.setPreferredSize(new java.awt.Dimension(550, 450));
+        InsertPanelHere.setMinimumSize(new java.awt.Dimension(0, 0));
+        InsertPanelHere.setPreferredSize(new java.awt.Dimension(600, 450));
         InsertPanelHere.setLayout(new java.awt.CardLayout());
+
+        jMenuBar.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
 
         mFile.setText("File");
 
@@ -131,17 +140,11 @@ public class MDI extends JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(InsertPanelHere, javax.swing.GroupLayout.DEFAULT_SIZE, 570, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(InsertPanelHere, javax.swing.GroupLayout.DEFAULT_SIZE, 622, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(InsertPanelHere, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(InsertPanelHere, javax.swing.GroupLayout.PREFERRED_SIZE, 453, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();

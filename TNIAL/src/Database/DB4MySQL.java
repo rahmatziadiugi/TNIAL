@@ -23,7 +23,7 @@ public class DB4MySQL {
         try{
             conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"
                     //nama DB:
-                    + "namadb", 
+                    + "diskumal", 
                     //id user db:
                     "root", 
                     //pw user db:
