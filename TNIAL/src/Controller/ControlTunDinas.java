@@ -12,6 +12,8 @@ import Model.TunDinas;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -137,11 +139,14 @@ public class ControlTunDinas {
         
         try{
             java.sql.Date sqlDate = new java.sql.Date(tgl);
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
             java.util.Date utilDate = new java.util.Date();
+            
             if(db.manipulate("INSERT INTO `bankum_tundinas` "
                     + "(`idTundinas`, `lokasiDT`, `Dasar`, `noSurat`, `tglDasar`, `Permasalahan`, `id_status_tingkat`, `kdTingkat`, `tglStatus`) "
                     + "VALUES ('"
-                    + String.valueOf(utilDate.getTime()) + "', '"
+                    //+ String.valueOf(utilDate.getTime()) + "', '"
+                    + String.valueOf(utilDate) + "', '"
                     + lokasi + "', '"
                     + dasar + "', '"
                     + noSurat + "', '"
