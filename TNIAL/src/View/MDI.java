@@ -21,6 +21,7 @@ public class MDI extends JFrame {
         initComponents();
         setVisible(true);
         
+        this.setTitle("Nama Aplikasi");
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         
         //shortcut

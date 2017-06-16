@@ -18,7 +18,6 @@ public class Main{
 //        ControlLogin logon = new ControlLogin();
         
         MDI mdi = new MDI();
-        mdi.setTitle("NAMA APLIKASI");
         mdi.setVisible(true);        
         
     }
