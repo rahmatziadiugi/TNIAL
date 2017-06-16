@@ -5,6 +5,22 @@
  */
 package View;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.UIManager;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+
 /**
  *
  * @author aldebaran
@@ -16,6 +32,33 @@ public class FormTingkat extends javax.swing.JFrame {
      */
     public FormTingkat() {
         initComponents();
+    }
+        
+    FormTingkat(String lokasi, String masalah){
+        initComponents();
+        
+        String[] lokasinya = lokasi.split("\n");
+        String[] masalahnya = masalah.split("\n");
+        
+        String lokasihtml = "<html>";        
+        for(String s: lokasinya){
+            lokasihtml += s + "<br />";
+        }lokasihtml += "</html>";
+        
+        String masalahhtml = "<html>";        
+        for(String s: masalahnya){
+            masalahhtml += s + "<br />";
+        }masalahhtml += "</html>";
+        
+        labelLokasi.setText(lokasihtml);
+        labelMasalah.setText(masalahhtml);
+                
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
+        this.setTitle("Tun Dinas - Form Tingkat");
+        
+        
+        this.setVisible(true);
     }
 
     /**
@@ -32,11 +75,13 @@ public class FormTingkat extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
+        labelLokasi = new javax.swing.JLabel();
+        labelMasalah = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        btAddTingkat = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        tableTingkatnyaw = new javax.swing.JTable();
+        btBack = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -46,17 +91,51 @@ public class FormTingkat extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
         jLabel2.setText("Data Tingkat");
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
         jLabel3.setText("Lokasi dan Data Tanah");
 
         jLabel4.setText("Permasalahan");
 
-        jLabel5.setText("jLabel5");
+        labelLokasi.setText("jLabel5");
 
-        jLabel6.setText("jLabel6");
+        labelMasalah.setText("jLabel6");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(labelMasalah))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(labelLokasi)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(labelLokasi))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(labelMasalah))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        btAddTingkat.setText("Tambah Tingkat");
+
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(452, 80));
+
+        tableTingkatnyaw.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -68,48 +147,36 @@ public class FormTingkat extends javax.swing.JFrame {
                 "No.", "Tingkat", "Status", "Keterangan", ""
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tableTingkatnyaw);
 
-        jButton1.setText("Tambah Tingkat");
+        btBack.setText("Kembali");
+        btBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btBackActionPerformed(evt);
+            }
+        });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 583, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4))
-                        .addGap(45, 45, 45)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel5))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton1)))
-                .addContainerGap())
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 528, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btAddTingkat, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btBack, javax.swing.GroupLayout.Alignment.TRAILING)))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel5))
-                .addGap(48, 48, 48)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel6))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 113, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(6, 6, 6)
+                .addComponent(btAddTingkat)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btBack)
+                .addContainerGap(245, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -117,76 +184,209 @@ public class FormTingkat extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
-                .addGap(18, 18, 18)
+                .addGap(13, 13, 13)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FormTingkat.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FormTingkat.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FormTingkat.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FormTingkat.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new FormTingkat().setVisible(true);
-            }
-        });
-    }
+    private void btBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBackActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_btBackActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btAddTingkat;
+    private javax.swing.JButton btBack;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JLabel labelLokasi;
+    private javax.swing.JLabel labelMasalah;
+    private javax.swing.JTable tableTingkatnyaw;
     // End of variables declaration//GEN-END:variables
+
+    //button in cell
+    
+    class ClientsTableButtonRenderer extends JButton implements TableCellRenderer{
+    public ClientsTableButtonRenderer(){
+        setOpaque(true);
+    }
+
+    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column){
+        setBackground( table.getBackground() );
+        setForeground(Color.black);
+        setBackground(UIManager.getColor("Button.background"));
+        setText((value == null) ? "" : value.toString());
+        return this;
+    }
+}
+
+    public class ClientsTableRenderer extends DefaultCellEditor{
+        private JButton button;
+        private String label;
+        private boolean clicked;
+        private int row, col;
+        private JTable table;
+
+        public ClientsTableRenderer(JCheckBox checkBox){
+            super(checkBox);
+            button = new JButton();
+            button.setOpaque(true);
+            button.addActionListener(new ActionListener(){
+                public void actionPerformed(ActionEvent e){
+                    fireEditingStopped();
+                }
+            });
+        }
+
+        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column){
+            this.table = table;
+            this.row = row;
+            this.col = column;
+
+            button.setForeground(Color.black);
+            button.setBackground(UIManager.getColor("Button.background"));
+            label = (value == null) ? "" : value.toString();
+            button.setText(label);
+            clicked = true;
+            return button;
+        }
+
+        public Object getCellEditorValue(){
+            //when button is pressed gently desu
+            if (clicked){
+
+                //something happen
+
+            }
+            clicked = false;
+            return new String(label);
+        }
+
+        public boolean stopCellEditing(){
+            clicked = false;
+            return super.stopCellEditing();
+        }
+
+        protected void fireEditingStopped(){
+            super.fireEditingStopped();
+        }
+    }
+    
+    public void setIsiTable(){
+        //this.n = data.size();
+        resetTable(this.n);
+        tableTingkatnyaw.setModel(resetTable);  
+        
+        this.thisTableProperties();
+        
+        for(int i=0; i<this.n; i++){
+            tableTingkatnyaw.setValueAt(i+1, i, 0);
+            
+            tableTingkatnyaw.setValueAt("Data", i, 4);
+        }        
+    }
+    
+    private void thisTableProperties(){        
+        tableTingkatnyaw.getTableHeader().setReorderingAllowed(false);
+        
+        //set column width
+        tableTingkatnyaw.getColumnModel().getColumn(0).setPreferredWidth(50);        
+        tableTingkatnyaw.getColumnModel().getColumn(1).setPreferredWidth(100);
+        tableTingkatnyaw.getColumnModel().getColumn(2).setPreferredWidth(100);
+        tableTingkatnyaw.getColumnModel().getColumn(3).setPreferredWidth(200);
+        tableTingkatnyaw.getColumnModel().getColumn(4).setPreferredWidth(100);
+        //set button column
+        tableTingkatnyaw.getColumnModel().getColumn(4).setCellRenderer(new ClientsTableButtonRenderer());
+        tableTingkatnyaw.getColumnModel().getColumn(4).setCellEditor(new ClientsTableRenderer(new JCheckBox()));
+        //onclick event
+        tableTingkatnyaw.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int row = tableTingkatnyaw.rowAtPoint(evt.getPoint());
+                int col = tableTingkatnyaw.columnAtPoint(evt.getPoint());
+                if (col < 6) {
+                    int reply = JOptionPane.showConfirmDialog(
+                            null, //posisi kayaknya
+                            "Apakah anda yakin ingin membuka data No. " +
+                                    (row+1)+ "?\nPerubahan yang belum disimpan akan hilang.", //pesan
+                            "Peringatan!",  //judul
+                            JOptionPane.YES_NO_OPTION);
+                    if (reply == JOptionPane.YES_OPTION) {
+                        showRowData(row);
+                    }
+                    else {
+                       //kembali aja, gak ngefek
+                    }
+                }
+            }
+        });
+        
+        //can only select one row at a time
+        tableTingkatnyaw.setRowSelectionAllowed(true);
+        tableTingkatnyaw.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    }
+    
+    private void showRowData(int row){
+//        txLokasiNTanah.setText(this.data.get(row).getLokasiDT());
+//        txDasar.setText(this.data.get(row).getDasar());
+//        txNoSurat.setText(this.data.get(row).getnoSurat());
+//        txDateField.setDate(this.data.get(row).gettglDasar());
+//        txPermasalahan.setText(this.data.get(row).getPermasalahan());
+//
+//        btAdd.setText("Perbarui");
+//        btCancel.setVisible(true);
+//        btDelete.setVisible(true);
+//        LabelAtas.setText("Ubah data");
+    }
+        
+    public void resetField(){
+//        txLokasiNTanah.setText(null);
+//        txDasar.setText(null);
+//        txNoSurat.setText(null);
+//        txDateField.setDate(new Date());
+//        txPermasalahan.setText(null);
+    }
+    
+    public void resetTable(int i){
+        String[] header = {"No","Tingkat","Status","Keterangan",""};
+        resetTable = new DefaultTableModel(null, header){
+            public boolean isCellEditable(int row, int column)      //override isCellEditable
+                //PRE:  row > 0, column > 0
+                //POST: FCTVAL == false always
+            {
+                return column==6; //kolom 6 editable
+            }
+            
+            
+        };
+        resetTable.setRowCount(i);        
+    }
+    
+    private DefaultTableModel resetTable;
+    private int n;
 }

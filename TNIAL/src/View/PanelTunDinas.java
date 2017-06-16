@@ -11,7 +11,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.time.Instant;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,7 +23,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import org.jdesktop.swingx.JXDatePicker;
 
 /**
  *
@@ -357,7 +355,7 @@ public class PanelTunDinas extends javax.swing.JPanel {
             TableTunDinas.setValueAt(data.get(i).getPermasalahan(), i, 3);
             TableTunDinas.setValueAt(control.getKetTingkat(data.get(i).getkdTIngkat()), i, 4);
             TableTunDinas.setValueAt(control.getStatusnya(data.get(i).getidStatusTingkat()), i, 5);
-            TableTunDinas.setValueAt("Tingkat", i, 6);
+            TableTunDinas.setValueAt("Detil", i, 6);
         }        
     }
     
@@ -485,66 +483,66 @@ public class PanelTunDinas extends javax.swing.JPanel {
     }
 }
 
-public class ClientsTableRenderer extends DefaultCellEditor{
-    private JButton button;
-    private String label;
-    private boolean clicked;
-    private int row, col;
-    private JTable table;
+    public class ClientsTableRenderer extends DefaultCellEditor{
+        private JButton button;
+        private String label;
+        private boolean clicked;
+        private int row, col;
+        private JTable table;
 
-    public ClientsTableRenderer(JCheckBox checkBox){
-        super(checkBox);
-        button = new JButton();
-        button.setOpaque(true);
-        button.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
-                fireEditingStopped();
-            }
-        });
-    }
-    
-    public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column){
-        this.table = table;
-        this.row = row;
-        this.col = column;
-        
-        button.setForeground(Color.black);
-        button.setBackground(UIManager.getColor("Button.background"));
-        label = (value == null) ? "" : value.toString();
-        button.setText(label);
-        clicked = true;
-        return button;
-    }
-    
-    public Object getCellEditorValue(){
-        if (clicked){
-            JOptionPane.showMessageDialog(
-                    //posisi
-                    null, 
-                    //pesan
-                    "Column with Value: "+table.getValueAt(row, 1) + " -  Clicked!"
-            );
-            
-//            showRowData(row);
-            
-            btAdd.setText("Perbarui");
-            btCancel.setVisible(true);
-            btDelete.setVisible(true);
-            LabelAtas.setText("Detil data");
-            
+        public ClientsTableRenderer(JCheckBox checkBox){
+            super(checkBox);
+            button = new JButton();
+            button.setOpaque(true);
+            button.addActionListener(new ActionListener(){
+                public void actionPerformed(ActionEvent e){
+                    fireEditingStopped();
+                }
+            });
         }
-        clicked = false;
-        return new String(label);
-    }
 
-    public boolean stopCellEditing(){
-        clicked = false;
-        return super.stopCellEditing();
-    }
+        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column){
+            this.table = table;
+            this.row = row;
+            this.col = column;
 
-    protected void fireEditingStopped(){
-        super.fireEditingStopped();
+            button.setForeground(Color.black);
+            button.setBackground(UIManager.getColor("Button.background"));
+            label = (value == null) ? "" : value.toString();
+            button.setText(label);
+            clicked = true;
+            return button;
+        }
+
+        public Object getCellEditorValue(){
+            //when button is pressed gently desu
+            if (clicked){
+
+                FormTingkat tingkatnya = new FormTingkat(
+                        data.get(row).getLokasiDT(), 
+                        data.get(row).getPermasalahan()
+                );
+                
+//                showRowData(row);
+
+                btAdd.setText("Perbarui");
+                btCancel.setVisible(true);
+                btDelete.setVisible(true);
+                LabelAtas.setText("Detil data");
+
+            }
+            clicked = false;
+            return new String(label);
+        }
+
+        public boolean stopCellEditing(){
+            clicked = false;
+            return super.stopCellEditing();
+        }
+
+        protected void fireEditingStopped(){
+            super.fireEditingStopped();
+        }
     }
-}
 
 }
