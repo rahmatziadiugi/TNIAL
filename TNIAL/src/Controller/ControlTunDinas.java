@@ -9,11 +9,13 @@ import Database.DB4MySQL;
 import Model.JnsTingkat;
 import Model.StatusTingkat;
 import Model.TunDinas;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -120,5 +122,43 @@ public class ControlTunDinas {
         }
         
         return temp;
+    }
+    
+    public boolean tambahData(
+            String lokasi,
+            String dasar,
+            String noSurat,
+            long tgl,
+            String permasalahan
+    ){
+        boolean berhasil = false;
+        
+        db.connect();
+        
+        try{
+            java.sql.Date sqlDate = new java.sql.Date(tgl);
+            java.util.Date utilDate = new java.util.Date();
+            if(db.manipulate("INSERT INTO `bankum_tundinas` "
+                    + "(`idTundinas`, `lokasiDT`, `Dasar`, `noSurat`, `tglDasar`, `Permasalahan`, `id_status_tingkat`, `kdTingkat`, `tglStatus`) "
+                    + "VALUES ('"
+                    + String.valueOf(utilDate.getTime()) + "', '"
+                    + lokasi + "', '"
+                    + dasar + "', '"
+                    + noSurat + "', '"
+                    + sqlDate + "', '"
+                    + permasalahan + "', NULL, NULL, NULL);") >= 1)
+            {
+                JOptionPane.showMessageDialog(null,"Berhasil menambahkan!");
+                berhasil = true;
+            } else{
+                JOptionPane.showMessageDialog(null,"Gagal menambahkan!");
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null,"Gagal!");
+        }
+        
+        db.disconnect();
+        
+        return berhasil;
     }
 }

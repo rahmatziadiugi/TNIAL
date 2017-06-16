@@ -11,6 +11,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.Instant;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,6 +24,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+import org.jdesktop.swingx.JXDatePicker;
 
 /**
  *
@@ -90,6 +92,7 @@ public class PanelTunDinas extends javax.swing.JPanel {
         jScrollPane3 = new javax.swing.JScrollPane();
         TableTunDinas = new javax.swing.JTable();
         LabelAtas = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setText("TUN DINAS");
@@ -232,62 +235,110 @@ public class PanelTunDinas extends javax.swing.JPanel {
 
         LabelAtas.setText("jLabel5");
 
+        jButton1.setText("Segarkan Tabel");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(LabelAtas)
-                    .addComponent(jLabel1))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(LabelAtas)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton1))
+                            .addComponent(jLabel1))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addGap(24, 24, 24)
-                .addComponent(LabelAtas)
+                .addGap(20, 20, 20)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(LabelAtas)
+                    .addComponent(jButton1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(64, Short.MAX_VALUE))
+                .addContainerGap(59, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAddActionPerformed
         // TODO add your handling code here:
-        btAdd.setName("Simpan");
+        if(control.tambahData(
+                    txLokasiNTanah.getText(), 
+                    txDasar.getText(), 
+                    txNoSurat.getText(), 
+                    txDateField.getDate().getTime(), 
+                    txPermasalahan.getText()
+                )
+            ) 
+        {
+            resetField();
+            setIsiTable();
+        }
+        
     }//GEN-LAST:event_btAddActionPerformed
 
     private void btCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelActionPerformed
         // TODO add your handling code here:
-        
-        resetField();
-        btAdd.setText("Tambah");
-        btCancel.setVisible(false);
-        btDelete.setVisible(false);
-        LabelAtas.setText("Tambah data");
+        int reply = JOptionPane.showConfirmDialog(
+                null, //posisi kayaknya
+                "Apakah anda yakin ingin membatalkan ini?\nPerubahan yang belum disimpan akan hilang.", //pesan
+                "Peringatan!",  //judul
+                JOptionPane.YES_NO_OPTION);
+        if (reply == JOptionPane.YES_OPTION) {
+            resetField();
+            btAdd.setText("Tambah");
+            btCancel.setVisible(false);
+            btDelete.setVisible(false);
+            LabelAtas.setText("Tambah data");
+        }
+        else {
+           //kembali aja, gak ngefek
+        }
     }//GEN-LAST:event_btCancelActionPerformed
 
     private void btDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btDeleteActionPerformed
         // TODO add your handling code here:
-        
-        resetField();
-        btAdd.setText("Tambah");
-        btCancel.setVisible(false);
-        btDelete.setVisible(false);
-        LabelAtas.setText("Tambah data");
+        int reply = JOptionPane.showConfirmDialog(
+                null, //posisi kayaknya
+                "Apakah anda yakin ingin menghapus ini?\nData yang sudah dihapus tidak bisa dikembalikan lagi.", //pesan
+                "Peringatan!",  //judul
+                JOptionPane.YES_NO_OPTION);
+        if (reply == JOptionPane.YES_OPTION) {
+            resetField();
+            btAdd.setText("Tambah");
+            btCancel.setVisible(false);
+            btDelete.setVisible(false);
+            LabelAtas.setText("Tambah data");
+        }
+        else {
+           //kembali aja, gak ngefek
+        }
     }//GEN-LAST:event_btDeleteActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        setIsiTable();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     public void setIsiTable(){
         control.getDataDB();
@@ -331,27 +382,17 @@ public class PanelTunDinas extends javax.swing.JPanel {
                 int row = TableTunDinas.rowAtPoint(evt.getPoint());
                 int col = TableTunDinas.columnAtPoint(evt.getPoint());
                 if (col < 6) {
-                    if(isFieldModified(data.get(row))){
-                        int reply = JOptionPane.showConfirmDialog(
-                                null, //posisi kayaknya
-                                "Apakah anda yakin ingin membuka ini?\nPerubahan yang belum disimpan akan hilang.", //pesan
-                                "Peringatan",  //judul
-                                JOptionPane.YES_NO_OPTION);
-                        if (reply == JOptionPane.YES_OPTION) {
-                            txLokasiNTanah.setText(data.get(row).getLokasiDT());
-                            txDasar.setText(data.get(row).getDasar());
-                            txNoSurat.setText(data.get(row).getnoSurat());
-                            txDateField.setDate(data.get(row).gettglDasar());
-                            txPermasalahan.setText(data.get(row).getPermasalahan());
-
-                            btAdd.setText("Perbarui");
-                            btCancel.setVisible(true);
-                            btDelete.setVisible(true);
-                            LabelAtas.setText("Ubah data");
-                        }
-                        else {
-                           //kembali aja, gak ngefek
-                        }
+                    int reply = JOptionPane.showConfirmDialog(
+                            null, //posisi kayaknya
+                            "Apakah anda yakin ingin membuka data No. " +
+                                    (row+1)+ "?\nPerubahan yang belum disimpan akan hilang.", //pesan
+                            "Peringatan!",  //judul
+                            JOptionPane.YES_NO_OPTION);
+                    if (reply == JOptionPane.YES_OPTION) {
+                        showRowData(row);
+                    }
+                    else {
+                       //kembali aja, gak ngefek
                     }
                 }
             }
@@ -362,14 +403,19 @@ public class PanelTunDinas extends javax.swing.JPanel {
         TableTunDinas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
     
-    public boolean isFieldModified(TunDinas datanya){
-        boolean temp = false;
-        
-        
-        
-        return temp;
+    private void showRowData(int row){
+        txLokasiNTanah.setText(this.data.get(row).getLokasiDT());
+        txDasar.setText(this.data.get(row).getDasar());
+        txNoSurat.setText(this.data.get(row).getnoSurat());
+        txDateField.setDate(this.data.get(row).gettglDasar());
+        txPermasalahan.setText(this.data.get(row).getPermasalahan());
+
+        btAdd.setText("Perbarui");
+        btCancel.setVisible(true);
+        btDelete.setVisible(true);
+        LabelAtas.setText("Ubah data");
     }
-    
+        
     public void resetField(){
         txLokasiNTanah.setText(null);
         txDasar.setText(null);
@@ -404,6 +450,7 @@ public class PanelTunDinas extends javax.swing.JPanel {
     private javax.swing.JButton btAdd;
     private javax.swing.JButton btCancel;
     private javax.swing.JButton btDelete;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -471,12 +518,19 @@ public class ClientsTableRenderer extends DefaultCellEditor{
     
     public Object getCellEditorValue(){
         if (clicked){
-            JOptionPane.showMessageDialog(null, "Column with Value: "+table.getValueAt(row, 1) + " -  Clicked!");
+            JOptionPane.showMessageDialog(
+                    //posisi
+                    null, 
+                    //pesan
+                    "Column with Value: "+table.getValueAt(row, 1) + " -  Clicked!"
+            );
+            
+//            showRowData(row);
             
             btAdd.setText("Perbarui");
             btCancel.setVisible(true);
             btDelete.setVisible(true);
-            LabelAtas.setText("Ubah data");
+            LabelAtas.setText("Detil data");
             
         }
         clicked = false;
