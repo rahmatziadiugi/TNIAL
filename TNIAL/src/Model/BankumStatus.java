@@ -9,20 +9,15 @@ package Model;
  *
  * @author Someone
  */
-public class StatusTingkat {
+public class BankumStatus {
     private String idStatus;
     private String ketStatus;
     
-    public StatusTingkat(String id, String ket){
-        this.idStatus = id;
-        this.ketStatus = ket;
-    }
-    
-    public String getId(){
-        return this.idStatus;
-    }
-    
-    public String getKet(){
-        return this.ketStatus;
+    public BankumStatus(
+            String idStatus,
+            String ketStatus
+    ){
+        this.idStatus = idStatus;
+        this.ketStatus = ketStatus;
     }
 }

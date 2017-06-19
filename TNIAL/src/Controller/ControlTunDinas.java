@@ -6,10 +6,10 @@
 package Controller;
 
 import Database.DB4MySQL;
-import Model.JnsTingkat;
-import Model.StatusTingkat;
+import Model.BankumJnsTingkat;
+import Model.BankumStatus;
+import Model.BankumStatusTingkat;
 import Model.TunDinas;
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
@@ -26,20 +26,21 @@ import javax.swing.JOptionPane;
 public class ControlTunDinas {
     DB4MySQL db = new DB4MySQL();
     private ArrayList<TunDinas> data = new ArrayList<>();
-    private ArrayList<JnsTingkat> dataJns = new ArrayList<>();
-    private ArrayList<StatusTingkat> dataStatus = new ArrayList<>();
+    private ArrayList<BankumJnsTingkat> dataJns = new ArrayList<>();
+    private ArrayList<BankumStatusTingkat> dataStatusTingkat = new ArrayList<>();
+    private ArrayList<BankumStatus> dataStatus = new ArrayList<>();
     
-    public void getDataDB(){
-        ArrayList<TunDinas> temp = new ArrayList<>();
-        ArrayList<JnsTingkat> tempJns = new ArrayList<>();
+    public void getDataDBTunDinas(){
         db.connect();
+        
+        this.data.clear();
         
         //data Tun Dinas
         ResultSet rs = db.get("SELECT * FROM `bankum_tundinas`");
         try {
             rs.beforeFirst();
             while(rs.next()){
-                temp.add(new TunDinas(
+                this.data.add(new TunDinas(
                         rs.getString("idTundinas"),
                         rs.getString("lokasiDT"),
                         rs.getString("Dasar"),
@@ -56,18 +57,45 @@ public class ControlTunDinas {
             Logger.getLogger(TunDinas.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        this.data = temp;
-
+        db.disconnect();
+    }
+    
+    public void getDataDBDatajenis(){
+        
+        db.connect();
+        
+        this.dataJns.clear();
+        
         //data jenis        
-        rs = db.get("SELECT * FROM `bankum_jnstingkat` WHERE `kdPemilik` = '04'");
+        ResultSet rs = db.get("SELECT * FROM `bankum_jnstingkat` WHERE `kdPemilik` = '04'");
         try {
             rs.beforeFirst();
             while(rs.next()){
-                tempJns.add(new JnsTingkat(
+                this.dataJns.add(new BankumJnsTingkat(
                         rs.getString("kdTingkat"), 
-                        rs.getString("ketTingkat"), 
-                        rs.getString("kdPemilik"), 
-                        rs.getString("Pemilik")
+                        rs.getString("ketTingkat")
+                ));
+            }                
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(TunDinas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+                
+        db.disconnect();
+    }
+    
+    public void getDataDBDataStatusTingkat(){
+        db.connect();
+        
+        this.dataStatusTingkat.clear();
+        
+        ResultSet rs = db.get("SELECT * FROM `bankumstatustingkat`");
+        try {
+            rs.beforeFirst();
+            while(rs.next()){
+                this.dataStatusTingkat.add(new BankumStatusTingkat(
+                        rs.getString("id_status_tingkat"), 
+                        rs.getString("StatusTingkat")
                 ));
             }                
             rs.close();
@@ -75,15 +103,21 @@ public class ControlTunDinas {
             Logger.getLogger(TunDinas.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        this.dataJns = tempJns;
+        db.disconnect();
+    }
+    
+    public void getDataDBDataStatus(){
+        db.connect();
         
-        rs = db.get("SELECT * FROM `bankumstatustingkat`");
+        this.dataStatus.clear();
+        
+        ResultSet rs = db.get("SELECT * FROM `bankumstatus` WHERE `kdPemilik` = '04' ");
         try {
             rs.beforeFirst();
             while(rs.next()){
-                this.dataStatus.add(new StatusTingkat(
-                        rs.getString("id_status_tingkat"), 
-                        rs.getString("StatusTingkat")
+                this.dataStatus.add(new BankumStatus(
+                        rs.getString("idStatus"), 
+                        rs.getString("ketStatus")
                 ));
             }                
             rs.close();
@@ -104,7 +138,7 @@ public class ControlTunDinas {
     
     public String getKetTingkat(String kd){
         String temp = "Tidak diketahui";
-        for(JnsTingkat jns : dataJns){
+        for(BankumJnsTingkat jns : dataJns){
             if(jns.getkdTingkat().equals(kd)){
                 temp = jns.getketTingkat();
                 break;
@@ -116,7 +150,7 @@ public class ControlTunDinas {
     
     public String getStatusnya(String id){
         String temp = "Tidak diketahui";
-        for(StatusTingkat status : dataStatus){
+        for(BankumStatusTingkat status : dataStatusTingkat){
             if(status.getId().equals(id)){
                 temp = status.getKet();
                 break;

@@ -5,12 +5,15 @@
  */
 package View;
 
+import Controller.ControlTunDinasDataTingkat;
+import Model.TunDinasTingkat;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -32,10 +35,13 @@ public class FormTingkat extends javax.swing.JFrame {
      */
     public FormTingkat() {
         initComponents();
+        this.idTunDinas = null;
     }
         
-    FormTingkat(String lokasi, String masalah){
+    FormTingkat(String lokasi, String masalah, String idTunDinas){
         initComponents();
+        
+        this.idTunDinas = idTunDinas;
         
         String[] lokasinya = lokasi.split("\n");
         String[] masalahnya = masalah.split("\n");
@@ -57,6 +63,11 @@ public class FormTingkat extends javax.swing.JFrame {
         this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
         this.setTitle("Tun Dinas - Form Tingkat");
         
+        control = new ControlTunDinasDataTingkat();
+        
+        setIsiTable();
+        
+        this.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         
         this.setVisible(true);
     }
@@ -132,6 +143,11 @@ public class FormTingkat extends javax.swing.JFrame {
         );
 
         btAddTingkat.setText("Tambah Tingkat");
+        btAddTingkat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btAddTingkatActionPerformed(evt);
+            }
+        });
 
         jScrollPane1.setPreferredSize(new java.awt.Dimension(452, 80));
 
@@ -214,6 +230,12 @@ public class FormTingkat extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btBackActionPerformed
 
+    private void btAddTingkatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAddTingkatActionPerformed
+        // TODO add your handling code here:
+        FormTambahTingkat tambahTingkat = new FormTambahTingkat();
+        tambahTingkat.setVisible(true);
+    }//GEN-LAST:event_btAddTingkatActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btAddTingkat;
     private javax.swing.JButton btBack;
@@ -229,6 +251,10 @@ public class FormTingkat extends javax.swing.JFrame {
     private javax.swing.JTable tableTingkatnyaw;
     // End of variables declaration//GEN-END:variables
 
+    ControlTunDinasDataTingkat control;
+    ArrayList<TunDinasTingkat> data = new ArrayList<>();
+    private final String idTunDinas;
+    
     //button in cell
     
     class ClientsTableButtonRenderer extends JButton implements TableCellRenderer{
@@ -298,7 +324,13 @@ public class FormTingkat extends javax.swing.JFrame {
     }
     
     public void setIsiTable(){
-        //this.n = data.size();
+        
+        control.getDataDB(this.idTunDinas);
+        
+        data = control.getDatanya();
+        
+        this.n = data.size();
+        
         resetTable(this.n);
         tableTingkatnyaw.setModel(resetTable);  
         
@@ -306,7 +338,9 @@ public class FormTingkat extends javax.swing.JFrame {
         
         for(int i=0; i<this.n; i++){
             tableTingkatnyaw.setValueAt(i+1, i, 0);
-            
+            tableTingkatnyaw.setValueAt(data.get(i).getKdTIngkat(), i, 1);
+            tableTingkatnyaw.setValueAt(data.get(i).getidStatus(), i, 2);
+            tableTingkatnyaw.setValueAt(data.get(i).getKetStatus(), i, 3);
             tableTingkatnyaw.setValueAt("Data", i, 4);
         }        
     }
@@ -329,20 +363,16 @@ public class FormTingkat extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 int row = tableTingkatnyaw.rowAtPoint(evt.getPoint());
                 int col = tableTingkatnyaw.columnAtPoint(evt.getPoint());
-                if (col < 6) {
-                    int reply = JOptionPane.showConfirmDialog(
-                            null, //posisi kayaknya
-                            "Apakah anda yakin ingin membuka data No. " +
-                                    (row+1)+ "?\nPerubahan yang belum disimpan akan hilang.", //pesan
-                            "Peringatan!",  //judul
-                            JOptionPane.YES_NO_OPTION);
-                    if (reply == JOptionPane.YES_OPTION) {
-                        showRowData(row);
-                    }
-                    else {
-                       //kembali aja, gak ngefek
-                    }
-                }
+//                if (col < 4) {
+                    
+                        FormProsesTingkat form = new FormProsesTingkat(
+                                data.get(row).getKdTIngkat(),
+                                data.get(row).getidStatus(),
+                                data.get(row).getKetStatus()
+                        );
+                        form.setVisible(true);
+                    
+//                }
             }
         });
         

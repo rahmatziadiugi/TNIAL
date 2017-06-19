@@ -9,23 +9,17 @@ package Model;
  *
  * @author Someone
  */
-public class JnsTingkat {
+public class BankumJnsTingkat {
     private String kdTingkat;
     private String ketTingkat;
-    private String kdPemilik;
-    private String pemilik;
     
-    public JnsTingkat(
+    public BankumJnsTingkat(
             String kdTingkat,
-            String ketTingkat,
-            String kdPemilik,
-            String pemilik
+            String ketTingkat
     )
     {
         this.kdTingkat = kdTingkat;
         this.ketTingkat = ketTingkat;
-        this.kdPemilik = kdPemilik; 
-        this.pemilik = pemilik;
     }
     
     public  String getkdTingkat(){
@@ -33,12 +27,6 @@ public class JnsTingkat {
     }
     public  String getketTingkat(){
         return this.ketTingkat;
-    }
-    public  String getkdPemilik(){
-        return this.kdPemilik;
-    }
-    public  String getpemilik(){
-        return this.pemilik;
     }
     
 }

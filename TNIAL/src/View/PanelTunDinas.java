@@ -42,7 +42,10 @@ public class PanelTunDinas extends javax.swing.JPanel {
                 
         //get DB
         control = new ControlTunDinas();
-        control.getDataDB();
+        control.getDataDBTunDinas();
+        control.getDataDBDatajenis();
+        control.getDataDBDataStatus();
+        control.getDataDBDataStatusTingkat();
         data = control.getDatanya();
         this.n = data.size();
         
@@ -90,7 +93,7 @@ public class PanelTunDinas extends javax.swing.JPanel {
         jScrollPane3 = new javax.swing.JScrollPane();
         TableTunDinas = new javax.swing.JTable();
         LabelAtas = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btRefresh = new javax.swing.JButton();
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setText("TUN DINAS");
@@ -233,10 +236,10 @@ public class PanelTunDinas extends javax.swing.JPanel {
 
         LabelAtas.setText("jLabel5");
 
-        jButton1.setText("Segarkan Tabel");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btRefresh.setText("Segarkan Tabel");
+        btRefresh.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btRefreshActionPerformed(evt);
             }
         });
 
@@ -257,7 +260,7 @@ public class PanelTunDinas extends javax.swing.JPanel {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(LabelAtas)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton1))
+                                .addComponent(btRefresh))
                             .addComponent(jLabel1))))
                 .addContainerGap())
         );
@@ -269,7 +272,7 @@ public class PanelTunDinas extends javax.swing.JPanel {
                 .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(LabelAtas)
-                    .addComponent(jButton1))
+                    .addComponent(btRefresh))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -333,13 +336,13 @@ public class PanelTunDinas extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btDeleteActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRefreshActionPerformed
         // TODO add your handling code here:
         setIsiTable();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btRefreshActionPerformed
 
     public void setIsiTable(){
-        control.getDataDB();
+        control.getDataDBTunDinas();
         data = control.getDatanya();
         Collections.reverse(data);
         this.n = data.size();
@@ -448,7 +451,7 @@ public class PanelTunDinas extends javax.swing.JPanel {
     private javax.swing.JButton btAdd;
     private javax.swing.JButton btCancel;
     private javax.swing.JButton btDelete;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btRefresh;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -517,11 +520,15 @@ public class PanelTunDinas extends javax.swing.JPanel {
         public Object getCellEditorValue(){
             //when button is pressed gently desu
             if (clicked){
-
+                
+                
+                                
                 FormTingkat tingkatnya = new FormTingkat(
                         data.get(row).getLokasiDT(), 
-                        data.get(row).getPermasalahan()
+                        data.get(row).getPermasalahan(),
+                        data.get(row).getidTundinas()
                 );
+                
                 
 //                showRowData(row);
 
