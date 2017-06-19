@@ -6,6 +6,9 @@
 package View;
 
 import Controller.ControlTunDinasDataTingkat;
+import Model.BankumJnsTingkat;
+import Model.BankumStatus;
+import Model.BankumStatusTingkat;
 import Model.TunDinasTingkat;
 import java.awt.Color;
 import java.awt.Component;
@@ -17,7 +20,6 @@ import java.util.ArrayList;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.UIManager;
@@ -37,7 +39,7 @@ public class FormTingkat extends javax.swing.JFrame {
         initComponents();
         this.idTunDinas = null;
     }
-        
+            
     FormTingkat(String lokasi, String masalah, String idTunDinas){
         initComponents();
         
@@ -66,7 +68,7 @@ public class FormTingkat extends javax.swing.JFrame {
         control = new ControlTunDinasDataTingkat();
         
         setIsiTable();
-        
+                
         this.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         
         this.setVisible(true);
@@ -232,7 +234,9 @@ public class FormTingkat extends javax.swing.JFrame {
 
     private void btAddTingkatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAddTingkatActionPerformed
         // TODO add your handling code here:
-        FormTambahTingkat tambahTingkat = new FormTambahTingkat();
+        FormTambahTingkat tambahTingkat = new FormTambahTingkat(
+                idTunDinas
+        );
         tambahTingkat.setVisible(true);
     }//GEN-LAST:event_btAddTingkatActionPerformed
 
@@ -339,8 +343,8 @@ public class FormTingkat extends javax.swing.JFrame {
         for(int i=0; i<this.n; i++){
             tableTingkatnyaw.setValueAt(i+1, i, 0);
             tableTingkatnyaw.setValueAt(data.get(i).getKdTIngkat(), i, 1);
-            tableTingkatnyaw.setValueAt(data.get(i).getidStatus(), i, 2);
-            tableTingkatnyaw.setValueAt(data.get(i).getKetStatus(), i, 3);
+            tableTingkatnyaw.setValueAt(data.get(i).getidStatus(), i, 2);            
+            tableTingkatnyaw.setValueAt(data.get(i).getKet(), i, 3);
             tableTingkatnyaw.setValueAt("Data", i, 4);
         }        
     }

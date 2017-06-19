@@ -132,12 +132,20 @@ public class ControlTunDinas {
         return this.data;
     }
     
+    public ArrayList<BankumJnsTingkat> getDataJns(){
+        return this.dataJns;
+    }
+    
+    public ArrayList<BankumStatus> getDataStatus(){
+        return this.dataStatus;
+    }
+    
     public TunDinas getDataNo(int i){
         return this.data.get(i);
     }
     
     public String getKetTingkat(String kd){
-        String temp = "Tidak diketahui";
+        String temp = "-";
         for(BankumJnsTingkat jns : dataJns){
             if(jns.getkdTingkat().equals(kd)){
                 temp = jns.getketTingkat();
@@ -149,7 +157,7 @@ public class ControlTunDinas {
     }
     
     public String getStatusnya(String id){
-        String temp = "Tidak diketahui";
+        String temp = "-";
         for(BankumStatusTingkat status : dataStatusTingkat){
             if(status.getId().equals(id)){
                 temp = status.getKet();

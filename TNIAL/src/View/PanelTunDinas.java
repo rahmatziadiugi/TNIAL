@@ -532,9 +532,9 @@ public class PanelTunDinas extends javax.swing.JPanel {
                 
 //                showRowData(row);
 
-                btAdd.setText("Perbarui");
-                btCancel.setVisible(true);
-                btDelete.setVisible(true);
+//                btAdd.setText("Perbarui");
+//                btCancel.setVisible(true);
+//                btDelete.setVisible(true);
                 LabelAtas.setText("Detil data");
 
             }

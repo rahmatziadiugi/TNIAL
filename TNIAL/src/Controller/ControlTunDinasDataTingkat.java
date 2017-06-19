@@ -6,6 +6,9 @@
 package Controller;
 
 import Database.DB4MySQL;
+import Model.BankumJnsTingkat;
+import Model.BankumStatus;
+import Model.BankumStatusTingkat;
 import Model.TunDinasTingkat;
 import java.io.File;
 import java.sql.ResultSet;
@@ -20,28 +23,32 @@ import java.util.logging.Logger;
  */
 public class ControlTunDinasDataTingkat {
     DB4MySQL db = new DB4MySQL();
-    private ArrayList<TunDinasTingkat> dataDinasTingkat = new ArrayList<>();    
+    private ArrayList<TunDinasTingkat> dataDinasTingkat = new ArrayList<>();
     
     public void getDataDB(String id){
         ArrayList<TunDinasTingkat> temp = new ArrayList<>();
         db.connect();
         
         //data Tun Dinas
-        ResultSet rs = db.get("SELECT * FROM `bankum_tundinastingkat` WHERE `idTundinas` = '"+
-                id
-                + "'");
+        ResultSet rs = db.get(
+                "SELECT `idR`, `idTundinas`, `ketTingkat`, `ketStatus`, `ketstat`, `Keterangan`, `File_lampiran`, `StatusTingkat`, `tglStatusAkhir` FROM `bankum_tundinastingkat` \n" +
+                        "JOIN bankumstatus USING (`idStatus`)\n" +
+                        "JOIN bankum_jnstingkat USING (`kdTingkat`)\n" +
+                        "JOIN bankumstatustingkat USING (`id_status_tingkat`) WHERE `idTundinas` = '"+
+                        id
+                        + "'");
         try {
             rs.beforeFirst();
             while(rs.next()){
                 temp.add(new TunDinasTingkat(
                         rs.getLong("idR"),
                         rs.getString("idTunDinas"),
-                        rs.getString("kdTingkat"),
-                        rs.getString("idStatus"),
+                        rs.getString("ketTingkat"),
+                        rs.getString("ketStatus"),
                         rs.getString("ketstat"),
                         rs.getString("Keterangan"), 
                         (File) rs.getBlob("File_lampiran"),
-                        rs.getString("id_status_tingkat"),
+                        rs.getString("StatusTingkat"),
                         rs.getDate("tglStatusAkhir")
                 ));
             }                
@@ -58,7 +65,7 @@ public class ControlTunDinasDataTingkat {
     public ArrayList<TunDinasTingkat> getDatanya(){
         return this.dataDinasTingkat;
     }
-    
+        
 //    public boolean tambahData(
 //            String lokasi,
 //            String dasar,

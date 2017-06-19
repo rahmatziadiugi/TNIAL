@@ -20,4 +20,12 @@ public class BankumStatus {
         this.idStatus = idStatus;
         this.ketStatus = ketStatus;
     }
+    
+    public String getID(){
+        return this.idStatus;
+    }
+    
+    public String getStatus(){
+        return this.ketStatus;
+    }
 }
