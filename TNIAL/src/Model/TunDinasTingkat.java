@@ -61,4 +61,8 @@ public class TunDinasTingkat {
         return this.ket;
     }
     
+    public long getIdR(){
+        return this.idR;
+    }
+    
 }

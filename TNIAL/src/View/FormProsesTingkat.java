@@ -5,8 +5,11 @@
  */
 package View;
 
+import Controller.ControlTunDinasDataTingkatProses;
+import Model.TunDinasProses;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.util.ArrayList;
 
 /**
  *
@@ -21,7 +24,7 @@ public class FormProsesTingkat extends javax.swing.JFrame {
         initComponents();
     }
     
-    public FormProsesTingkat(String tingkat, String Status, String ketStatus){
+    public FormProsesTingkat(long idR, String tingkat, String Status, String ketStatus){
         initComponents();
         
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -35,6 +38,27 @@ public class FormProsesTingkat extends javax.swing.JFrame {
         
         this.ketStat = ketStatus;
         txKet.setText(ketStatus);
+        
+        control = new ControlTunDinasDataTingkatProses(idR);
+                
+        setProsesText();
+    }
+    
+    public void setProsesText(){
+        String temp = "";
+        
+        control.getDataDB();
+        ArrayList<TunDinasProses> data = control.getDatanya();
+        
+        
+        int i = 1;
+        for(TunDinasProses dat : data){
+            temp += i + ". " + dat.getDate().toString()+ " - " + dat.getProses() + "\n";
+            i++;
+        }
+        
+        txProsesSidang.setText(temp);
+        txProsesSidang.setEditable(false);
     }
 
     /**
@@ -217,7 +241,9 @@ public class FormProsesTingkat extends javax.swing.JFrame {
 
     private void btUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btUpdateActionPerformed
         // TODO add your handling code here:
-        
+        if(!this.ketStat.equals(txKet)){
+            //update
+        }
     }//GEN-LAST:event_btUpdateActionPerformed
 
     private void btDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btDeleteActionPerformed
@@ -228,9 +254,11 @@ public class FormProsesTingkat extends javax.swing.JFrame {
 
     private void btAddProsesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAddProsesActionPerformed
         // TODO add your handling code here:
+        FormProsesSidang form = new FormProsesSidang();
     }//GEN-LAST:event_btAddProsesActionPerformed
 
     private String ketStat;
+    private ControlTunDinasDataTingkatProses control;
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btAddProses;
