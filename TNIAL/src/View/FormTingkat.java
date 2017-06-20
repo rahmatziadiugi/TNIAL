@@ -16,6 +16,9 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
@@ -238,6 +241,13 @@ public class FormTingkat extends javax.swing.JFrame {
                 idTunDinas
         );
         tambahTingkat.setVisible(true);
+        tambahTingkat.addWindowListener(new WindowAdapter() {
+                @Override 
+                public void windowClosed(WindowEvent e) {
+                    setIsiTable();
+                }
+            }
+        );
     }//GEN-LAST:event_btAddTingkatActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -339,7 +349,7 @@ public class FormTingkat extends javax.swing.JFrame {
         tableTingkatnyaw.setModel(resetTable);  
         
         this.thisTableProperties();
-        
+                      
         for(int i=0; i<this.n; i++){
             tableTingkatnyaw.setValueAt(i+1, i, 0);
             tableTingkatnyaw.setValueAt(data.get(i).getKdTIngkat(), i, 1);
@@ -360,8 +370,11 @@ public class FormTingkat extends javax.swing.JFrame {
         tableTingkatnyaw.getColumnModel().getColumn(4).setPreferredWidth(100);
         //set button column
         tableTingkatnyaw.getColumnModel().getColumn(4).setCellRenderer(new ClientsTableButtonRenderer());
-        tableTingkatnyaw.getColumnModel().getColumn(4).setCellEditor(new ClientsTableRenderer(new JCheckBox()));
+        //tableTingkatnyaw.getColumnModel().getColumn(4).setCellEditor(new ClientsTableRenderer(new JCheckBox()));
         //onclick event
+        for(MouseListener m : tableTingkatnyaw.getMouseListeners()){
+            tableTingkatnyaw.removeMouseListener(m);
+        }        
         tableTingkatnyaw.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -375,6 +388,15 @@ public class FormTingkat extends javax.swing.JFrame {
                                 data.get(row).getidStatus(),
                                 data.get(row).getKetStatus()
                         );
+                        
+                        form.addWindowListener(new WindowAdapter() {
+                                @Override 
+                                public void windowClosed(WindowEvent e) {
+                                    setIsiTable();
+                                }
+                            }
+                        );
+                        
                         form.setVisible(true);
                     
 //                }
@@ -386,27 +408,6 @@ public class FormTingkat extends javax.swing.JFrame {
         tableTingkatnyaw.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
     
-    private void showRowData(int row){
-//        txLokasiNTanah.setText(this.data.get(row).getLokasiDT());
-//        txDasar.setText(this.data.get(row).getDasar());
-//        txNoSurat.setText(this.data.get(row).getnoSurat());
-//        txDateField.setDate(this.data.get(row).gettglDasar());
-//        txPermasalahan.setText(this.data.get(row).getPermasalahan());
-//
-//        btAdd.setText("Perbarui");
-//        btCancel.setVisible(true);
-//        btDelete.setVisible(true);
-//        LabelAtas.setText("Ubah data");
-    }
-        
-    public void resetField(){
-//        txLokasiNTanah.setText(null);
-//        txDasar.setText(null);
-//        txNoSurat.setText(null);
-//        txDateField.setDate(new Date());
-//        txPermasalahan.setText(null);
-    }
-    
     public void resetTable(int i){
         String[] header = {"No","Tingkat","Status","Keterangan",""};
         resetTable = new DefaultTableModel(null, header){
@@ -414,7 +415,7 @@ public class FormTingkat extends javax.swing.JFrame {
                 //PRE:  row > 0, column > 0
                 //POST: FCTVAL == false always
             {
-                return column==6; //kolom 6 editable
+                return column==4; //kolom 6 editable
             }
             
             
