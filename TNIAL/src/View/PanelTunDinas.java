@@ -11,6 +11,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -61,6 +62,29 @@ public class PanelTunDinas extends javax.swing.JPanel {
         
         //set format tanggal
         txDateField.setFormats("MM/dd/yyyy");
+        
+        //onclick event
+        TableTunDinas.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int row = TableTunDinas.rowAtPoint(evt.getPoint());
+                int col = TableTunDinas.columnAtPoint(evt.getPoint());
+                if (col < 6) {
+                    int reply = JOptionPane.showConfirmDialog(
+                            null, //posisi kayaknya
+                            "Apakah anda yakin ingin membuka data No. " +
+                                    (row+1)+ "?\nPerubahan yang belum disimpan akan hilang.", //pesan
+                            "Peringatan!",  //judul
+                            JOptionPane.YES_NO_OPTION);
+                    if (reply == JOptionPane.YES_OPTION) {
+                        showRowData(row);
+                    }
+                    else {
+                       //kembali aja, gak ngefek
+                    }
+                }
+            }
+        });
     }
         
     /**
@@ -283,6 +307,14 @@ public class PanelTunDinas extends javax.swing.JPanel {
 
     private void btAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAddActionPerformed
         // TODO add your handling code here:
+        if(this.currentRowDat == null){
+        if(
+                !txLokasiNTanah.getText().isEmpty() &&
+                !txDasar.getText().isEmpty() &&
+                !txNoSurat.getText().isEmpty() &&
+                !txPermasalahan.getText().isEmpty()
+                ){
+        
         if(control.tambahData(
                     txLokasiNTanah.getText(), 
                     txDasar.getText(), 
@@ -295,7 +327,10 @@ public class PanelTunDinas extends javax.swing.JPanel {
             resetField();
             setIsiTable();
         }
-        
+        }else{
+            JOptionPane.showMessageDialog(null,"Semua field harus diisi!");
+        }
+        }
     }//GEN-LAST:event_btAddActionPerformed
 
     private void btCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelActionPerformed
@@ -311,6 +346,8 @@ public class PanelTunDinas extends javax.swing.JPanel {
             btCancel.setVisible(false);
             btDelete.setVisible(false);
             LabelAtas.setText("Tambah data");
+            
+            this.currentRowDat = null;
         }
         else {
            //kembali aja, gak ngefek
@@ -325,14 +362,19 @@ public class PanelTunDinas extends javax.swing.JPanel {
                 "Peringatan!",  //judul
                 JOptionPane.YES_NO_OPTION);
         if (reply == JOptionPane.YES_OPTION) {
+            //delete row
+            control.deleteDisRow(this.currentRowDat.getidTundinas());
+            
+            //nyahahahhahahahahahahah
             resetField();
             btAdd.setText("Tambah");
             btCancel.setVisible(false);
             btDelete.setVisible(false);
             LabelAtas.setText("Tambah data");
-        }
-        else {
-           //kembali aja, gak ngefek
+            
+            setIsiTable();
+            
+            this.currentRowDat = null;
         }
     }//GEN-LAST:event_btDeleteActionPerformed
 
@@ -373,31 +415,9 @@ public class PanelTunDinas extends javax.swing.JPanel {
         TableTunDinas.getColumnModel().getColumn(4).setPreferredWidth(100);
         TableTunDinas.getColumnModel().getColumn(5).setPreferredWidth(80);
         TableTunDinas.getColumnModel().getColumn(6).setPreferredWidth(80);
-        //set button column
+        //set button column        
         TableTunDinas.getColumnModel().getColumn(6).setCellRenderer(new ClientsTableButtonRenderer());
-        TableTunDinas.getColumnModel().getColumn(6).setCellEditor(new ClientsTableRenderer(new JCheckBox()));
-        //onclick event
-        TableTunDinas.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                int row = TableTunDinas.rowAtPoint(evt.getPoint());
-                int col = TableTunDinas.columnAtPoint(evt.getPoint());
-                if (col < 6) {
-                    int reply = JOptionPane.showConfirmDialog(
-                            null, //posisi kayaknya
-                            "Apakah anda yakin ingin membuka data No. " +
-                                    (row+1)+ "?\nPerubahan yang belum disimpan akan hilang.", //pesan
-                            "Peringatan!",  //judul
-                            JOptionPane.YES_NO_OPTION);
-                    if (reply == JOptionPane.YES_OPTION) {
-                        showRowData(row);
-                    }
-                    else {
-                       //kembali aja, gak ngefek
-                    }
-                }
-            }
-        });
+        TableTunDinas.getColumnModel().getColumn(6).setCellEditor(new ClientsTableRenderer(new JCheckBox()));        
         
         //can only select one row at a time
         TableTunDinas.setRowSelectionAllowed(true);
@@ -405,6 +425,8 @@ public class PanelTunDinas extends javax.swing.JPanel {
     }
     
     private void showRowData(int row){
+        this.currentRowDat = this.data.get(row);
+        
         txLokasiNTanah.setText(this.data.get(row).getLokasiDT());
         txDasar.setText(this.data.get(row).getDasar());
         txNoSurat.setText(this.data.get(row).getnoSurat());
@@ -444,6 +466,7 @@ public class PanelTunDinas extends javax.swing.JPanel {
     private ControlTunDinas control;
     ArrayList<TunDinas> data = new ArrayList<>();
     private int n;
+    private TunDinas currentRowDat;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel LabelAtas;

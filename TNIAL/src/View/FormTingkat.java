@@ -75,6 +75,33 @@ public class FormTingkat extends javax.swing.JFrame {
         this.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         
         this.setVisible(true);
+        
+        //onclick event        
+        tableTingkatnyaw.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int row = tableTingkatnyaw.rowAtPoint(evt.getPoint());
+                int col = tableTingkatnyaw.columnAtPoint(evt.getPoint());
+//                if (col < 4) {                    
+                        FormProsesTingkat form = new FormProsesTingkat(
+                                data.get(row).getIdR(),
+                                data.get(row).getKdTIngkat(),
+                                data.get(row).getidStatus(),
+                                data.get(row).getKetStatus()
+                        );
+                        
+                        form.addWindowListener(new WindowAdapter() {
+                                @Override 
+                                public void windowClosed(WindowEvent e) {
+                                    setIsiTable();
+                                }
+                            }
+                        );
+                        
+                        form.setVisible(true);                    
+//                }
+            }
+        });
     }
 
     /**
@@ -371,38 +398,7 @@ public class FormTingkat extends javax.swing.JFrame {
         //set button column
         tableTingkatnyaw.getColumnModel().getColumn(4).setCellRenderer(new ClientsTableButtonRenderer());
         //tableTingkatnyaw.getColumnModel().getColumn(4).setCellEditor(new ClientsTableRenderer(new JCheckBox()));
-        //onclick event
-        for(MouseListener m : tableTingkatnyaw.getMouseListeners()){
-            tableTingkatnyaw.removeMouseListener(m);
-        }        
-        tableTingkatnyaw.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                int row = tableTingkatnyaw.rowAtPoint(evt.getPoint());
-                int col = tableTingkatnyaw.columnAtPoint(evt.getPoint());
-//                if (col < 4) {
-                    
-                        FormProsesTingkat form = new FormProsesTingkat(
-                                data.get(row).getIdR(),
-                                data.get(row).getKdTIngkat(),
-                                data.get(row).getidStatus(),
-                                data.get(row).getKetStatus()
-                        );
-                        
-                        form.addWindowListener(new WindowAdapter() {
-                                @Override 
-                                public void windowClosed(WindowEvent e) {
-                                    setIsiTable();
-                                }
-                            }
-                        );
-                        
-                        form.setVisible(true);
-                    
-//                }
-            }
-        });
-        
+                
         //can only select one row at a time
         tableTingkatnyaw.setRowSelectionAllowed(true);
         tableTingkatnyaw.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);

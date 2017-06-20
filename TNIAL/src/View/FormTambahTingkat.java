@@ -6,13 +6,9 @@
 package View;
 
 import Controller.ControlTunDinasDataTingkatTambahTingkat;
-import Model.BankumJnsTingkat;
-import Model.BankumStatus;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JOptionPane;
 
 /**
  *

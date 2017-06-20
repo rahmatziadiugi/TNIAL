@@ -208,4 +208,22 @@ public class ControlTunDinas {
         
         return berhasil;
     }
+    
+    public void deleteDisRow(
+            String id
+    ){
+        db.connect();
+        try{
+            if(db.manipulate("DELETE FROM `bankum_tundinas` WHERE `idTundinas` = '" +
+                    id + "';") > 0)
+            {
+                JOptionPane.showMessageDialog(null,"Berhasil dihapus!");
+            } else{
+                JOptionPane.showMessageDialog(null,"Gagal! #Feelsblackman");
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null,"Gagal!");
+        }
+        db.disconnect();
+    }
 }

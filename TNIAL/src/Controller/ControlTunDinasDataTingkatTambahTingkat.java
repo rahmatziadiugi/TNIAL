@@ -108,14 +108,19 @@ public class ControlTunDinasDataTingkatTambahTingkat {
         db.connect();
         
         try{
-                        
+            
+            ResultSet rs = db.get("SELECT * FROM `bankum_tundinastingkat` WHERE `idTundinas` = '" +
+                    id + "' AND `kdTingkat` = '" +
+                    dataJns.get(kdTingkat).getkdTingkat() + "'");
+            if (!rs.next() ) {
+                         
             if(db.manipulate("INSERT INTO `bankum_tundinastingkat` "
                     + "(`idR`, `idTundinas`, `kdTingkat`, `idStatus`, `ketstat`, `Keterangan`, `File_lampiran`, `id_status_tingkat`, `tglStatusAkhir`) VALUES "
                     + "(NULL, '" +
                     id + "', '" +
                     dataJns.get(kdTingkat).getkdTingkat() + "', '" +
                     dataStatus.get(idStatus).getID() + "', '"+
-                    ket + "', NULL, NULL, NULL, '"+
+                    ket + "', NULL, NULL, '01', '"+
                     (new java.sql.Date((new java.util.Date()).getTime()))+ "')"
                     + "") >= 1)
             {
@@ -123,6 +128,8 @@ public class ControlTunDinasDataTingkatTambahTingkat {
                 temp = true;
             } else{
                 JOptionPane.showMessageDialog(null,"Gagal menambahkan!");
+            }
+            
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null,"Gagal!");

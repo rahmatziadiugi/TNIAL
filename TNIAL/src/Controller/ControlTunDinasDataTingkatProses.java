@@ -72,6 +72,7 @@ public class ControlTunDinasDataTingkatProses {
                     ket + "' WHERE `idR` = " +
                     id + ";") > 0){
                 //do something
+                JOptionPane.showMessageDialog(null,"Berhasil disimpan."); 
             }else{
                 JOptionPane.showMessageDialog(null,("Gagal!"));
             }
