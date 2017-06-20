@@ -31,9 +31,9 @@ public class ControlTunDinasDataTingkat {
         
         //data Tun Dinas
         ResultSet rs = db.get(
-                "SELECT `idR`, `idTundinas`, `ketTingkat`, `ketStatus`, `ketstat`, `Keterangan`, `File_lampiran`, `StatusTingkat`, `tglStatusAkhir` FROM `bankum_tundinastingkat` \n" +
-                        "JOIN bankumstatus USING (`idStatus`)\n" +
-                        "JOIN bankum_jnstingkat USING (`kdTingkat`)\n" +
+                "SELECT `idR`, `idTundinas`, `ketTingkat`, `ketStatus`, `ketstat`, `Keterangan`, `File_lampiran`, `StatusTingkat`, `tglStatusAkhir` FROM `bankum_tundinastingkat` " +
+                        "JOIN bankumstatus USING (`idStatus`) " +
+                        "JOIN bankum_jnstingkat USING (`kdTingkat`) " +
                         "JOIN bankumstatustingkat USING (`id_status_tingkat`) WHERE `idTundinas` = '"+
                         id
                         + "'");
@@ -64,48 +64,5 @@ public class ControlTunDinasDataTingkat {
     
     public ArrayList<TunDinasTingkat> getDatanya(){
         return this.dataDinasTingkat;
-    }
-        
-//    public boolean tambahData(
-//            String lokasi,
-//            String dasar,
-//            String noSurat,
-//            long tgl,
-//            String permasalahan
-//    ){
-//        boolean berhasil = false;
-//        
-//        db.connect();
-//        
-//        try{
-//            java.sql.Date sqlDate = new java.sql.Date(tgl);
-//            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-//            java.util.Date utilDate = new java.util.Date();
-//            
-//            if(db.manipulate("INSERT INTO `bankum_tundinas` "
-//                    + "(`idTundinas`, `lokasiDT`, `Dasar`, `noSurat`, `tglDasar`, `Permasalahan`, `id_status_tingkat`, `kdTingkat`, `tglStatus`) "
-//                    + "VALUES ('"
-//                    //+ String.valueOf(utilDate.getTime()) + "', '"
-//                    + String.valueOf(utilDate) + "', '"
-//                    + lokasi + "', '"
-//                    + dasar + "', '"
-//                    + noSurat + "', '"
-//                    + sqlDate + "', '"
-//                    + permasalahan + "', NULL, NULL, NULL);") >= 1)
-//            {
-//                JOptionPane.showMessageDialog(null,"Berhasil menambahkan!");
-//                berhasil = true;
-//            } else{
-//                JOptionPane.showMessageDialog(null,"Gagal menambahkan!");
-//            }
-//        } catch (Exception ex) {
-//            JOptionPane.showMessageDialog(null,"Gagal!");
-//        }
-//        
-//        db.disconnect();
-//        
-//        return berhasil;
-//    }
-    
-    
+    }        
 }

@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -59,4 +60,45 @@ public class ControlTunDinasDataTingkatProses {
     public ArrayList<TunDinasProses> getDatanya(){
         return this.data;
     }
+    
+    public void updateDataDB(
+            String ket,
+            long id
+    ){
+        db.connect();
+        
+        try{
+            if(db.manipulate("UPDATE `bankum_tundinastingkat` SET `ketstat` = '" +
+                    ket + "' WHERE `idR` = " +
+                    id + ";") > 0){
+                //do something
+            }else{
+                JOptionPane.showMessageDialog(null,("Gagal!"));
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null,"Gagal");                
+        }
+        
+        db.disconnect();
+    }
+    
+    public void deleteDataDB(long id){
+        db.connect();
+        
+        try{
+            if(db.manipulate("DELETE FROM `bankum_tundinastingkat` WHERE `idR` = " +
+                    id + "") > 0){
+                //do something
+            }else{
+                JOptionPane.showMessageDialog(null,("Gagal!"));
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null,"Gagal");                
+        }
+        
+        db.disconnect();
+    }
+    
 }

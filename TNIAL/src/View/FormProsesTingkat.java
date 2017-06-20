@@ -9,7 +9,13 @@ import Controller.ControlTunDinasDataTingkatProses;
 import Model.TunDinasProses;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -22,7 +28,10 @@ public class FormProsesTingkat extends javax.swing.JFrame {
      */
     public FormProsesTingkat() {
         initComponents();
+        this.idr = -1;
     }
+    
+    private final long idr;
     
     public FormProsesTingkat(long idR, String tingkat, String Status, String ketStatus){
         initComponents();
@@ -40,6 +49,8 @@ public class FormProsesTingkat extends javax.swing.JFrame {
         txKet.setText(ketStatus);
         
         control = new ControlTunDinasDataTingkatProses(idR);
+        
+        this.idr = idR;
                 
         setProsesText();
     }
@@ -241,22 +252,39 @@ public class FormProsesTingkat extends javax.swing.JFrame {
 
     private void btUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btUpdateActionPerformed
         // TODO add your handling code here:
-        if(!this.ketStat.equals(txKet)){
+        if(!this.ketStat.equals(txKet.getText())){
             //update
+            control.updateDataDB(txKet.getText(), idr);
         }
     }//GEN-LAST:event_btUpdateActionPerformed
 
     private void btDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btDeleteActionPerformed
         // TODO add your handling code here:
         
-        this.dispose();
+        int reply = JOptionPane.showConfirmDialog(
+                null, //posisi kayaknya
+                "Apakah anda yakin ingin menghapus ini?\nData yang sudah dihapus tidak dapat dikembalikan lagi.", //pesan
+                "Peringatan!",  //judul
+                JOptionPane.YES_NO_OPTION);
+        if (reply == JOptionPane.YES_OPTION) {
+            control.deleteDataDB(idr);
+            this.dispose();
+        }
     }//GEN-LAST:event_btDeleteActionPerformed
 
     private void btAddProsesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAddProsesActionPerformed
         // TODO add your handling code here:
-        FormProsesSidang form = new FormProsesSidang();
+        FormProsesSidang form = new FormProsesSidang(this.idr);
+        //when that form closed do dis plis -> setProsesText();
+        form.addWindowListener(new WindowAdapter() {
+                @Override 
+                public void windowClosed(WindowEvent e) {
+                    setProsesText();
+                }
+            }
+        );
     }//GEN-LAST:event_btAddProsesActionPerformed
-
+    
     private String ketStat;
     private ControlTunDinasDataTingkatProses control;
     

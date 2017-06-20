@@ -111,10 +111,10 @@ public class ControlTunDinasDataTingkatTambahTingkat {
                         
             if(db.manipulate("INSERT INTO `bankum_tundinastingkat` "
                     + "(`idR`, `idTundinas`, `kdTingkat`, `idStatus`, `ketstat`, `Keterangan`, `File_lampiran`, `id_status_tingkat`, `tglStatusAkhir`) VALUES "
-                    + "('4', '" +
+                    + "(NULL, '" +
                     id + "', '" +
-                    dataJns.get(kdTingkat) + "', '" +
-                    dataStatus.get(idStatus) + "', '"+
+                    dataJns.get(kdTingkat).getkdTingkat() + "', '" +
+                    dataStatus.get(idStatus).getID() + "', '"+
                     ket + "', NULL, NULL, NULL, '"+
                     (new java.sql.Date((new java.util.Date()).getTime()))+ "')"
                     + "") >= 1)

@@ -5,8 +5,10 @@
  */
 package View;
 
+import Controller.ControlTunDinasDataTingkatProsesSidang;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.util.Date;
 
 /**
  *
@@ -20,6 +22,12 @@ public class FormProsesSidang extends javax.swing.JFrame {
     public FormProsesSidang() {
         initComponents();
         
+        this.idR = -1;
+    }
+    
+    public FormProsesSidang(long id){
+        initComponents();
+        
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
         this.setTitle("Tun Dinas - Form Proses Tingkat");
@@ -30,8 +38,14 @@ public class FormProsesSidang extends javax.swing.JFrame {
         buttonGroup1.add(btSelesai);
         buttonGroup1.setSelected(btProses.getModel(), true);
         
+        txDate.setDate(new Date());
+        
+        this.idR = id;
+        
         this.setVisible(true);
     }
+    
+    private final long idR;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -166,15 +180,31 @@ public class FormProsesSidang extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+   
     private void btAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAddActionPerformed
         // TODO add your handling code here:
         
+        ControlTunDinasDataTingkatProsesSidang control = new ControlTunDinasDataTingkatProsesSidang();
         
-        
-        this.dispose();
+        if(control.add2DB(
+                this.idR,
+                txDate.getDate().getTime(),
+                txHasilSIdang.getText(),
+                getTheChoosenOne()
+        )){
+            this.dispose();
+        }
     }//GEN-LAST:event_btAddActionPerformed
 
+    public String getTheChoosenOne(){
+        String me = "00";
+        
+        if(btProses.isSelected()) me = "01";
+        else me = "02";
+        
+        return me;
+    }
+    
     private void btCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelActionPerformed
         // TODO add your handling code here:
         this.dispose();
