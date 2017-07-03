@@ -307,29 +307,51 @@ public class PanelTunDinas extends javax.swing.JPanel {
 
     private void btAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAddActionPerformed
         // TODO add your handling code here:
-        if(this.currentRowDat == null){
-        if(
-                !txLokasiNTanah.getText().isEmpty() &&
-                !txDasar.getText().isEmpty() &&
-                !txNoSurat.getText().isEmpty() &&
-                !txPermasalahan.getText().isEmpty()
-                ){
         
-        if(control.tambahData(
-                    txLokasiNTanah.getText(), 
-                    txDasar.getText(), 
-                    txNoSurat.getText(), 
-                    txDateField.getDate().getTime(), 
-                    txPermasalahan.getText()
-                )
-            ) 
-        {
-            resetField();
-            setIsiTable();
-        }
-        }else{
-            JOptionPane.showMessageDialog(null,"Semua field harus diisi!");
-        }
+        if(!this.editOrNotEdit){
+            //add data
+            if(
+                    !txLokasiNTanah.getText().isEmpty() &&
+                    !txDasar.getText().isEmpty() &&
+                    !txNoSurat.getText().isEmpty() &&
+                    !txPermasalahan.getText().isEmpty()
+                    ){
+
+                if(control.tambahData(
+                            txLokasiNTanah.getText(), 
+                            txDasar.getText(), 
+                            txNoSurat.getText(), 
+                            txDateField.getDate().getTime(), 
+                            txPermasalahan.getText()
+                        )
+                    ) 
+                {
+                    resetField();
+                    setIsiTable();
+                }
+                }else{
+                    JOptionPane.showMessageDialog(null,"Semua field harus diisi!");
+                }
+        }else{                
+            //edit current row            
+            if(!(
+                    this.currentRowDat.getLokasiDT().equals(txLokasiNTanah.getText()) &&
+                    this.currentRowDat.getDasar().equals(txDasar.getText()) &&
+                    this.currentRowDat.getnoSurat().equals(txNoSurat.getText()) &&
+                    this.currentRowDat.gettglDasar().equals(txDateField.getDate()) &&
+                    this.currentRowDat.getPermasalahan().equals(txPermasalahan.getText())
+                    )){
+                //ada perubahan
+                if(control.editData(
+                        txLokasiNTanah.getText(), 
+                        txDasar.getText(), 
+                        txNoSurat.getText(), 
+                        txDateField.getDate().getTime(), 
+                        txPermasalahan.getText(), 
+                        this.currentRowDat.getidTundinas()))setIsiTable();
+            }else{
+                JOptionPane.showMessageDialog(null,"Tidak ada perubahan!");
+            }
         }
     }//GEN-LAST:event_btAddActionPerformed
 
@@ -348,6 +370,7 @@ public class PanelTunDinas extends javax.swing.JPanel {
             LabelAtas.setText("Tambah data");
             
             this.currentRowDat = null;
+            this.editOrNotEdit = false;
         }
         else {
            //kembali aja, gak ngefek
@@ -375,6 +398,7 @@ public class PanelTunDinas extends javax.swing.JPanel {
             setIsiTable();
             
             this.currentRowDat = null;
+            this.editOrNotEdit = false;
         }
     }//GEN-LAST:event_btDeleteActionPerformed
 
@@ -426,6 +450,7 @@ public class PanelTunDinas extends javax.swing.JPanel {
     
     private void showRowData(int row){
         this.currentRowDat = this.data.get(row);
+        this.editOrNotEdit = true;
         
         txLokasiNTanah.setText(this.data.get(row).getLokasiDT());
         txDasar.setText(this.data.get(row).getDasar());
@@ -462,6 +487,7 @@ public class PanelTunDinas extends javax.swing.JPanel {
         resetTable.setRowCount(i);        
     }
     
+    private boolean editOrNotEdit = false;
     private DefaultTableModel resetTable;
     private ControlTunDinas control;
     ArrayList<TunDinas> data = new ArrayList<>();
@@ -543,23 +569,17 @@ public class PanelTunDinas extends javax.swing.JPanel {
         public Object getCellEditorValue(){
             //when button is pressed gently desu
             if (clicked){
-                
-                
-                                
                 FormTingkat tingkatnya = new FormTingkat(
                         data.get(row).getLokasiDT(), 
                         data.get(row).getPermasalahan(),
                         data.get(row).getidTundinas()
                 );
-                
-                
 //                showRowData(row);
 
 //                btAdd.setText("Perbarui");
 //                btCancel.setVisible(true);
 //                btDelete.setVisible(true);
-                LabelAtas.setText("Detil data");
-
+//                LabelAtas.setText("Detil data");
             }
             clicked = false;
             return new String(label);

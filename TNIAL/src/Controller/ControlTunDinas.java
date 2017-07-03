@@ -226,4 +226,43 @@ public class ControlTunDinas {
         }
         db.disconnect();
     }
+    
+    public boolean editData(
+            String lokasi,
+            String dasar,
+            String noSurat,
+            long tgl,
+            String permasalahan,
+            String id
+    ){
+        boolean berhasil = false;
+        
+        db.connect();
+        
+        try{
+            java.sql.Date sqlDate = new java.sql.Date(tgl);
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+            java.util.Date utilDate = new java.util.Date();
+            
+            if(db.manipulate("UPDATE `bankum_tundinas` SET "
+                    + "`lokasiDT` = '"+ lokasi +"', "
+                    + "`Dasar` = '"+ dasar +"', "
+                    + "`noSurat` = '"+ noSurat +"', "
+                    + "`tglDasar` = '"+ sqlDate +"', "
+                    + "`Permasalahan` = '"+ permasalahan +"' "
+                    + "WHERE `bankum_tundinas`.`idTundinas` = '"+ id +"';") >= 1)
+            {
+                JOptionPane.showMessageDialog(null,"Berhasil diperbarui!");
+                berhasil = true;
+            } else{
+                JOptionPane.showMessageDialog(null,"Gagal!");
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null,"Gagal!");
+        }
+        
+        db.disconnect();
+        
+        return berhasil;
+    }
 }
