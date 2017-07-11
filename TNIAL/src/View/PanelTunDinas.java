@@ -421,10 +421,11 @@ public class PanelTunDinas extends javax.swing.JPanel {
             TableTunDinas.setValueAt(i+1, i, 0);
             TableTunDinas.setValueAt(data.get(i).getLokasiDT(), i, 1);
             TableTunDinas.setValueAt(data.get(i).getDasar(), i, 2);
-            TableTunDinas.setValueAt(data.get(i).getPermasalahan(), i, 3);
-            TableTunDinas.setValueAt(control.getKetTingkat(data.get(i).getkdTIngkat()), i, 4);
-            TableTunDinas.setValueAt(control.getStatusnya(data.get(i).getidStatusTingkat()), i, 5);
-            TableTunDinas.setValueAt("Detil", i, 6);
+            TableTunDinas.setValueAt(data.get(i).getnoSurat(), i, 3);
+            TableTunDinas.setValueAt(data.get(i).getPermasalahan(), i, 4);
+            TableTunDinas.setValueAt(control.getKetTingkat(data.get(i).getkdTIngkat()), i, 5);
+            TableTunDinas.setValueAt(control.getStatusnya(data.get(i).getidStatusTingkat()), i, 6);
+            TableTunDinas.setValueAt("Detil", i, 7);
         }        
     }
     
@@ -435,13 +436,14 @@ public class PanelTunDinas extends javax.swing.JPanel {
         TableTunDinas.getColumnModel().getColumn(0).setPreferredWidth(50);        
         TableTunDinas.getColumnModel().getColumn(1).setPreferredWidth(275);
         TableTunDinas.getColumnModel().getColumn(2).setPreferredWidth(100);
-        TableTunDinas.getColumnModel().getColumn(3).setPreferredWidth(140);
-        TableTunDinas.getColumnModel().getColumn(4).setPreferredWidth(100);
-        TableTunDinas.getColumnModel().getColumn(5).setPreferredWidth(80);
+        TableTunDinas.getColumnModel().getColumn(3).setPreferredWidth(120);
+        TableTunDinas.getColumnModel().getColumn(4).setPreferredWidth(140);
+        TableTunDinas.getColumnModel().getColumn(5).setPreferredWidth(100);
         TableTunDinas.getColumnModel().getColumn(6).setPreferredWidth(80);
+        TableTunDinas.getColumnModel().getColumn(7).setPreferredWidth(80);
         //set button column        
-        TableTunDinas.getColumnModel().getColumn(6).setCellRenderer(new ClientsTableButtonRenderer());
-        TableTunDinas.getColumnModel().getColumn(6).setCellEditor(new ClientsTableRenderer(new JCheckBox()));        
+        TableTunDinas.getColumnModel().getColumn(7).setCellRenderer(new ClientsTableButtonRenderer());
+        TableTunDinas.getColumnModel().getColumn(7).setCellEditor(new ClientsTableRenderer(new JCheckBox()));        
         
         //can only select one row at a time
         TableTunDinas.setRowSelectionAllowed(true);
@@ -473,13 +475,13 @@ public class PanelTunDinas extends javax.swing.JPanel {
     }
     
     public void resetTable(int i){
-        String[] header = {"No","Lokasi & Data Tanah","Dasar","Permasalahan","Tingkat","Status","Data Tingkat"};
+        String[] header = {"No","Lokasi & Data Tanah","Dasar","No Surat","Permasalahan","Tingkat","Status","Data Tingkat"};
         resetTable = new DefaultTableModel(null, header){
             public boolean isCellEditable(int row, int column)      //override isCellEditable
                 //PRE:  row > 0, column > 0
                 //POST: FCTVAL == false always
             {
-                return column==6; //kolom 6 editable
+                return column==7; //kolom 6 editable
             }
             
             

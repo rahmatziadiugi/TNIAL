@@ -9,7 +9,10 @@ import Database.DB4MySQL;
 import Model.BankumJnsTingkat;
 import Model.BankumStatus;
 import Model.TunDinas;
+import java.sql.Connection;
 import java.sql.Date;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -22,18 +25,26 @@ import javax.swing.JOptionPane;
  * @author Someone
  */
 public class ControlTunDinasDataTingkatTambahTingkat {
-        DB4MySQL db = new DB4MySQL();
+        //DB4MySQL db = new DB4MySQL();
+    String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+    String url = "jdbc:sqlserver://localhost:1433;"
+                + "user=diskumal;"
+                + "password=diskumal123;"
+                +"databaseName=DISKUMAL;";
     private ArrayList<BankumStatus> dataStatus = new ArrayList<>();
     private ArrayList<BankumJnsTingkat> dataJns = new ArrayList<>();
     
     public void getDataDB(){
         ArrayList<BankumStatus> temp = new ArrayList<>();
-        db.connect();
+        //db.connect();
         
-        ResultSet rs = db.get(
-                "SELECT * FROM `bankumstatus` WHERE `kdPemilik` = '04'");
+        //ResultSet rs = db.get(
+              //  "SELECT * FROM `bankum_status` WHERE `kdPemilik` = '04'");
         try {
-            rs.beforeFirst();
+            Connection con = DriverManager.getConnection(url);
+            PreparedStatement st = con.prepareStatement("SELECT * FROM bankum_status WHERE kdPemilik = '04'");
+            ResultSet rs = st.executeQuery();
+            //rs.beforeFirst();
             while(rs.next()){
                 temp.add(new BankumStatus(
                         rs.getString("idStatus"), 
@@ -48,19 +59,22 @@ public class ControlTunDinasDataTingkatTambahTingkat {
         
         this.dataStatus = temp;
         
-        db.disconnect();
+        //db.disconnect();
     }
     
     public void getDataDBDatajenis(){
         
-        db.connect();
+        //db.connect();
         
         this.dataJns.clear();
         
         //data jenis        
-        ResultSet rs = db.get("SELECT * FROM `bankum_jnstingkat` WHERE `kdPemilik` = '04'");
+        //ResultSet rs = db.get("SELECT * FROM `bankum_jenistingkat` WHERE `kdPemilik` = '04'");
         try {
-            rs.beforeFirst();
+            Connection con = DriverManager.getConnection(url);
+            PreparedStatement st = con.prepareStatement("SELECT * FROM bankum_jenistingkat WHERE kdPemilik = '04'");
+            ResultSet rs = st.executeQuery();
+            //rs.beforeFirst();
             while(rs.next()){
                 this.dataJns.add(new BankumJnsTingkat(
                         rs.getString("kdTingkat"), 
@@ -72,7 +86,7 @@ public class ControlTunDinasDataTingkatTambahTingkat {
             Logger.getLogger(TunDinas.class.getName()).log(Level.SEVERE, null, ex);
         }
                 
-        db.disconnect();
+        //db.disconnect();
     }
     
     public String[] getKetJns(){
@@ -105,24 +119,18 @@ public class ControlTunDinasDataTingkatTambahTingkat {
     ){
         boolean temp = false;
         
-        db.connect();
-        
+        //db.connect();
+        //'Mon Jun 19 08:25:31 ICT 2017', 'C0', 'C8', 'asfawfaw', NULL)
         try{
-            
-            ResultSet rs = db.get("SELECT * FROM `bankum_tundinastingkat` WHERE `idTundinas` = '" +
-                    id + "' AND `kdTingkat` = '" +
-                    dataJns.get(kdTingkat).getkdTingkat() + "'");
-            if (!rs.next() ) {
-                         
-            if(db.manipulate("INSERT INTO `bankum_tundinastingkat` "
-                    + "(`idR`, `idTundinas`, `kdTingkat`, `idStatus`, `ketstat`, `Keterangan`, `File_lampiran`, `id_status_tingkat`, `tglStatusAkhir`) VALUES "
-                    + "(NULL, '" +
-                    id + "', '" +
+            Connection con = DriverManager.getConnection(url);
+            PreparedStatement st = con.prepareStatement("INSERT INTO bankum_tundinastingkat VALUES "
+                    +"('"+ id + "', '" +
                     dataJns.get(kdTingkat).getkdTingkat() + "', '" +
                     dataStatus.get(idStatus).getID() + "', '"+
-                    ket + "', NULL, NULL, '01', '"+
-                    (new java.sql.Date((new java.util.Date()).getTime()))+ "')"
-                    + "") >= 1)
+                    ket + "', NULL " +  
+                    ")");
+                         
+            if(st.executeUpdate()>0)
             {
                 JOptionPane.showMessageDialog(null,"Berhasil menambahkan!");
                 temp = true;
@@ -130,12 +138,12 @@ public class ControlTunDinasDataTingkatTambahTingkat {
                 JOptionPane.showMessageDialog(null,"Gagal menambahkan!");
             }
             
-            }
+            
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null,"Gagal!");
         }
         
-        db.disconnect();
+        //db.disconnect();
         
         return temp;
     }

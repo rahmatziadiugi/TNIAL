@@ -6,10 +6,14 @@
 package Controller;
 
 import Database.DB4MySQL;
+import Database.DB4SQLServer;
 import Model.BankumJnsTingkat;
 import Model.BankumStatus;
 import Model.BankumStatusTingkat;
 import Model.TunDinas;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
@@ -24,21 +28,29 @@ import javax.swing.JOptionPane;
  * @author Someone
  */
 public class ControlTunDinas {
-    DB4MySQL db = new DB4MySQL();
+    //DB4SQLServer db = new DB4SQLServer();
     private ArrayList<TunDinas> data = new ArrayList<>();
     private ArrayList<BankumJnsTingkat> dataJns = new ArrayList<>();
     private ArrayList<BankumStatusTingkat> dataStatusTingkat = new ArrayList<>();
     private ArrayList<BankumStatus> dataStatus = new ArrayList<>();
+    //private DB4SQLServer db ;
+    String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+    String url = "jdbc:sqlserver://localhost:1433;"
+                + "user=diskumal;"
+                + "password=diskumal123;"
+                +"databaseName=DISKUMAL;";
+    private Connection con = null;
+    private PreparedStatement st = null;
+    private ResultSet rs = null;
     
     public void getDataDBTunDinas(){
-        db.connect();
-        
         this.data.clear();
-        
-        //data Tun Dinas
-        ResultSet rs = db.get("SELECT * FROM `bankum_tundinas`");
         try {
-            rs.beforeFirst();
+            //Class.forName(driver);
+            Connection con = DriverManager.getConnection(url);
+            PreparedStatement st = con.prepareStatement("select * from bankum_tundinas");
+            ResultSet rs = st.executeQuery();
+            //rs.beforeFirst();
             while(rs.next()){
                 this.data.add(new TunDinas(
                         rs.getString("idTundinas"),
@@ -56,20 +68,21 @@ public class ControlTunDinas {
         } catch (SQLException ex) {
             Logger.getLogger(TunDinas.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        db.disconnect();
     }
-    
+
     public void getDataDBDatajenis(){
         
-        db.connect();
+    //    db.connect();
         
         this.dataJns.clear();
         
         //data jenis        
-        ResultSet rs = db.get("SELECT * FROM `bankum_jnstingkat` WHERE `kdPemilik` = '04'");
+        //ResultSet rs = db.get("SELECT * FROM `bankum_jenistingkat` WHERE `kdPemilik` = '04'");
         try {
-            rs.beforeFirst();
+            Connection con = DriverManager.getConnection(url);
+            PreparedStatement st = con.prepareStatement("select * from bankum_jenistingkat");
+            ResultSet rs = st.executeQuery();            
+//            rs.beforeFirst();
             while(rs.next()){
                 this.dataJns.add(new BankumJnsTingkat(
                         rs.getString("kdTingkat"), 
@@ -79,41 +92,51 @@ public class ControlTunDinas {
             rs.close();
         } catch (SQLException ex) {
             Logger.getLogger(TunDinas.class.getName()).log(Level.SEVERE, null, ex);
+        }   finally {
+                try { rs.close(); } catch (Exception e) { /* ignored */ }
+                try { st.close(); } catch (Exception e) { /* ignored */ }
+                try { con.close(); } catch (Exception e) { /* ignored */ }
         }
-                
-        db.disconnect();
     }
     
     public void getDataDBDataStatusTingkat(){
-        db.connect();
+        //db.connect();
         
         this.dataStatusTingkat.clear();
         
-        ResultSet rs = db.get("SELECT * FROM `bankumstatustingkat`");
+        //ResultSet rs = db.get("SELECT * FROM `bankum_statustingkat`");
         try {
-            rs.beforeFirst();
+            Connection con = DriverManager.getConnection(url);
+            PreparedStatement st = con.prepareStatement("select * from bankum_statustingkat");
+            ResultSet rs = st.executeQuery();
+//            rs.beforeFirst();
             while(rs.next()){
                 this.dataStatusTingkat.add(new BankumStatusTingkat(
                         rs.getString("id_status_tingkat"), 
-                        rs.getString("StatusTingkat")
+                        rs.getString("statusTingkat")
                 ));
             }                
             rs.close();
         } catch (SQLException ex) {
             Logger.getLogger(TunDinas.class.getName()).log(Level.SEVERE, null, ex);
+        }   finally {
+                try { rs.close(); } catch (Exception e) { /* ignored */ }
+                try { st.close(); } catch (Exception e) { /* ignored */ }
+                try { con.close(); } catch (Exception e) { /* ignored */ }
         }
-        
-        db.disconnect();
     }
     
     public void getDataDBDataStatus(){
-        db.connect();
+        //db.connect();
         
         this.dataStatus.clear();
         
-        ResultSet rs = db.get("SELECT * FROM `bankumstatus` WHERE `kdPemilik` = '04' ");
+        //ResultSet rs = db.get("SELECT * FROM `bankum_status` WHERE `kdPemilik` = '04' ");
         try {
-            rs.beforeFirst();
+            Connection con = DriverManager.getConnection(url);
+            PreparedStatement st = con.prepareStatement("select * from bankum_status");
+            ResultSet rs = st.executeQuery();
+//            rs.beforeFirst();
             while(rs.next()){
                 this.dataStatus.add(new BankumStatus(
                         rs.getString("idStatus"), 
@@ -123,9 +146,11 @@ public class ControlTunDinas {
             rs.close();
         } catch (SQLException ex) {
             Logger.getLogger(TunDinas.class.getName()).log(Level.SEVERE, null, ex);
+        }   finally {
+                try { rs.close(); } catch (Exception e) { /* ignored */ }
+                try { st.close(); } catch (Exception e) { /* ignored */ }
+                try { con.close(); } catch (Exception e) { /* ignored */ }
         }
-        
-        db.disconnect();
     }
     
     public ArrayList<TunDinas> getDatanya(){
@@ -177,54 +202,58 @@ public class ControlTunDinas {
     ){
         boolean berhasil = false;
         
-        db.connect();
+        //db.connect();
         
         try{
+            Connection con = DriverManager.getConnection(url);
             java.sql.Date sqlDate = new java.sql.Date(tgl);
             DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
             java.util.Date utilDate = new java.util.Date();
-            
-            if(db.manipulate("INSERT INTO `bankum_tundinas` "
-                    + "(`idTundinas`, `lokasiDT`, `Dasar`, `noSurat`, `tglDasar`, `Permasalahan`, `id_status_tingkat`, `kdTingkat`, `tglStatus`) "
-                    + "VALUES ('"
-                    //+ String.valueOf(utilDate.getTime()) + "', '"
-                    + String.valueOf(utilDate) + "', '"
-                    + lokasi + "', '"
-                    + dasar + "', '"
-                    + noSurat + "', '"
-                    + sqlDate + "', '"
-                    + permasalahan + "', NULL, NULL, NULL);") >= 1)
+
+            PreparedStatement st = con.prepareStatement("INSERT INTO bankum_tundinas"
+                    + "(idTundinas,lokasiDT,Dasar,noSurat,tglDasar,Permasalahan,id_status_tingkat,kdTingkat,tglStatus)"
+                    + "values(?,?,?,?,?,?,NULL,NULL,NULL)");
+            st.setString(1, String.valueOf(utilDate));
+            st.setString(2, lokasi);
+            st.setString(3, dasar);
+            st.setString(4, noSurat);
+            st.setDate(5, sqlDate);
+            st.setString(6, permasalahan);
+            st.executeUpdate();
+            st.close();
+                        
             {
                 JOptionPane.showMessageDialog(null,"Berhasil menambahkan!");
                 berhasil = true;
-            } else{
-                JOptionPane.showMessageDialog(null,"Gagal menambahkan!");
-            }
+            } 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null,"Gagal!");
+        }   finally {
+                try { rs.close(); } catch (Exception e) { /* ignored */ }
+                try { st.close(); } catch (Exception e) { /* ignored */ }
+                try { con.close(); } catch (Exception e) { /* ignored */ }
         }
-        
-        db.disconnect();
         
         return berhasil;
     }
     
-    public void deleteDisRow(
-            String id
-    ){
-        db.connect();
+    public void deleteDisRow(String id){
+        //db.connect();
         try{
-            if(db.manipulate("DELETE FROM `bankum_tundinas` WHERE `idTundinas` = '" +
-                    id + "';") > 0)
+            Connection con = DriverManager.getConnection(url);
+            PreparedStatement st = con.prepareStatement("DELETE FROM bankum_tundinas WHERE idTundinas = '" +id+ "';");
+            st.executeUpdate();
+            st.close();
             {
                 JOptionPane.showMessageDialog(null,"Berhasil dihapus!");
-            } else{
-                JOptionPane.showMessageDialog(null,"Gagal! #Feelsblackman");
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null,"Gagal!");
+        }   finally {
+                try { rs.close(); } catch (Exception e) { /* ignored */ }
+                try { st.close(); } catch (Exception e) { /* ignored */ }
+                try { con.close(); } catch (Exception e) { /* ignored */ }
         }
-        db.disconnect();
     }
     
     public boolean editData(
@@ -237,31 +266,32 @@ public class ControlTunDinas {
     ){
         boolean berhasil = false;
         
-        db.connect();
+        //db.connect();
         
         try{
+            Connection con = DriverManager.getConnection(url);
             java.sql.Date sqlDate = new java.sql.Date(tgl);
             DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
             java.util.Date utilDate = new java.util.Date();
-            
-            if(db.manipulate("UPDATE `bankum_tundinas` SET "
-                    + "`lokasiDT` = '"+ lokasi +"', "
-                    + "`Dasar` = '"+ dasar +"', "
-                    + "`noSurat` = '"+ noSurat +"', "
-                    + "`tglDasar` = '"+ sqlDate +"', "
-                    + "`Permasalahan` = '"+ permasalahan +"' "
-                    + "WHERE `bankum_tundinas`.`idTundinas` = '"+ id +"';") >= 1)
-            {
-                JOptionPane.showMessageDialog(null,"Berhasil diperbarui!");
-                berhasil = true;
-            } else{
-                JOptionPane.showMessageDialog(null,"Gagal!");
-            }
+
+            PreparedStatement st = con.prepareStatement("UPDATE bankum_tundinas SET"
+                    + "lokasiDT = ?,Dasar = ?,noSurat = ?,tglDasar = ?,Permasalahan = ?,id_status_tingkat = NULL,kdTingkat = NULL,tglStatus = NULL"
+                    + "WHERE bankum_tundinas.idTundinas = '"+id+"';");
+            st.setString(1, lokasi);
+            st.setString(2, dasar);
+            st.setString(3, noSurat);
+            st.setDate(4, sqlDate);
+            st.setString(5, permasalahan);
+            st.executeUpdate();
+            st.close();
+
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null,"Gagal!");
+        }   finally {
+                try { rs.close(); } catch (Exception e) { /* ignored */ }
+                try { st.close(); } catch (Exception e) { /* ignored */ }
+                try { con.close(); } catch (Exception e) { /* ignored */ }
         }
-        
-        db.disconnect();
         
         return berhasil;
     }

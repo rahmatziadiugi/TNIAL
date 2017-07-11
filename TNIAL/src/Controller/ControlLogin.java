@@ -9,6 +9,9 @@ import Database.DB4MySQL;
 import View.Login;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javax.swing.JOptionPane;
 
@@ -18,7 +21,14 @@ import javax.swing.JOptionPane;
  */
 public class ControlLogin implements ActionListener {
     private Login view;
-    DB4MySQL db = new DB4MySQL();
+    String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+    String url = "jdbc:sqlserver://localhost:1433;"
+                + "user=diskumal;"
+                + "password=diskumal123;"
+                +"databaseName=DISKUMAL;";
+    private Connection con = null;
+    private PreparedStatement st = null;
+    private ResultSet rs = null;
     public ControlLogin() {        
         view = new Login();
         view.setVisible(true);
@@ -30,15 +40,17 @@ public class ControlLogin implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
         if(source.equals(view.getBtnLogin())) {
-            db.connect();
-            ResultSet rs = db.get("SELECT * FROM `user` WHERE "
+
+            try {
+            Connection con = DriverManager.getConnection(url);
+            PreparedStatement st = con.prepareStatement("SELECT * FROM user WHERE "
                     + "`username` = '"+view.getUsername()+"' "
                     + "AND "
                     + "`password` = '"+view.getPassword()+"'");
-            try {
+            ResultSet rs = st.executeQuery();
                 if(rs.first()){
                     ControlMDI mdi = new ControlMDI(rs.getInt("role"));                       
-                    db.disconnect();
+                    //db.disconnect();
                     view.dispose();                 
                     } 
                  else{
@@ -48,7 +60,7 @@ public class ControlLogin implements ActionListener {
             } catch (Exception ex) {
                 ex.printStackTrace();
             }       
-            db.disconnect();
+            //db.disconnect();
         }
     }
 }

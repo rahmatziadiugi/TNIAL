@@ -6,11 +6,15 @@
 package Controller;
 
 import Database.DB4MySQL;
+import Database.DB4SQLServer;
 import Model.BankumJnsTingkat;
 import Model.BankumStatus;
 import Model.BankumStatusTingkat;
 import Model.TunDinasTingkat;
 import java.io.File;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -22,44 +26,51 @@ import java.util.logging.Logger;
  * @author Someone
  */
 public class ControlTunDinasDataTingkat {
-    DB4MySQL db = new DB4MySQL();
+    String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+    String url = "jdbc:sqlserver://localhost:1433;"
+                + "user=diskumal;"
+                + "password=diskumal123;"
+                +"databaseName=DISKUMAL;";
     private ArrayList<TunDinasTingkat> dataDinasTingkat = new ArrayList<>();
+    private Connection con = null;
+    private PreparedStatement st = null;
+    private ResultSet rs = null;
     
     public void getDataDB(String id){
         ArrayList<TunDinasTingkat> temp = new ArrayList<>();
-        db.connect();
-        
-        //data Tun Dinas
-        ResultSet rs = db.get(
-                "SELECT `idR`, `idTundinas`, `ketTingkat`, `ketStatus`, `ketstat`, `Keterangan`, `File_lampiran`, `StatusTingkat`, `tglStatusAkhir` FROM `bankum_tundinastingkat` " +
-                        "JOIN bankumstatus USING (`idStatus`) " +
-                        "JOIN bankum_jnstingkat USING (`kdTingkat`) " +
-                        "JOIN bankumstatustingkat USING (`id_status_tingkat`) WHERE `idTundinas` = '"+
-                        id
-                        + "'");
+        //this.dataDinasTingkat.clear();
         try {
-            rs.beforeFirst();
+            Connection con = DriverManager.getConnection(url);
+            PreparedStatement st = con.prepareStatement("SELECT tt.idR, tt.idTundinas, jt.ketTingkat, s.ketStatus, tt.Keterangan, tt.file_lampiran" +
+            " FROM bankum_tundinastingkat tt" +
+            " JOIN bankum_status s ON tt.idStatus = s.idStatus" +
+            " JOIN bankum_jenistingkat jt ON tt.kdTingkat = jt.kdTingkat WHERE tt.idTundinas = '"+ id + "'");
+            ResultSet rs = st.executeQuery();
+            
+//            rs.beforeFirst();
             while(rs.next()){
                 temp.add(new TunDinasTingkat(
                         rs.getLong("idR"),
-                        rs.getString("idTunDinas"),
+                        rs.getString("idTundinas"),
                         rs.getString("ketTingkat"),
                         rs.getString("ketStatus"),
-                        rs.getString("ketstat"),
                         rs.getString("Keterangan"), 
-                        (File) rs.getBlob("File_lampiran"),
-                        rs.getString("StatusTingkat"),
-                        rs.getDate("tglStatusAkhir")
-                ));
-            }                
+                        null)
+                );
+            }
+                            
             rs.close();
         } catch (SQLException ex) {
             Logger.getLogger(TunDinasTingkat.class.getName()).log(Level.SEVERE, null, ex);
+        }   finally {
+                try { rs.close(); } catch (Exception e) { /* ignored */ }
+                try { st.close(); } catch (Exception e) { /* ignored */ }
+                try { con.close(); } catch (Exception e) { /* ignored */ }
         }
         
         this.dataDinasTingkat = temp;
         
-        db.disconnect();
+//        db.disconnect();
     }
     
     public ArrayList<TunDinasTingkat> getDatanya(){

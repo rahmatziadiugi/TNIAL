@@ -7,6 +7,10 @@ package Controller;
 
 import Database.DB4MySQL;
 import Model.TunDinasProses;
+import Model.TunDinasTingkat;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -19,7 +23,15 @@ import javax.swing.JOptionPane;
  * @author Someone
  */
 public class ControlTunDinasDataTingkatProses {
-    DB4MySQL db = new DB4MySQL();
+    String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+    String url = "jdbc:sqlserver://localhost:1433;"
+                + "user=diskumal;"
+                + "password=diskumal123;"
+                +"databaseName=DISKUMAL;";
+    private Connection con = null;
+    private PreparedStatement st = null;
+    private ResultSet rs = null;
+    //DB4MySQL db = new DB4MySQL();
     private ArrayList<TunDinasProses> data = new ArrayList<>();
     final private long idR;
     
@@ -29,13 +41,14 @@ public class ControlTunDinasDataTingkatProses {
     
     public void getDataDB(){
         ArrayList<TunDinasProses> temp = new ArrayList<>();
-        db.connect();
-        
-        ResultSet rs = db.get(
-                "SELECT * FROM `bankum_tundinasproses` WHERE `idR` = '"+
-                        this.idR + "' ORDER BY `tgl` ASC");
+        //db.connect();
+
         try {
-            rs.beforeFirst();
+            Connection con = DriverManager.getConnection(url);
+            PreparedStatement st = con.prepareStatement("SELECT * FROM bankum_tundinasproses WHERE idR = '"+
+                        this.idR + "' ORDER BY tgl ASC");
+            ResultSet rs = st.executeQuery();
+//            rs.beforeFirst();
             while(rs.next()){
                 
                 temp.add(new TunDinasProses(
@@ -50,11 +63,15 @@ public class ControlTunDinasDataTingkatProses {
             rs.close();
         } catch (SQLException ex) {
             Logger.getLogger(TunDinasProses.class.getName()).log(Level.SEVERE, null, ex);
+        }   finally {
+                try { rs.close(); } catch (Exception e) { /* ignored */ }
+                try { st.close(); } catch (Exception e) { /* ignored */ }
+                try { con.close(); } catch (Exception e) { /* ignored */ }
         }
         
         this.data = temp;
         
-        db.disconnect();
+        //db.disconnect();
     }
     
     public ArrayList<TunDinasProses> getDatanya(){
@@ -65,12 +82,15 @@ public class ControlTunDinasDataTingkatProses {
             String ket,
             long id
     ){
-        db.connect();
+        //db.connect();
         
         try{
-            if(db.manipulate("UPDATE `bankum_tundinastingkat` SET `ketstat` = '" +
+            Connection con = DriverManager.getConnection(url);
+            PreparedStatement st = con.prepareStatement("UPDATE bankum_tundinastingkat SET ketStat = '" +
                     ket + "' WHERE `idR` = " +
-                    id + ";") > 0){
+                    id + ";");
+//            ResultSet rs = st.executeQuery();
+            if(st.executeUpdate() > 0){
                 //do something
                 JOptionPane.showMessageDialog(null,"Berhasil disimpan."); 
             }else{
@@ -79,17 +99,22 @@ public class ControlTunDinasDataTingkatProses {
         } catch (Exception ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null,"Gagal");                
+        }   finally {
+                try { rs.close(); } catch (Exception e) { /* ignored */ }
+                try { st.close(); } catch (Exception e) { /* ignored */ }
+                try { con.close(); } catch (Exception e) { /* ignored */ }
         }
-        
-        db.disconnect();
     }
     
     public void deleteDataDB(long id){
-        db.connect();
+        //db.connect();
         
         try{
-            if(db.manipulate("DELETE FROM `bankum_tundinastingkat` WHERE `idR` = " +
-                    id + "") > 0){
+            Connection con = DriverManager.getConnection(url);
+            PreparedStatement st = con.prepareStatement("DELETE FROM bankum_tundinastingkat WHERE idR = " +
+                    id + "");
+            //ResultSet rs = st.executeQuery();
+            if(st.executeUpdate() > 0){
                 //do something
             }else{
                 JOptionPane.showMessageDialog(null,("Gagal!"));
@@ -97,9 +122,11 @@ public class ControlTunDinasDataTingkatProses {
         } catch (Exception ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null,"Gagal");                
+        }   finally {
+                try { rs.close(); } catch (Exception e) { /* ignored */ }
+                try { st.close(); } catch (Exception e) { /* ignored */ }
+                try { con.close(); } catch (Exception e) { /* ignored */ }
         }
-        
-        db.disconnect();
     }
     
 }

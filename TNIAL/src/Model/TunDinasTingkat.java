@@ -15,38 +15,35 @@ import java.sql.Date;
 public class TunDinasTingkat {
     private long idR;
     private String idTunDinas;
-    private String kdTingkat;
+    private String ketTingkat;
     private String idStatus;
     private String ketStatus;
     private String ket;
     private File lampiran;
     private String idStatusTingkat;
     private Date tglStatusAkhir;
+
     
     public TunDinasTingkat(
             long idR,
             String idTunDinas,
-            String kdTingkat,
-            String idStatus,
+            String ketTingkat,
             String ketStatus,
             String ket,
-            File lampiran,
-            String idStatusTingkat,
-            Date tglStatusAkhir
+            File lampiran
+
     ){
         this.idR = idR;
         this.idTunDinas = idTunDinas;
-        this.kdTingkat = kdTingkat;
-        this.idStatus = idStatus;
+        this.ketTingkat = ketTingkat;
         this.ketStatus = ketStatus;
         this.ket = ket;
         this.lampiran = lampiran; 
-        this.idStatusTingkat = idStatusTingkat;
-        this.tglStatusAkhir = tglStatusAkhir;
+
     }
     
     public String getKdTIngkat(){
-        return this.kdTingkat;
+        return this.ketTingkat;
     }
     
     public String getidStatus(){

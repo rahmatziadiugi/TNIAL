@@ -6,6 +6,10 @@
 package Controller;
 
 import Database.DB4MySQL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import javax.swing.JOptionPane;
 
 /**
@@ -13,7 +17,15 @@ import javax.swing.JOptionPane;
  * @author Someone
  */
 public class ControlTunDinasDataTingkatProsesSidang {
-    DB4MySQL db = new DB4MySQL();
+    //DB4MySQL db = new DB4MySQL();
+    String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+    String url = "jdbc:sqlserver://localhost:1433;"
+                + "user=diskumal;"
+                + "password=diskumal123;"
+                +"databaseName=DISKUMAL;";
+    private Connection con = null;
+    private PreparedStatement st = null;
+    private ResultSet rs = null;
     
     public boolean add2DB(
             long idr,
@@ -23,15 +35,17 @@ public class ControlTunDinasDataTingkatProsesSidang {
     ){
         boolean sukses = false;
         
-        db.connect();
+        //db.connect();
         
         try{
-            if(db.manipulate("INSERT INTO `bankum_tundinasproses` (`idRtundinas`, `idR`, `tgl`, `proses`, `id_status_tingkat`) VALUES "
-                    + "(NULL, '" +
-                    idr + "', '" +
+            Connection con = DriverManager.getConnection(url);
+            PreparedStatement st = con.prepareStatement("INSERT INTO bankum_tundinasproses VALUES "
+                    + "('" + idr + "', '" +
                     (new java.sql.Date(tgl))+ "', '" +
                     proses + "', '" +
-                     stat + "');") > 0)
+                     stat + "');");
+//            ResultSet rs = st.executeQuery();
+            if(st.executeUpdate() > 0)
             {
                 JOptionPane.showMessageDialog(null,"Berhasil menambahkan data!");
                 sukses = true;
@@ -40,10 +54,11 @@ public class ControlTunDinasDataTingkatProsesSidang {
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null,"Gagal!");
+        }   finally {
+                try { rs.close(); } catch (Exception e) { /* ignored */ }
+                try { st.close(); } catch (Exception e) { /* ignored */ }
+                try { con.close(); } catch (Exception e) { /* ignored */ }
         }
-        
-        db.disconnect();
-        
         return sukses;
     }
 }
