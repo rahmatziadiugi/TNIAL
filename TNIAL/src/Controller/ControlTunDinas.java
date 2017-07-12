@@ -42,7 +42,7 @@ public class ControlTunDinas {
         this.data.clear();
         try {
             //Class.forName(driver);
-            Connection con = DriverManager.getConnection(db.getURL());
+            Connection con = DriverManager.getConnection(this.db.getURL());
             PreparedStatement st = con.prepareStatement("select * from bankum_tundinas");
             ResultSet rs = st.executeQuery();
             //rs.beforeFirst();
