@@ -6,6 +6,7 @@
 package Controller;
 
 import Database.DB4MySQL;
+import Database.DB4SQLServer;
 import Model.TunDinasProses;
 import Model.TunDinasTingkat;
 import java.sql.Connection;
@@ -23,15 +24,10 @@ import javax.swing.JOptionPane;
  * @author Someone
  */
 public class ControlTunDinasDataTingkatProses {
-    String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-    String url = "jdbc:sqlserver://localhost:1433;"
-                + "user=diskumal;"
-                + "password=diskumal123;"
-                +"databaseName=DISKUMAL;";
+    private DB4SQLServer db = new DB4SQLServer();
     private Connection con = null;
     private PreparedStatement st = null;
     private ResultSet rs = null;
-    //DB4MySQL db = new DB4MySQL();
     private ArrayList<TunDinasProses> data = new ArrayList<>();
     final private long idR;
     
@@ -44,7 +40,7 @@ public class ControlTunDinasDataTingkatProses {
         //db.connect();
 
         try {
-            Connection con = DriverManager.getConnection(url);
+            Connection con = DriverManager.getConnection(db.getURL());
             PreparedStatement st = con.prepareStatement("SELECT * FROM bankum_tundinasproses WHERE idR = '"+
                         this.idR + "' ORDER BY tgl ASC");
             ResultSet rs = st.executeQuery();
@@ -85,7 +81,7 @@ public class ControlTunDinasDataTingkatProses {
         //db.connect();
         
         try{
-            Connection con = DriverManager.getConnection(url);
+            Connection con = DriverManager.getConnection(db.getURL());
             PreparedStatement st = con.prepareStatement("UPDATE bankum_tundinastingkat SET ketStat = '" +
                     ket + "' WHERE `idR` = " +
                     id + ";");
@@ -110,7 +106,7 @@ public class ControlTunDinasDataTingkatProses {
         //db.connect();
         
         try{
-            Connection con = DriverManager.getConnection(url);
+            Connection con = DriverManager.getConnection(db.getURL());
             PreparedStatement st = con.prepareStatement("DELETE FROM bankum_tundinastingkat WHERE idR = " +
                     id + "");
             //ResultSet rs = st.executeQuery();

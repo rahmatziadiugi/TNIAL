@@ -26,11 +26,7 @@ import java.util.logging.Logger;
  * @author Someone
  */
 public class ControlTunDinasDataTingkat {
-    String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-    String url = "jdbc:sqlserver://localhost:1433;"
-                + "user=diskumal;"
-                + "password=diskumal123;"
-                +"databaseName=DISKUMAL;";
+    private DB4SQLServer db = new DB4SQLServer();
     private ArrayList<TunDinasTingkat> dataDinasTingkat = new ArrayList<>();
     private Connection con = null;
     private PreparedStatement st = null;
@@ -40,7 +36,7 @@ public class ControlTunDinasDataTingkat {
         ArrayList<TunDinasTingkat> temp = new ArrayList<>();
         //this.dataDinasTingkat.clear();
         try {
-            Connection con = DriverManager.getConnection(url);
+            Connection con = DriverManager.getConnection(db.getURL());
             PreparedStatement st = con.prepareStatement("SELECT tt.idR, tt.idTundinas, jt.ketTingkat, s.ketStatus, tt.Keterangan, tt.file_lampiran" +
             " FROM bankum_tundinastingkat tt" +
             " JOIN bankum_status s ON tt.idStatus = s.idStatus" +

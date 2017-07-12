@@ -6,6 +6,7 @@
 package Controller;
 
 import Database.DB4MySQL;
+import Database.DB4SQLServer;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -17,12 +18,7 @@ import javax.swing.JOptionPane;
  * @author Someone
  */
 public class ControlTunDinasDataTingkatProsesSidang {
-    //DB4MySQL db = new DB4MySQL();
-    String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-    String url = "jdbc:sqlserver://localhost:1433;"
-                + "user=diskumal;"
-                + "password=diskumal123;"
-                +"databaseName=DISKUMAL;";
+    private DB4SQLServer db = new DB4SQLServer();
     private Connection con = null;
     private PreparedStatement st = null;
     private ResultSet rs = null;
@@ -38,7 +34,7 @@ public class ControlTunDinasDataTingkatProsesSidang {
         //db.connect();
         
         try{
-            Connection con = DriverManager.getConnection(url);
+            Connection con = DriverManager.getConnection(db.getURL());
             PreparedStatement st = con.prepareStatement("INSERT INTO bankum_tundinasproses VALUES "
                     + "('" + idr + "', '" +
                     (new java.sql.Date(tgl))+ "', '" +

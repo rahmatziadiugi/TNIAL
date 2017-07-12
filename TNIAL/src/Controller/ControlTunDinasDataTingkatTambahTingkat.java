@@ -6,6 +6,7 @@
 package Controller;
 
 import Database.DB4MySQL;
+import Database.DB4SQLServer;
 import Model.BankumJnsTingkat;
 import Model.BankumStatus;
 import Model.TunDinas;
@@ -25,12 +26,7 @@ import javax.swing.JOptionPane;
  * @author Someone
  */
 public class ControlTunDinasDataTingkatTambahTingkat {
-        //DB4MySQL db = new DB4MySQL();
-    String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-    String url = "jdbc:sqlserver://localhost:1433;"
-                + "user=diskumal;"
-                + "password=diskumal123;"
-                +"databaseName=DISKUMAL;";
+    private DB4SQLServer db = new DB4SQLServer();        
     private ArrayList<BankumStatus> dataStatus = new ArrayList<>();
     private ArrayList<BankumJnsTingkat> dataJns = new ArrayList<>();
     
@@ -41,7 +37,7 @@ public class ControlTunDinasDataTingkatTambahTingkat {
         //ResultSet rs = db.get(
               //  "SELECT * FROM `bankum_status` WHERE `kdPemilik` = '04'");
         try {
-            Connection con = DriverManager.getConnection(url);
+            Connection con = DriverManager.getConnection(db.getURL());
             PreparedStatement st = con.prepareStatement("SELECT * FROM bankum_status WHERE kdPemilik = '04'");
             ResultSet rs = st.executeQuery();
             //rs.beforeFirst();
@@ -71,7 +67,7 @@ public class ControlTunDinasDataTingkatTambahTingkat {
         //data jenis        
         //ResultSet rs = db.get("SELECT * FROM `bankum_jenistingkat` WHERE `kdPemilik` = '04'");
         try {
-            Connection con = DriverManager.getConnection(url);
+            Connection con = DriverManager.getConnection(db.getURL());
             PreparedStatement st = con.prepareStatement("SELECT * FROM bankum_jenistingkat WHERE kdPemilik = '04'");
             ResultSet rs = st.executeQuery();
             //rs.beforeFirst();
@@ -122,7 +118,7 @@ public class ControlTunDinasDataTingkatTambahTingkat {
         //db.connect();
         //'Mon Jun 19 08:25:31 ICT 2017', 'C0', 'C8', 'asfawfaw', NULL)
         try{
-            Connection con = DriverManager.getConnection(url);
+            Connection con = DriverManager.getConnection(db.getURL());
             PreparedStatement st = con.prepareStatement("INSERT INTO bankum_tundinastingkat VALUES "
                     +"('"+ id + "', '" +
                     dataJns.get(kdTingkat).getkdTingkat() + "', '" +

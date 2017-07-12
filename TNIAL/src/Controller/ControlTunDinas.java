@@ -33,12 +33,7 @@ public class ControlTunDinas {
     private ArrayList<BankumJnsTingkat> dataJns = new ArrayList<>();
     private ArrayList<BankumStatusTingkat> dataStatusTingkat = new ArrayList<>();
     private ArrayList<BankumStatus> dataStatus = new ArrayList<>();
-    //private DB4SQLServer db ;
-    String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-    String url = "jdbc:sqlserver://localhost:1433;"
-                + "user=diskumal;"
-                + "password=diskumal123;"
-                +"databaseName=DISKUMAL;";
+    private DB4SQLServer db = new DB4SQLServer();
     private Connection con = null;
     private PreparedStatement st = null;
     private ResultSet rs = null;
@@ -47,7 +42,7 @@ public class ControlTunDinas {
         this.data.clear();
         try {
             //Class.forName(driver);
-            Connection con = DriverManager.getConnection(url);
+            Connection con = DriverManager.getConnection(db.getURL());
             PreparedStatement st = con.prepareStatement("select * from bankum_tundinas");
             ResultSet rs = st.executeQuery();
             //rs.beforeFirst();
@@ -79,7 +74,7 @@ public class ControlTunDinas {
         //data jenis        
         //ResultSet rs = db.get("SELECT * FROM `bankum_jenistingkat` WHERE `kdPemilik` = '04'");
         try {
-            Connection con = DriverManager.getConnection(url);
+            Connection con = DriverManager.getConnection(db.getURL());
             PreparedStatement st = con.prepareStatement("select * from bankum_jenistingkat");
             ResultSet rs = st.executeQuery();            
 //            rs.beforeFirst();
@@ -106,7 +101,7 @@ public class ControlTunDinas {
         
         //ResultSet rs = db.get("SELECT * FROM `bankum_statustingkat`");
         try {
-            Connection con = DriverManager.getConnection(url);
+            Connection con = DriverManager.getConnection(db.getURL());
             PreparedStatement st = con.prepareStatement("select * from bankum_statustingkat");
             ResultSet rs = st.executeQuery();
 //            rs.beforeFirst();
@@ -133,7 +128,7 @@ public class ControlTunDinas {
         
         //ResultSet rs = db.get("SELECT * FROM `bankum_status` WHERE `kdPemilik` = '04' ");
         try {
-            Connection con = DriverManager.getConnection(url);
+            Connection con = DriverManager.getConnection(db.getURL());
             PreparedStatement st = con.prepareStatement("select * from bankum_status");
             ResultSet rs = st.executeQuery();
 //            rs.beforeFirst();
@@ -205,7 +200,7 @@ public class ControlTunDinas {
         //db.connect();
         
         try{
-            Connection con = DriverManager.getConnection(url);
+            Connection con = DriverManager.getConnection(db.getURL());
             java.sql.Date sqlDate = new java.sql.Date(tgl);
             DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
             java.util.Date utilDate = new java.util.Date();
@@ -240,7 +235,7 @@ public class ControlTunDinas {
     public void deleteDisRow(String id){
         //db.connect();
         try{
-            Connection con = DriverManager.getConnection(url);
+            Connection con = DriverManager.getConnection(db.getURL());
             PreparedStatement st = con.prepareStatement("DELETE FROM bankum_tundinas WHERE idTundinas = '" +id+ "';");
             st.executeUpdate();
             st.close();
@@ -269,7 +264,7 @@ public class ControlTunDinas {
         //db.connect();
         
         try{
-            Connection con = DriverManager.getConnection(url);
+            Connection con = DriverManager.getConnection(db.getURL());
             java.sql.Date sqlDate = new java.sql.Date(tgl);
             DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
             java.util.Date utilDate = new java.util.Date();

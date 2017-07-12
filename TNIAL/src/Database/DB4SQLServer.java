@@ -24,7 +24,24 @@ public class DB4SQLServer {
     private DataSource dataSource ;
     //private  Connection conn ;
     Connection conn = null ;
-    public DB4SQLServer(){  }
+    
+    private final String driver;
+    private final String url;
+    public DB4SQLServer(){
+            this.driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+            this.url = "jdbc:sqlserver://localhost:1433;"
+                + "user=diskumal;"
+                + "password=diskumal123;"
+                +"databaseName=DISKUMAL;";
+    }
+    
+    public String getDriver(){
+        return this.driver;
+    }
+    
+    public String getURL(){
+        return this.url;
+    }
 
     public void connect(){
         //System.out.println("op...");
