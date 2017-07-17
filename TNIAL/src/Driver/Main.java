@@ -7,6 +7,7 @@ package Driver;
  */
 
 import View.MDI;
+import Controller.ControlGenerateReport;
 
 /**
  *
@@ -19,6 +20,8 @@ public class Main{
         
         MDI mdi = new MDI();
         mdi.setVisible(true);        
+    
+//        ControlGenerateReport createpdf = new ControlGenerateReport();
         
     }
 }

@@ -130,7 +130,7 @@ public class FormProsesTingkat extends javax.swing.JFrame {
             }
         });
 
-        btUpdate.setText("Perbarui");
+        btUpdate.setText("Simpan");
         btUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btUpdateActionPerformed(evt);

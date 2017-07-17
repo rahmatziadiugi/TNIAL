@@ -86,7 +86,7 @@ public class FormTingkat extends javax.swing.JFrame {
                         FormProsesTingkat form = new FormProsesTingkat(
                                 data.get(row).getIdR(),
                                 data.get(row).getKdTIngkat(),
-                                data.get(row).getidStatus(),
+                                data.get(row).getKetStatus(),
                                 data.get(row).getKet()
                         );
                         

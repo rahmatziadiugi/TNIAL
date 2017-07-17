@@ -53,10 +53,7 @@ public class ControlTunDinas {
                         rs.getString("Dasar"),
                         rs.getString("noSurat"),
                         rs.getDate("tglDasar"),
-                        rs.getString("Permasalahan"),
-                        rs.getString("id_status_tingkat"),
-                        rs.getString("kdTingkat"),
-                        rs.getDate("tglStatus")
+                        rs.getString("Permasalahan")
                 ));
             }                
             rs.close();
@@ -203,12 +200,12 @@ public class ControlTunDinas {
             Connection con = DriverManager.getConnection(db.getURL());
             java.sql.Date sqlDate = new java.sql.Date(tgl);
             DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-            java.util.Date utilDate = new java.util.Date();
+            String utilDate = dateFormat.format(new java.util.Date());
 
             PreparedStatement st = con.prepareStatement("INSERT INTO bankum_tundinas"
-                    + "(idTundinas,lokasiDT,Dasar,noSurat,tglDasar,Permasalahan,id_status_tingkat,kdTingkat,tglStatus)"
-                    + "values(?,?,?,?,?,?,NULL,NULL,NULL)");
-            st.setString(1, String.valueOf(utilDate));
+                    + "(idTundinas,lokasiDT,Dasar,noSurat,tglDasar,Permasalahan)"
+                    + "values(?,?,?,?,?,?)");
+            st.setString(1, utilDate);
             st.setString(2, lokasi);
             st.setString(3, dasar);
             st.setString(4, noSurat);

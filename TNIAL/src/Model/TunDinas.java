@@ -6,6 +6,7 @@
 package Model;
 
 import java.sql.Date;
+import java.util.ArrayList;
 
 /**
  *
@@ -18,9 +19,7 @@ public class TunDinas {
     private String noSurat;
     private Date tglDasar;
     private String Permasalahan;
-    private String idStatusTingkat;
-    private String kdTIngkat;
-    private Date tglStatus;
+    private ArrayList<TunDinasTingkat> tingkat;
     
     public TunDinas(    
             String idTundinas,
@@ -28,10 +27,7 @@ public class TunDinas {
             String Dasar,
             String noSurat,
             Date tglDasar,
-            String Permasalahan,
-            String idStatusTingkat,
-            String kdTIngkat,
-            Date tglStatus
+            String Permasalahan
             )
     {        
         this.idTundinas = idTundinas;
@@ -39,11 +35,8 @@ public class TunDinas {
         this.Dasar = Dasar;
         this.noSurat = noSurat;
         this.tglDasar = tglDasar;
-        this.Permasalahan = Permasalahan;
-        this.idStatusTingkat = idStatusTingkat;
-        this.kdTIngkat = kdTIngkat;
-        this.tglStatus = tglStatus;
-        
+        this.Permasalahan = Permasalahan;        
+        this.tingkat = new ArrayList<>();
     }
     
     public String getidTundinas(){
@@ -64,13 +57,16 @@ public class TunDinas {
     public String getPermasalahan(){
         return this.Permasalahan;
     }
-    public String getidStatusTingkat(){
-        return this.idStatusTingkat;
+    
+    public ArrayList<TunDinasTingkat> getTingkat(){
+        return this.tingkat;
     }
-    public String getkdTIngkat(){
-        return this.kdTIngkat;
+    
+    public void setTingkat(ArrayList<TunDinasTingkat> tingkat){
+        this.tingkat = tingkat;
     }
-    public Date gettglStatus(){
-        return this.tglStatus;
+    
+    public void addTingkat(TunDinasTingkat tingkat){
+        this.tingkat.add(tingkat);
     }
 }

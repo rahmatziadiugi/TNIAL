@@ -78,6 +78,9 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Per Triwulan"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="PerTriwulanActionPerformed"/>
+                  </Events>
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="PerTanggal">
                   <Properties>

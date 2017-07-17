@@ -123,6 +123,11 @@ public class MDI extends JFrame {
         TUNDINAS.setText("TUNDINAS");
 
         PerTriwulan.setText("Per Triwulan");
+        PerTriwulan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PerTriwulanActionPerformed(evt);
+            }
+        });
         TUNDINAS.add(PerTriwulan);
 
         PerTanggal.setText("Per Tanggal");
@@ -180,9 +185,11 @@ public class MDI extends JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_ExitActionPerformed
 
-    
-    
-    
+    private void PerTriwulanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PerTriwulanActionPerformed
+        // TODO add your handling code here:
+        ReportTunDinasTriwulan reportTri = new ReportTunDinasTriwulan();
+    }//GEN-LAST:event_PerTriwulanActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem Exit;
     private javax.swing.JPanel InsertPanelHere;
@@ -200,3 +207,4 @@ public class MDI extends JFrame {
     private javax.swing.JMenu mReport;
     // End of variables declaration//GEN-END:variables
 }
+

@@ -423,8 +423,8 @@ public class PanelTunDinas extends javax.swing.JPanel {
             TableTunDinas.setValueAt(data.get(i).getDasar(), i, 2);
             TableTunDinas.setValueAt(data.get(i).getnoSurat(), i, 3);
             TableTunDinas.setValueAt(data.get(i).getPermasalahan(), i, 4);
-            TableTunDinas.setValueAt(control.getKetTingkat(data.get(i).getkdTIngkat()), i, 5);
-            TableTunDinas.setValueAt(control.getStatusnya(data.get(i).getidStatusTingkat()), i, 6);
+            TableTunDinas.setValueAt(control.getKetTingkat(null), i, 5);
+            TableTunDinas.setValueAt(control.getStatusnya(null), i, 6);
             TableTunDinas.setValueAt("Detil", i, 7);
         }        
     }

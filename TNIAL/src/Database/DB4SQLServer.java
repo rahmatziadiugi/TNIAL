@@ -29,7 +29,7 @@ public class DB4SQLServer {
     private final String url;
     public DB4SQLServer(){
             this.driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-            this.url = "jdbc:sqlserver://localhost:1433;"
+            this.url = "jdbc:sqlserver://10.3.18.94:1433;"
                 + "user=diskumal;"
                 + "password=diskumal123;"
                 +"databaseName=DISKUMAL;";

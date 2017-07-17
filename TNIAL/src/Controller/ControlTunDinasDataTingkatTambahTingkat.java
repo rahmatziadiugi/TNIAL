@@ -110,8 +110,7 @@ public class ControlTunDinasDataTingkatTambahTingkat {
     public boolean tambahData(
             String id,
             int kdTingkat,
-            int idStatus,
-            String ket
+            int idStatus
     ){
         boolean temp = false;
         
@@ -122,8 +121,8 @@ public class ControlTunDinasDataTingkatTambahTingkat {
             PreparedStatement st = con.prepareStatement("INSERT INTO bankum_tundinastingkat VALUES "
                     +"('"+ id + "', '" +
                     dataJns.get(kdTingkat).getkdTingkat() + "', '" +
-                    dataStatus.get(idStatus).getID() + "', '"+
-                    ket + "', NULL " +  
+                    dataStatus.get(idStatus).getID() + "', "+
+                    "NULL, NULL " +  
                     ")");
                          
             if(st.executeUpdate()>0)

@@ -7,6 +7,7 @@ package Model;
 
 import java.io.File;
 import java.sql.Date;
+import java.util.ArrayList;
 
 /**
  *
@@ -16,14 +17,11 @@ public class TunDinasTingkat {
     private long idR;
     private String idTunDinas;
     private String ketTingkat;
-    private String idStatus;
     private String ketStatus;
     private String ket;
     private File lampiran;
-    private String idStatusTingkat;
-    private Date tglStatusAkhir;
-
-    
+    private ArrayList<TunDinasProses> proses;
+            
     public TunDinasTingkat(
             long idR,
             String idTunDinas,
@@ -31,7 +29,6 @@ public class TunDinasTingkat {
             String ketStatus,
             String ket,
             File lampiran
-
     ){
         this.idR = idR;
         this.idTunDinas = idTunDinas;
@@ -39,17 +36,13 @@ public class TunDinasTingkat {
         this.ketStatus = ketStatus;
         this.ket = ket;
         this.lampiran = lampiran; 
-
+        this.proses = new ArrayList<>();
     }
     
     public String getKdTIngkat(){
         return this.ketTingkat;
     }
-    
-    public String getidStatus(){
-        return this.idStatus;
-    }
-    
+        
     public String getKetStatus(){
         return this.ketStatus;
     }
@@ -62,4 +55,15 @@ public class TunDinasTingkat {
         return this.idR;
     }
     
+    public ArrayList<TunDinasProses> getProses(){
+        return this.proses;
+    }
+    
+    public void setProses(ArrayList<TunDinasProses> proses){
+        this.proses = proses;
+    }
+    
+    public void addProses(TunDinasProses proses){
+        this.proses.add(proses);
+    }
 }
