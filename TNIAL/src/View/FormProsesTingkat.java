@@ -42,7 +42,11 @@ public class FormProsesTingkat extends javax.swing.JFrame {
         labelTingkat.setText(tingkat);
         labelStatus.setText(Status);
         
-        this.ketStat = ketStatus;
+        if(ketStatus == null){
+            this.ketStat = "";
+        }else{
+            this.ketStat = ketStatus;
+        }        
         txKet.setText(ketStatus);
         
         control = new ControlTunDinasDataTingkatProses(idR);

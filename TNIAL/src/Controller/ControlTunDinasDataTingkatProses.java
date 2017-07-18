@@ -5,10 +5,8 @@
  */
 package Controller;
 
-import Database.DB4MySQL;
 import Database.DB4SQLServer;
 import Model.TunDinasProses;
-import Model.TunDinasTingkat;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -82,8 +80,8 @@ public class ControlTunDinasDataTingkatProses {
         
         try{
             Connection con = DriverManager.getConnection(db.getURL());
-            PreparedStatement st = con.prepareStatement("UPDATE bankum_tundinastingkat SET ketStat = '" +
-                    ket + "' WHERE `idR` = " +
+            PreparedStatement st = con.prepareStatement("UPDATE bankum_tundinastingkat SET Keterangan = '" +
+                    ket + "' WHERE idR = " +
                     id + ";");
 //            ResultSet rs = st.executeQuery();
             if(st.executeUpdate() > 0){
