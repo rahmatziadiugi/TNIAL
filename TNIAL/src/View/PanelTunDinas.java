@@ -118,6 +118,7 @@ public class PanelTunDinas extends javax.swing.JPanel {
         TableTunDinas = new javax.swing.JTable();
         LabelAtas = new javax.swing.JLabel();
         btRefresh = new javax.swing.JButton();
+        pulang = new javax.swing.JButton();
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setText("TUN DINAS");
@@ -260,10 +261,17 @@ public class PanelTunDinas extends javax.swing.JPanel {
 
         LabelAtas.setText("jLabel5");
 
-        btRefresh.setText("Segarkan Tabel");
+        btRefresh.setText("Refresh");
         btRefresh.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btRefreshActionPerformed(evt);
+            }
+        });
+
+        pulang.setText("Home");
+        pulang.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pulangActionPerformed(evt);
             }
         });
 
@@ -275,17 +283,19 @@ public class PanelTunDinas extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(20, 20, 20)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(LabelAtas)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btRefresh))
+                            .addComponent(LabelAtas)
                             .addComponent(jLabel1))))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(pulang, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btRefresh)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -296,12 +306,13 @@ public class PanelTunDinas extends javax.swing.JPanel {
                 .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(LabelAtas)
-                    .addComponent(btRefresh))
+                    .addComponent(btRefresh)
+                    .addComponent(pulang))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(59, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -406,6 +417,15 @@ public class PanelTunDinas extends javax.swing.JPanel {
         // TODO add your handling code here:
         setIsiTable();
     }//GEN-LAST:event_btRefreshActionPerformed
+
+    private void pulangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pulangActionPerformed
+        // TODO add your handling code here:
+        int pulang = JOptionPane.showConfirmDialog(null, "Anda yakin ingin ke halaman utama?", "Peringatan!", JOptionPane.YES_NO_OPTION);
+        if (pulang == 0) { //The ISSUE is here
+        MDI mdi = new MDI();
+        mdi.setVisible(true);
+        }
+    }//GEN-LAST:event_pulangActionPerformed
 
     public void setIsiTable(){
         control.getDataDBTunDinas();
@@ -514,6 +534,7 @@ public class PanelTunDinas extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JButton pulang;
     private javax.swing.JTextField txDasar;
     private org.jdesktop.swingx.JXDatePicker txDateField;
     private javax.swing.JTextArea txLokasiNTanah;

@@ -6,6 +6,7 @@
 package Controller;
 
 import Database.DB4MySQL;
+import Database.DB4SQLServer;
 import View.Login;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,11 +22,7 @@ import javax.swing.JOptionPane;
  */
 public class ControlLogin implements ActionListener {
     private Login view;
-    String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-    String url = "jdbc:sqlserver://localhost:1433;"
-                + "user=diskumal;"
-                + "password=diskumal123;"
-                +"databaseName=DISKUMAL;";
+    private DB4SQLServer db = new DB4SQLServer();
     private Connection con = null;
     private PreparedStatement st = null;
     private ResultSet rs = null;
@@ -42,7 +39,7 @@ public class ControlLogin implements ActionListener {
         if(source.equals(view.getBtnLogin())) {
 
             try {
-            Connection con = DriverManager.getConnection(url);
+            Connection con = DriverManager.getConnection(this.db.getURL());
             PreparedStatement st = con.prepareStatement("SELECT * FROM user WHERE "
                     + "`username` = '"+view.getUsername()+"' "
                     + "AND "

@@ -26,7 +26,7 @@ public class MDI extends JFrame {
         
         //shortcut
         InsertPanelHere.setVisible(false);
-        JPanel pane = new PanelTunDinas();
+        JPanel pane = new Maps();
         InsertPanelHere.removeAll();        
         InsertPanelHere.add(pane);
         InsertPanelHere.setVisible(true);
@@ -58,7 +58,6 @@ public class MDI extends JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(600, 400));
-        setPreferredSize(new java.awt.Dimension(600, 400));
 
         InsertPanelHere.setMinimumSize(new java.awt.Dimension(0, 0));
         InsertPanelHere.setPreferredSize(new java.awt.Dimension(600, 450));
@@ -150,7 +149,7 @@ public class MDI extends JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(InsertPanelHere, javax.swing.GroupLayout.PREFERRED_SIZE, 453, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(InsertPanelHere, javax.swing.GroupLayout.DEFAULT_SIZE, 453, Short.MAX_VALUE)
         );
 
         pack();
