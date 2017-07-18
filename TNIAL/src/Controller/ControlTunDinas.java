@@ -5,7 +5,6 @@
  */
 package Controller;
 
-import Database.DB4MySQL;
 import Database.DB4SQLServer;
 import Model.BankumJnsTingkat;
 import Model.BankumStatus;
@@ -43,7 +42,7 @@ public class ControlTunDinas {
         try {
             //Class.forName(driver);
             Connection con = DriverManager.getConnection(this.db.getURL());
-            PreparedStatement st = con.prepareStatement("select * from bankum_tundinas");
+            PreparedStatement st = con.prepareStatement("SELECT * FROM bankum_tundinas");
             ResultSet rs = st.executeQuery();
             //rs.beforeFirst();
             while(rs.next()){
@@ -72,7 +71,7 @@ public class ControlTunDinas {
         //ResultSet rs = db.get("SELECT * FROM `bankum_jenistingkat` WHERE `kdPemilik` = '04'");
         try {
             Connection con = DriverManager.getConnection(db.getURL());
-            PreparedStatement st = con.prepareStatement("select * from bankum_jenistingkat");
+            PreparedStatement st = con.prepareStatement("SELECT * FROM bankum_jenistingkat");
             ResultSet rs = st.executeQuery();            
 //            rs.beforeFirst();
             while(rs.next()){
@@ -99,7 +98,7 @@ public class ControlTunDinas {
         //ResultSet rs = db.get("SELECT * FROM `bankum_statustingkat`");
         try {
             Connection con = DriverManager.getConnection(db.getURL());
-            PreparedStatement st = con.prepareStatement("select * from bankum_statustingkat");
+            PreparedStatement st = con.prepareStatement("SELECT * FROM bankum_statustingkat");
             ResultSet rs = st.executeQuery();
 //            rs.beforeFirst();
             while(rs.next()){
@@ -126,7 +125,7 @@ public class ControlTunDinas {
         //ResultSet rs = db.get("SELECT * FROM `bankum_status` WHERE `kdPemilik` = '04' ");
         try {
             Connection con = DriverManager.getConnection(db.getURL());
-            PreparedStatement st = con.prepareStatement("select * from bankum_status");
+            PreparedStatement st = con.prepareStatement("SELECT * FROM bankum_status");
             ResultSet rs = st.executeQuery();
 //            rs.beforeFirst();
             while(rs.next()){
@@ -256,29 +255,33 @@ public class ControlTunDinas {
             String permasalahan,
             String id
     ){
-        boolean berhasil = false;
+        boolean berhasil = true;
         
         //db.connect();
         
         try{
             Connection con = DriverManager.getConnection(db.getURL());
             java.sql.Date sqlDate = new java.sql.Date(tgl);
-            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-            java.util.Date utilDate = new java.util.Date();
 
-            PreparedStatement st = con.prepareStatement("UPDATE bankum_tundinas SET"
-                    + "lokasiDT = ?,Dasar = ?,noSurat = ?,tglDasar = ?,Permasalahan = ?,id_status_tingkat = NULL,kdTingkat = NULL,tglStatus = NULL"
-                    + "WHERE bankum_tundinas.idTundinas = '"+id+"';");
-            st.setString(1, lokasi);
-            st.setString(2, dasar);
-            st.setString(3, noSurat);
-            st.setDate(4, sqlDate);
-            st.setString(5, permasalahan);
+            PreparedStatement st = con.prepareStatement("UPDATE bankum_tundinas SET "
+                    + "lokasiDT = '" + lokasi + "', "
+                    + "Dasar = '" + dasar + "', "
+                    + "noSurat = '" + noSurat + "', "
+                    + "tglDasar = '" + sqlDate + "', "
+                    + "Permasalahan = '" + permasalahan + "' "
+                    + "WHERE idTundinas = '" + id + "';");
+//            st.setString(1, lokasi);
+//            st.setString(2, dasar);
+//            st.setString(3, noSurat);
+//            st.setDate(4, sqlDate);
+//            st.setString(5, permasalahan);
             st.executeUpdate();
             st.close();
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null,"Gagal!");
+            ex.printStackTrace();
+            berhasil = false;
         }   finally {
                 try { rs.close(); } catch (Exception e) { /* ignored */ }
                 try { st.close(); } catch (Exception e) { /* ignored */ }

@@ -359,9 +359,18 @@ public class PanelTunDinas extends javax.swing.JPanel {
                         txNoSurat.getText(), 
                         txDateField.getDate().getTime(), 
                         txPermasalahan.getText(), 
-                        this.currentRowDat.getidTundinas()))setIsiTable();
-            }else{
-                JOptionPane.showMessageDialog(null,"Tidak ada perubahan!");
+                        this.currentRowDat.getidTundinas()))
+                {
+                    setIsiTable();
+                    JOptionPane.showMessageDialog(null,"Berhasil disimpan!");
+                    this.currentRowDat = new TunDinas(
+                            this.currentRowDat.getidTundinas(), 
+                            txLokasiNTanah.getText(), 
+                            txDasar.getText(), 
+                            txNoSurat.getText(),
+                            new java.sql.Date(txDateField.getDate().getTime()),
+                            txPermasalahan.getText());
+                }
             }
         }
     }//GEN-LAST:event_btAddActionPerformed
