@@ -40,7 +40,7 @@ import javax.swing.JOptionPane;
  */
 public class ControlGenerateReport {
     private String triwulan, tahun;
-    private Database.DB4SQLServer db;
+    private Database.DB4SQLServer db = new Database.DB4SQLServer();
     private Connection con = null;
     private PreparedStatement st = null;
     private ResultSet rs = null;
@@ -83,17 +83,17 @@ public class ControlGenerateReport {
                     "LEFT OUTER JOIN bankum_statustingkat on bankum_tundinasproses.id_status_tingkat=bankum_statustingkat.id_status_tingkat " +
                     "LEFT OUTER JOIN bankum_jenistingkat on bankum_tundinastingkat.kdTingkat=bankum_jenistingkat.kdTingkat "
                     + "WHERE "
-                    + "MONTH(tgl) IN ('"+bln[0]+", "+bln[1]+", "+bln[2]+") "
-                    + " AND YEAR(tgl) = ('"+tahun+") "
-                    + "' ORDER BY bankum_tundinas.idTundinas DESC, bankum_tundinastingkat.kdTingkat ASC, bankum_tundinasproses.tgl ASC");
+                    + "MONTH(tgl) IN ("+bln[0]+", "+bln[1]+", "+bln[2]+") "
+                    + " AND YEAR(tgl) = ("+tahun+") "
+                    + " ORDER BY bankum_tundinas.idTundinas DESC, bankum_tundinastingkat.kdTingkat ASC, bankum_tundinasproses.tgl ASC");
             
             ResultSet rs = st.executeQuery();
             
 //            rs.beforeFirst();
-            int n=0, m=0;
+            int n=-1, m=-1;
             while(rs.next()){     
-                if(!idKasus.equals(rs.getString("idTundinas"))){                    
-                    idKasus = rs.getString("idTundinas");
+                if(!idKasus.equals(rs.getString("bankum_tundinas idTundinas"))){                    
+                    idKasus = rs.getString("bankum_tundinas idTundinas");
                     kasus.add(new TunDinas(
                             idKasus, 
                             rs.getString("lokasiDT"), 
@@ -105,7 +105,8 @@ public class ControlGenerateReport {
                     m=-1;
                 }
                 //tambah tingkat
-                if(!idTingkat.equals(rs.getString("kdTingkat"))){
+                if(!idTingkat.equals(rs.getString("bankum_tundinastingkat kdTingkat"))){
+                    idTingkat = rs.getString("bankum_tundinastingkat kdTingkat");
                     kasus.get(n).addTingkat(new TunDinasTingkat(
                         0, 
                         null, 
@@ -126,6 +127,7 @@ public class ControlGenerateReport {
             
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null,"Gagal!");
+            ex.printStackTrace();
         }   finally {
                 try { rs.close(); } catch (Exception e) { /* ignored */ }
                 try { st.close(); } catch (Exception e) { /* ignored */ }
@@ -249,6 +251,7 @@ public class ControlGenerateReport {
         int rkasus;
         int rtingkat;
         String isicell;
+        Paragraph paragraf;
         for(TunDinas i : kasus){
             // row num
             rkasus = 0;
@@ -277,16 +280,21 @@ public class ControlGenerateReport {
             
             for(TunDinasTingkat j : i.getTingkat()){
                 rtingkat = j.getProses().size();
-                cell = new PdfPCell(new Paragraph(j.getKdTIngkat())); //status
+                isicell = 
+                        j.getKdTIngkat() + ": " + 
+                        j.getKetStatus(); //status
+                paragraf = new Paragraph(isicell);
+                cell = new PdfPCell(paragraf);
                 cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
                 cell.setRowspan(rtingkat);
                 table.addCell(cell);
                 
                 TunDinasProses proses = j.getProses().get(0);
                 isicell = 
-//                        proses.getDate().toString() + ": " + 
+                        proses.getDate().toString() + ": " + 
                         proses.getProses(); //proses
-                table.addCell(isicell);
+                paragraf = new Paragraph(isicell);
+                table.addCell(paragraf);
                 
                 cell = new PdfPCell(new Paragraph(j.getKet())); //keterangan
                 cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -297,9 +305,10 @@ public class ControlGenerateReport {
                     for(int k=1; k<rtingkat; k++){
                         proses = j.getProses().get(k);
                         isicell = 
-//                                proses.getDate().toString() + ": " + 
-                                proses.getProses(); //proses
-                        table.addCell(isicell);
+                                proses.getDate().toString() + ": " + 
+                                proses.getProses(); //proses                        
+                        paragraf = new Paragraph(isicell);
+                        table.addCell(paragraf);
                     }
                 }
             }
