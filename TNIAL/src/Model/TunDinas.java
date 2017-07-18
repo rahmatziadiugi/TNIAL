@@ -7,6 +7,7 @@ package Model;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import org.openstreetmap.gui.jmapviewer.Coordinate;
 
 /**
  *
@@ -20,6 +21,7 @@ public class TunDinas {
     private Date tglDasar;
     private String Permasalahan;
     private ArrayList<TunDinasTingkat> tingkat;
+    private Coordinate coor;
     
     public TunDinas(    
             String idTundinas,
@@ -68,5 +70,13 @@ public class TunDinas {
     
     public void addTingkat(TunDinasTingkat tingkat){
         this.tingkat.add(tingkat);
+    }
+    
+    public void setCoor(double lan, double lon){
+        this.coor = new Coordinate(lan, lon);
+    }
+    
+    public Coordinate getCoor(){
+        return this.coor;
     }
 }
