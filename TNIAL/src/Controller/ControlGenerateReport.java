@@ -26,6 +26,8 @@ import java.util.logging.Logger;
 import Model.TunDinas;
 import Model.TunDinasTingkat;
 import Model.TunDinasProses;
+import java.awt.Desktop;
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -203,6 +205,15 @@ public class ControlGenerateReport {
             doc.add(createFirstTable(kasus));                        
                         
             doc.close();
+            
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    File myFile = new File("results/Report.pdf");
+                    Desktop.getDesktop().open(myFile);
+                } catch (Exception ex) {
+                    // no application registered for PDFs
+                }
+            }
             
         } catch (Exception ex) {
             Logger.getLogger(ControlGenerateReport.class.getName()).log(Level.SEVERE, null, ex);
