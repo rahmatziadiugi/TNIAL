@@ -7,7 +7,11 @@ package View;
 
 import Controller.ControlMaps;
 import java.awt.Dimension;
+import java.awt.event.MouseEvent;
 import javax.swing.JPanel;
+import org.openstreetmap.gui.jmapviewer.DefaultMapController;
+import org.openstreetmap.gui.jmapviewer.JMapViewer;
+import org.openstreetmap.gui.jmapviewer.JMapViewerTree;
 
 /**
  *
@@ -20,15 +24,14 @@ public class Maps extends javax.swing.JPanel {
      */
     public Maps() {
         initComponents();
-        setVisible(true);
-
+        
         jPanel2.setVisible(false);
         JPanel pane = new ControlMaps();
         jPanel2.removeAll();        
         jPanel2.add(pane);
         jPanel2.setVisible(true);
         
-        
+        setVisible(true);
     }
 
     /**
