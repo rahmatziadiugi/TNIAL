@@ -8,6 +8,8 @@ package Driver;
 
 import View.MDI;
 import Controller.ControlGenerateReport;
+import View.Login;
+import java.awt.event.ActionEvent;
 
 /**
  *
@@ -16,10 +18,13 @@ import Controller.ControlGenerateReport;
 public class Main{    
     public static void main(String[] args) {
         
-//        ControlLogin logon = new ControlLogin();
+        Login log = new Login();
+        log.setVisible(true);
+       // log.setVisible(true);
         
-        MDI mdi = new MDI();
-        mdi.setVisible(true);        
+        
+//        MDI mdi = new MDI();
+//        mdi.setVisible(true);        
     
 //        ControlGenerateReport createpdf = new ControlGenerateReport();
         

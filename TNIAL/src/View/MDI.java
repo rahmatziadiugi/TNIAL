@@ -31,6 +31,25 @@ public class MDI extends JFrame {
         InsertPanelHere.add(pane);
         InsertPanelHere.setVisible(true);
     }
+    
+    public MDI(int i) {
+        initComponents();
+        setVisible(true);
+        
+        if (i!=0) {
+            this.mFile.remove(this.NewUser);
+        }
+        
+        this.setTitle("Nama Aplikasi");
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        
+        //shortcut
+        InsertPanelHere.setVisible(false);
+        JPanel pane = new Maps();
+        InsertPanelHere.removeAll();        
+        InsertPanelHere.add(pane);
+        InsertPanelHere.setVisible(true);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -49,6 +68,7 @@ public class MDI extends JFrame {
         PidanaUmum = new javax.swing.JMenuItem();
         PidanaMiliter = new javax.swing.JMenuItem();
         PerdataPersonel = new javax.swing.JMenuItem();
+        NewUser = new javax.swing.JMenuItem();
         Exit = new javax.swing.JMenuItem();
         mReport = new javax.swing.JMenu();
         TUNDINAS = new javax.swing.JMenu();
@@ -106,6 +126,14 @@ public class MDI extends JFrame {
             }
         });
         mFile.add(PerdataPersonel);
+
+        NewUser.setText("Buat User Baru");
+        NewUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                NewUserActionPerformed(evt);
+            }
+        });
+        mFile.add(NewUser);
 
         Exit.setText("Exit");
         Exit.addActionListener(new java.awt.event.ActionListener() {
@@ -189,9 +217,16 @@ public class MDI extends JFrame {
         ReportTunDinasTriwulan reportTri = new ReportTunDinasTriwulan();
     }//GEN-LAST:event_PerTriwulanActionPerformed
 
+    private void NewUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NewUserActionPerformed
+        // TODO add your handling code here:
+        FormUserBaru fub = new FormUserBaru();
+    }//GEN-LAST:event_NewUserActionPerformed
+
+    Login l = new Login();
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem Exit;
     private javax.swing.JPanel InsertPanelHere;
+    private javax.swing.JMenuItem NewUser;
     private javax.swing.JMenuItem PerKasus;
     private javax.swing.JMenuItem PerTanggal;
     private javax.swing.JMenuItem PerTriwulan;

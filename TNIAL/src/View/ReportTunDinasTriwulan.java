@@ -6,6 +6,8 @@
 package View;
 
 import Controller.ControlGenerateReport;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
@@ -21,6 +23,10 @@ public class ReportTunDinasTriwulan extends javax.swing.JFrame {
     public ReportTunDinasTriwulan() {
         initComponents();
         this.setVisible(true);
+        this.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
+        setResizable(false);
         DateFormat dateFormat = new SimpleDateFormat("yyyy");
         String utilDate = dateFormat.format(new java.util.Date());
         txTahun.setValue(Integer.valueOf(utilDate));

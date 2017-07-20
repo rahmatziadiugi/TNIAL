@@ -41,6 +41,9 @@ public class FormTingkat extends javax.swing.JFrame {
     public FormTingkat() {
         initComponents();
         this.idTunDinas = null;
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
+        setResizable(false);
     }
             
     FormTingkat(String lokasi, String masalah, String idTunDinas){

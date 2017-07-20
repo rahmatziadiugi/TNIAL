@@ -25,7 +25,7 @@ public class FormTambahTingkat extends javax.swing.JFrame {
     
     public FormTambahTingkat(String id) {
         initComponents();        
-        
+        setResizable(false);
         this.id = id;
         
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();

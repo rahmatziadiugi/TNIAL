@@ -5,11 +5,22 @@
  */
 package View;
 
+import Database.DB4SQLServer;
+import static com.sun.glass.ui.Cursor.setVisible;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 
 /**
@@ -23,13 +34,15 @@ public class Login extends javax.swing.JFrame {
      */
     public Login() {
         initComponents();
-        
-        password.addMouseListener(new MouseAdapter(){
-            @Override
-            public void mouseClicked(MouseEvent e){
-                password.setText(null);
-            }
-        });
+        setResizable(false);
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
+//        password.addMouseListener(new MouseAdapter(){
+//            @Override
+//            public void mouseClicked(MouseEvent e){
+//                password.setText(null);
+//            }
+//        });
     }
 
     /**
@@ -58,11 +71,21 @@ public class Login extends javax.swing.JFrame {
         jLabel3.setText("password");
 
         masuk.setText("masuk");
+        masuk.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                masukActionPerformed(evt);
+            }
+        });
 
         password.setText("password");
         password.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 passwordFocusGained(evt);
+            }
+        });
+        password.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                passwordActionPerformed(evt);
             }
         });
 
@@ -117,6 +140,35 @@ public class Login extends javax.swing.JFrame {
         
     }//GEN-LAST:event_passwordFocusGained
 
+    private void passwordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_passwordActionPerformed
+
+    private void masukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_masukActionPerformed
+        // TODO add your handling code here:
+        try {
+            Connection con = DriverManager.getConnection(this.db.getURL());
+            PreparedStatement st = con.prepareStatement("SELECT * FROM bankum_pengguna WHERE "
+                    + "username='"+username.getText()+"' "
+                    + "AND "
+                    + "password='"+password.getText()+"'");
+            ResultSet rs = st.executeQuery();
+                if(rs.next()){
+                    MDI mdi = new MDI(rs.getInt("role"));
+                    mdi.setVisible(true);
+                    setVisible(false);
+                    //db.disconnect();
+                    //view.dispose();                 
+                    } 
+                 else{
+                    JOptionPane.showMessageDialog(null,"Username atau Password salah !");
+                }
+                rs.close();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null,e);
+            }
+    }//GEN-LAST:event_masukActionPerformed
+
     public void addListener(ActionListener e) {
         masuk.addActionListener(e);
     }
@@ -125,21 +177,20 @@ public class Login extends javax.swing.JFrame {
         return masuk;
     }
     
-    public String getUsername(){
-        return username.getText();
-    }
-    
-    public String getPassword(){
-        return password.getSelectedText();
+    public int getRole() throws SQLException{
+        return rs.getInt("role");
     }
         
-
+    private DB4SQLServer db = new DB4SQLServer();
+    private Connection con = null;
+    private PreparedStatement st = null;
+    private ResultSet rs = null;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JButton masuk;
-    private javax.swing.JPasswordField password;
-    private javax.swing.JTextField username;
+    public javax.swing.JButton masuk;
+    public javax.swing.JPasswordField password;
+    public javax.swing.JTextField username;
     // End of variables declaration//GEN-END:variables
 }
