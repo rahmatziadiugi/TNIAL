@@ -398,12 +398,16 @@ public class PanelTunDinas extends javax.swing.JPanel implements ActionListener 
                 }
         }else{                
             //edit current row            
+            String[] coor = new String[2];
+            coor = txCoor.getText().split(",");
             if(!(
                     this.currentRowDat.getLokasiDT().equals(txLokasiNTanah.getText()) &&
                     this.currentRowDat.getDasar().equals(txDasar.getText()) &&
                     this.currentRowDat.getnoSurat().equals(txNoSurat.getText()) &&
                     this.currentRowDat.gettglDasar().equals(txDateField.getDate()) &&
-                    this.currentRowDat.getPermasalahan().equals(txPermasalahan.getText())
+                    this.currentRowDat.getPermasalahan().equals(txPermasalahan.getText()) &&
+                    this.currentRowDat.getCoor().getLat()==Double.valueOf(coor[1]) &&
+                    this.currentRowDat.getCoor().getLon()==Double.valueOf(coor[0])
                     )){
                 //ada perubahan
                 if(control.editData(
@@ -423,7 +427,8 @@ public class PanelTunDinas extends javax.swing.JPanel implements ActionListener 
                             txDasar.getText(), 
                             txNoSurat.getText(),
                             new java.sql.Date(txDateField.getDate().getTime()),
-                            txPermasalahan.getText());
+                            txPermasalahan.getText());                    
+                    this.currentRowDat.setCoor(Double.valueOf(coor[0]), Double.valueOf(coor[1]));
                 }
             }
         }
@@ -567,15 +572,16 @@ public class PanelTunDinas extends javax.swing.JPanel implements ActionListener 
         this.currentRowDat = this.data.get(row);
         this.editOrNotEdit = true;
         
-        txLokasiNTanah.setText(this.data.get(row).getLokasiDT());
-        txDasar.setText(this.data.get(row).getDasar());
-        txNoSurat.setText(this.data.get(row).getnoSurat());
-        txDateField.setDate(this.data.get(row).gettglDasar());
-        txPermasalahan.setText(this.data.get(row).getPermasalahan());
-        if(this.data.get(row).getCoor()==null){
-            txCoor.setText("");
+        txLokasiNTanah.setText(this.currentRowDat.getLokasiDT());
+        txDasar.setText(this.currentRowDat.getDasar());
+        txNoSurat.setText(this.currentRowDat.getnoSurat());
+        txDateField.setDate(this.currentRowDat.gettglDasar());
+        txPermasalahan.setText(this.currentRowDat.getPermasalahan());        
+        if(this.currentRowDat.getCoor()==null){
+            txCoor.setText("0,0");
         }else{
-            txCoor.setText(this.data.get(row).getCoor().toString());
+            String koor = this.currentRowDat.getCoor().getLat()+","+this.currentRowDat.getCoor().getLon();
+            txCoor.setText(koor);
         }
 
         btAdd.setText("Perbarui");
@@ -591,6 +597,7 @@ public class PanelTunDinas extends javax.swing.JPanel implements ActionListener 
         txNoSurat.setText(null);
         txDateField.setDate(new Date());
         txPermasalahan.setText(null);
+        txCoor.setText("0,0");
     }
     
     public void resetTable(int i){

@@ -45,6 +45,7 @@ public class ControlTunDinas {
             PreparedStatement st = con.prepareStatement("SELECT * FROM bankum_tundinas");
             ResultSet rs = st.executeQuery();
             //rs.beforeFirst();
+            int n = 0;
             while(rs.next()){
                 this.data.add(new TunDinas(
                         rs.getString("idTundinas"),
@@ -54,6 +55,15 @@ public class ControlTunDinas {
                         rs.getDate("tglDasar"),
                         rs.getString("Permasalahan")
                 ));
+                String[] coor = new String[2];
+                if(rs.getString("Koordinat")!=null){
+                    coor = rs.getString("Koordinat").split(",");
+                }else{
+                    coor[0] = "0";
+                    coor[1] = "0";
+                }
+                this.data.get(n).setCoor(Double.valueOf(coor[0]), Double.valueOf(coor[1]));
+                n++;
             }                
             rs.close();
         } catch (SQLException ex) {
@@ -273,7 +283,7 @@ public class ControlTunDinas {
                     + "Dasar = '" + dasar + "', "
                     + "noSurat = '" + noSurat + "', "
                     + "tglDasar = '" + sqlDate + "', "
-                    + "Permasalahan = '" + permasalahan + "'v "
+                    + "Permasalahan = '" + permasalahan + "', "
                     + "Koordinat = '" + coor + "' "
                     + "WHERE idTundinas = '" + id + "';");
             st.executeUpdate();
