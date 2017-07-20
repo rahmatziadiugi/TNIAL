@@ -33,7 +33,7 @@ import javax.swing.table.TableCellRenderer;
  *
  * @author Someone
  */
-public class PanelTunDinas extends javax.swing.JPanel {
+public class PanelTunDinas extends javax.swing.JPanel implements ActionListener {
 
     /**
      * Creates new form TunDinas
@@ -385,7 +385,8 @@ public class PanelTunDinas extends javax.swing.JPanel {
                             txDasar.getText(), 
                             txNoSurat.getText(), 
                             txDateField.getDate().getTime(), 
-                            txPermasalahan.getText()
+                            txPermasalahan.getText(),
+                            txCoor.getText()
                         )
                     ) 
                 {
@@ -411,6 +412,7 @@ public class PanelTunDinas extends javax.swing.JPanel {
                         txNoSurat.getText(), 
                         txDateField.getDate().getTime(), 
                         txPermasalahan.getText(), 
+                        txCoor.getText(),
                         this.currentRowDat.getidTundinas()))
                 {
                     setIsiTable();
@@ -504,9 +506,20 @@ public class PanelTunDinas extends javax.swing.JPanel {
 
     private void btPetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btPetaActionPerformed
         // TODO add your handling code here:
-        //new LihatPeta(txCoor.getText());
+        pickCoor = new LihatPeta(txCoor.getText());    
+        pickCoor.addListener(this);
     }//GEN-LAST:event_btPetaActionPerformed
 
+    private LihatPeta pickCoor;
+    
+    @Override
+    public void actionPerformed(ActionEvent ae) {
+        Object source = ae.getSource();
+        if(source.equals(pickCoor.getbtnOke())) {
+            txCoor.setText(pickCoor.getCoor());
+        }
+    }
+    
     public void setIsiTable(){
         control.getDataDBTunDinas();
         data = control.getDatanya();

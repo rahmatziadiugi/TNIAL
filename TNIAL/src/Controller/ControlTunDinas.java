@@ -189,7 +189,8 @@ public class ControlTunDinas {
             String dasar,
             String noSurat,
             long tgl,
-            String permasalahan
+            String permasalahan,
+            String coor
     ){
         boolean berhasil = false;
         
@@ -202,14 +203,15 @@ public class ControlTunDinas {
             String utilDate = dateFormat.format(new java.util.Date());
 
             PreparedStatement st = con.prepareStatement("INSERT INTO bankum_tundinas"
-                    + "(idTundinas,lokasiDT,Dasar,noSurat,tglDasar,Permasalahan)"
-                    + "values(?,?,?,?,?,?)");
+                    + "(idTundinas,lokasiDT,Dasar,noSurat,tglDasar,Permasalahan,Koordinat)"
+                    + "values(?,?,?,?,?,?,?)");
             st.setString(1, utilDate);
             st.setString(2, lokasi);
             st.setString(3, dasar);
             st.setString(4, noSurat);
             st.setDate(5, sqlDate);
             st.setString(6, permasalahan);
+            st.setString(7, coor);
             st.executeUpdate();
             st.close();
                         
@@ -219,6 +221,7 @@ public class ControlTunDinas {
             } 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null,"Gagal!");
+            ex.printStackTrace();
         }   finally {
                 try { rs.close(); } catch (Exception e) { /* ignored */ }
                 try { st.close(); } catch (Exception e) { /* ignored */ }
@@ -240,6 +243,7 @@ public class ControlTunDinas {
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null,"Gagal!");
+            ex.printStackTrace();
         }   finally {
                 try { rs.close(); } catch (Exception e) { /* ignored */ }
                 try { st.close(); } catch (Exception e) { /* ignored */ }
@@ -253,6 +257,7 @@ public class ControlTunDinas {
             String noSurat,
             long tgl,
             String permasalahan,
+            String coor,
             String id
     ){
         boolean berhasil = true;
@@ -268,13 +273,9 @@ public class ControlTunDinas {
                     + "Dasar = '" + dasar + "', "
                     + "noSurat = '" + noSurat + "', "
                     + "tglDasar = '" + sqlDate + "', "
-                    + "Permasalahan = '" + permasalahan + "' "
+                    + "Permasalahan = '" + permasalahan + "'v "
+                    + "Koordinat = '" + coor + "' "
                     + "WHERE idTundinas = '" + id + "';");
-//            st.setString(1, lokasi);
-//            st.setString(2, dasar);
-//            st.setString(3, noSurat);
-//            st.setDate(4, sqlDate);
-//            st.setString(5, permasalahan);
             st.executeUpdate();
             st.close();
 

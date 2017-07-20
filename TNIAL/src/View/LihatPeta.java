@@ -6,43 +6,126 @@
 package View;
 
 import Controller.ControlMaps;
+import Model.TunDinas;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import org.openstreetmap.gui.jmapviewer.Coordinate;
+import org.openstreetmap.gui.jmapviewer.DefaultMapController;
+import org.openstreetmap.gui.jmapviewer.JMapViewer;
+import org.openstreetmap.gui.jmapviewer.JMapViewerTree;
+import org.openstreetmap.gui.jmapviewer.MapMarkerDot;
+import org.openstreetmap.gui.jmapviewer.OsmTileLoader;
+import org.openstreetmap.gui.jmapviewer.Style;
+import org.openstreetmap.gui.jmapviewer.events.JMVCommandEvent;
+import org.openstreetmap.gui.jmapviewer.interfaces.ICoordinate;
+import org.openstreetmap.gui.jmapviewer.interfaces.JMapViewerEventListener;
+import org.openstreetmap.gui.jmapviewer.tilesources.OsmTileSource;
 
 /**
  *
  * @author Someone
  */
-public class LihatPeta extends javax.swing.JFrame {
+public class LihatPeta extends javax.swing.JFrame implements JMapViewerEventListener{
+    private JMapViewerTree mapView;
+    private JLabel zoomValue;
+    private JLabel mperpLabelValue;
+    private final Style legend1 = new Style(Color.BLACK, Color.GREEN, null, null);
+    private boolean ok;
 
     /**
      * Creates new form LihatPeta
      */
-//    public LihatPeta(String coor) {
-//        initComponents();
-//        setVisible(true);
-//        
-//        String[] loc = coor.split(",");
-//        
-//        txX.setText(loc[0]);
-//        txY.setText(loc[1]);
-//        
-//        jPanel1.setVisible(false);
-//        JPanel pane = new ControlMaps(loc[0], loc[1]);
-//        jPanel1.removeAll();        
-//        jPanel1.add(pane);
-//        jPanel1.setVisible(true);
-//    }
-//    
-//    private void RefreshCoor(java.awt.event.ActionEvent evt) {
-//        jPanel1.setVisible(false);
-//        if(txX.getText().equals(""))txX.setText("0");
-//        if(txY.getText().equals(""))txY.setText("0");
-//        JPanel pane = new ControlMaps(txX.getText(), txY.getText());
-//        jPanel1.removeAll();        
-//        jPanel1.add(pane);
-//        jPanel1.setVisible(true);
-//    }
+    public LihatPeta(String coor) {
+        initComponents();
+        
+        this.ok = false;
+        
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setLocation(dim.width/2-this.getSize().width/2, 0);
+        this.setTitle("Pilih Lokasi Kasus");
+        
+        this.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);      
+        
+        setVisible(true);
+        
+        String[] loc = coor.split(",");
+        
+        txLat.setText(loc[0]);
+        txLon.setText(loc[1]);
+        
+        jPanel1.setVisible(false);
+        
+        mapView = new JMapViewerTree("Lokasi Kasus");
+        
+        setup();
+        
+        MapMarkerDot dadot = new MapMarkerDot(new Coordinate(Double.valueOf(loc[0]), Double.valueOf(loc[1])));
+        dadot.setStyle(legend1);
+        map().addMapMarker(dadot);
+        
+        DefaultMapController mapControl = new DefaultMapController(map()){            
+            @Override   
+            public void mouseClicked(MouseEvent e) {
+                //System.out.println("\n"+map.getPosition(e.getPoint()));
+                double lat = map.getPosition(e.getPoint()).getLat();
+                double lon = map.getPosition(e.getPoint()).getLon();
+                txLat.setText(String.valueOf(lat));
+                txLon.setText(String.valueOf(lon));
+                map().getMapMarkerList().clear();
+                MapMarkerDot dadot = new MapMarkerDot(new Coordinate(lat, lon));
+                dadot.setStyle(legend1);
+                map().addMapMarker(dadot);
+            }
+        };
+        
+        add(mapView, BorderLayout.CENTER);
+        
+        jPanel1.removeAll();        
+        jPanel1.add(mapView);
+        jPanel1.setVisible(true);
+    }
+    
+    private void setup(){
+        setSize(600, 600);
+        setLayout(new BorderLayout());
+        
+        // Listen to the map viewer for user operations so components will
+        // receive events and updates
+        map().addJMVListener(this);
 
+        // Set some options, e.g. tile source and that markers are visible
+        map().setTileSource(new OsmTileSource.Mapnik());
+        map().setTileLoader(new OsmTileLoader(map()));
+        map().setMapMarkerVisible(true);
+        map().setZoomContolsVisible(true);
+    }
+    
+    public JMapViewer map() {
+        return mapView.getViewer();
+    }
+    
+    public void updateZoomParameters() {
+        if (mperpLabelValue != null)
+            mperpLabelValue.setText(String.format("%s", map().getMeterPerPixel()));
+        if (zoomValue != null)
+            zoomValue.setText(String.format("%s", map().getZoom()));
+    }
+    
+    @Override
+    public void processCommand(JMVCommandEvent command) {
+        if (command.getCommand().equals(JMVCommandEvent.COMMAND.ZOOM) ||
+                command.getCommand().equals(JMVCommandEvent.COMMAND.MOVE)) {
+            updateZoomParameters();
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -55,26 +138,17 @@ public class LihatPeta extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        txX = new javax.swing.JTextField();
-        txY = new javax.swing.JTextField();
+        txLat = new javax.swing.JTextField();
+        txLon = new javax.swing.JTextField();
         btOke = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
+        jPanel1.setLayout(new java.awt.BorderLayout());
 
-        jLabel1.setText("x: ");
+        jLabel1.setText("Lat: ");
 
-        jLabel2.setText("y: ");
+        jLabel2.setText("Lon: ");
 
         btOke.setText("Oke");
         btOke.addActionListener(new java.awt.event.ActionListener() {
@@ -89,18 +163,18 @@ public class LihatPeta extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 388, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txX))
+                        .addComponent(txLat))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txY))
-                    .addComponent(btOke, javax.swing.GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE))
+                        .addComponent(txLon))
+                    .addComponent(btOke, javax.swing.GroupLayout.DEFAULT_SIZE, 114, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -111,11 +185,11 @@ public class LihatPeta extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
-                            .addComponent(txX, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txLat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
-                            .addComponent(txY, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txLon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btOke)
                         .addGap(0, 198, Short.MAX_VALUE))
@@ -128,7 +202,7 @@ public class LihatPeta extends javax.swing.JFrame {
 
     private void btOkeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btOkeActionPerformed
         // TODO add your handling code here:
-        this.dispose();
+        this.ok = true;
     }//GEN-LAST:event_btOkeActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -136,7 +210,25 @@ public class LihatPeta extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField txX;
-    private javax.swing.JTextField txY;
+    private javax.swing.JTextField txLat;
+    private javax.swing.JTextField txLon;
     // End of variables declaration//GEN-END:variables
+
+    public String getCoor(){
+        String temp = txLat.getText()+","+txLon.getText();
+        this.dispose();
+        return temp;
+    }
+    
+    public boolean isOke(){
+        return this.ok;
+    }
+    
+    public void addListener(ActionListener e) {
+        btOke.addActionListener(e);
+    }
+    
+    public JButton getbtnOke() {
+        return this.btOke;
+    }
 }
