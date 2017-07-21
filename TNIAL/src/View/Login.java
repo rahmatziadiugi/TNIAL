@@ -9,6 +9,7 @@ import Database.DB4SQLServer;
 import static com.sun.glass.ui.Cursor.setVisible;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.MouseAdapter;
@@ -34,6 +35,8 @@ public class Login extends javax.swing.JFrame {
      */
     public Login() {
         initComponents();
+        ActionEvent evt = null;
+        showpassActionPerformed(evt);
         setResizable(false);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
@@ -60,6 +63,7 @@ public class Login extends javax.swing.JFrame {
         username = new javax.swing.JTextField();
         masuk = new javax.swing.JButton();
         password = new javax.swing.JPasswordField();
+        showpass = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -89,6 +93,13 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
+        showpass.setText("Show Password");
+        showpass.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showpassActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -99,18 +110,20 @@ public class Login extends javax.swing.JFrame {
                         .addGap(159, 159, 159)
                         .addComponent(jLabel1))
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(155, 155, 155)
+                        .addComponent(masuk))
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(42, 42, 42)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
                             .addComponent(jLabel3))
                         .addGap(37, 37, 37)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(username, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE)
-                            .addComponent(password)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(155, 155, 155)
-                        .addComponent(masuk)))
-                .addContainerGap(132, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(showpass)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(username, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE)
+                                .addComponent(password)))))
+                .addContainerGap(102, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -125,9 +138,11 @@ public class Login extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(showpass)
+                .addGap(18, 18, 18)
                 .addComponent(masuk)
-                .addGap(41, 41, 41))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
 
         pack();
@@ -169,6 +184,15 @@ public class Login extends javax.swing.JFrame {
             }
     }//GEN-LAST:event_masukActionPerformed
 
+    private void showpassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showpassActionPerformed
+        // TODO add your handling code here:
+        if(showpass.isSelected()){
+            password.setEchoChar((char)0);
+        }else{
+            password.setEchoChar('*');
+        }
+    }//GEN-LAST:event_showpassActionPerformed
+
     public void addListener(ActionListener e) {
         masuk.addActionListener(e);
     }
@@ -191,6 +215,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     public javax.swing.JButton masuk;
     public javax.swing.JPasswordField password;
+    private javax.swing.JCheckBox showpass;
     public javax.swing.JTextField username;
     // End of variables declaration//GEN-END:variables
 }

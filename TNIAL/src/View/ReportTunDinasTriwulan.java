@@ -112,7 +112,7 @@ public class ReportTunDinasTriwulan extends javax.swing.JFrame {
                         .addComponent(tri2)
                         .addComponent(tri3)
                         .addComponent(tri4)))
-                .addContainerGap(309, Short.MAX_VALUE))
+                .addContainerGap(69, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

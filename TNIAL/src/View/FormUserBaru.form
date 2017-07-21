@@ -149,7 +149,7 @@
         </Component>
         <Component class="javax.swing.JPasswordField" name="password">
           <Properties>
-            <Property name="text" type="java.lang.String" value="contoh"/>
+            <Property name="text" type="java.lang.String" value="password"/>
           </Properties>
           <Events>
             <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="passwordFocusGained"/>

@@ -34,8 +34,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ActionMap;
 import javax.swing.event.MouseInputListener;
 import org.eclipse.persistence.internal.databaseaccess.DatabaseAccessor;
 import org.openstreetmap.gui.jmapviewer.Coordinate;
@@ -85,7 +87,6 @@ public class ControlMaps extends JPanel implements JMapViewerEventListener {
         map().setTileLoader(new OsmTileLoader(map()));
         map().setMapMarkerVisible(true);
         map().setZoomContolsVisible(true);
-        
         addMarkTunDinas();
         
         for(TunDinas i : dataTunDinas){                    
@@ -95,10 +96,7 @@ public class ControlMaps extends JPanel implements JMapViewerEventListener {
         DefaultMapController mapControl = new DefaultMapController(map()){            
             @Override   
             public void mouseClicked(MouseEvent e) {
-                System.out.println("\n"+map.getPosition(e.getPoint()));
-                if(isPointValid(map.getPosition(e.getPoint()))){
-                    System.out.println("marker clicked i guess");
-                }
+                isPointValid(map.getPosition(e.getPoint()));
             }
             
             public boolean isPointValid(ICoordinate p){
@@ -111,15 +109,12 @@ public class ControlMaps extends JPanel implements JMapViewerEventListener {
                     zoom = (Math.pow(10, (int)(map.getZoom()/5)));
                 }
                 if(zoom==0)zoom=0.01;
-                System.out.println(map.getZoom()+"\t"+zoom);
                 for(TunDinas i : dataTunDinas){
                     //marker radius = 5.0                    
                     boolean inRangeLat = 
                             ((int)(i.getCoor().getLat()*zoom)) == (int)(p.getLat()*zoom);
                     boolean inRangeLon = 
                             ((int)(i.getCoor().getLon()*zoom)) == (int)(p.getLon()*zoom);
-                    //System.out.println((i.getCoor().getLat()*zoom)+"\t"+(i.getCoor().getLon()*zoom));
-                    //System.out.println((p.getLat()*zoom)+"\t"+(p.getLon()*zoom));
                     if(inRangeLat && inRangeLon){
                         new MarkedDetail(i.getLokasiDT(), i.getDasar(), i.getPermasalahan());
                         return true;
@@ -143,18 +138,52 @@ public class ControlMaps extends JPanel implements JMapViewerEventListener {
         map().setTileLoader(new OsmTileLoader(map()));
         map().setMapMarkerVisible(true);
         map().setZoomContolsVisible(true);
+        
                 
         Style legend1 = new Style(Color.BLACK, Color.GREEN, null, null);
         MapMarkerDot dadot = new MapMarkerDot(new Coordinate(Double.valueOf(y), Double.valueOf(x)));
         dadot.setStyle(legend1);
         map().addMapMarker(dadot);
-                                
         add(treeMap, BorderLayout.CENTER);
     }
+    
+//    public void setLocation(){
+//        double zoom = 5.5;
+//        int x = (int) 10;
+//        int y = (int) 1;
+//
+//        map().getBounds();
+//        //map().setDisplayPosition(x, y, (int) zoom);
+//        
+//    }
     
     private void setupJFrame() {
         setSize(600, 600);
         setLayout(new BorderLayout());
+        ICoordinate to = new ICoordinate() {
+            @Override
+            public double getLat() {
+                double lat = -2.49607;
+                return lat;
+            }
+
+            @Override
+            public void setLat(double lat) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public double getLon() {
+                double lon = 117.89558;
+                return lon;
+            }
+
+            @Override
+            public void setLon(double lon) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        };
+        map().setDisplayPosition(to, 5);
     }    
 
     public JMapViewer map() {
