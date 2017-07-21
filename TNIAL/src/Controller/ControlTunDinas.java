@@ -11,6 +11,7 @@ import Model.BankumStatus;
 import Model.BankumStatusTingkat;
 import Model.TunDinas;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -42,7 +43,10 @@ public class ControlTunDinas {
         try {
             //Class.forName(driver);
             Connection con = DriverManager.getConnection(this.db.getURL());
-            PreparedStatement st = con.prepareStatement("SELECT * FROM bankum_tundinas");
+            PreparedStatement st = con.prepareStatement("SELECT t.idTundinas, lokasiDT, Dasar, noSurat, tglDasar, Permasalahan, Koordinat, MAX(tt.kdTingkat) AS tingkat " +
+                    "FROM bankum_tundinas t " +
+                    "LEFT OUTER JOIN bankum_tundinastingkat tt on t.idTundinas=tt.idTundinas " +
+                    "GROUP by t.idTundinas, lokasiDT, Dasar, noSurat, tglDasar, Permasalahan, Koordinat");
             ResultSet rs = st.executeQuery();
             //rs.beforeFirst();
             int n = 0;
@@ -62,13 +66,47 @@ public class ControlTunDinas {
                     coor[0] = "0";
                     coor[1] = "0";
                 }
-                this.data.get(n).setCoor(Double.valueOf(coor[0]), Double.valueOf(coor[1]));
+                this.data.get(n).setCoor(Double.valueOf(coor[0]), Double.valueOf(coor[1]));                
+                this.data.get(n).setLastTingkat(rs.getString("tingkat"));
                 n++;
             }                
             rs.close();
+            st.close();
+            
+            for(int i=0; i<this.data.size(); i++){
+                if(this.data.get(i).getLastTingkat()!=null){
+                    st = con.prepareStatement("SELECT TOP 1 TP.id_status_tingkat " +
+                            "FROM bankum_tundinasproses TP " +
+                            "JOIN bankum_tundinastingkat TT on TT.idR=TP.idR " +
+                            "JOIN bankum_tundinas T on T.idTundinas=TT.idTundinas " +
+                            "WHERE T.idTundinas= '" + this.data.get(i).getidTundinas() + "'" +
+                            "AND " +
+                            "kdTingkat = '" + this.data.get(i).getLastTingkat() + "' " +
+                            "ORDER BY TP.tgl DESC");
+                    rs = st.executeQuery();
+                    if(rs.next()){
+                        this.data.get(i).setLastStatus(rs.getString("id_status_tingkat"));
+                    }
+                }
+                rs.close(); st.close();
+            }
         } catch (SQLException ex) {
             Logger.getLogger(TunDinas.class.getName()).log(Level.SEVERE, null, ex);
+        } finally{
+            try {con.close();} catch (Exception ex) {}
+            try {st.close();} catch (Exception ex) {}
         }
+    }
+    
+    private int getIdIdx(String id){
+        int n = 0;
+        for(TunDinas i : data){
+            if(i.getidTundinas().equals(id)){
+                return n;
+            }
+            n++;
+        }
+        return -1;
     }
 
     public void getDataDBDatajenis(){
@@ -171,27 +209,27 @@ public class ControlTunDinas {
     }
     
     public String getKetTingkat(String kd){
-        String temp = "-";
+        if(kd==null){
+            return "-";
+        }
         for(BankumJnsTingkat jns : dataJns){
             if(jns.getkdTingkat().equals(kd)){
-                temp = jns.getketTingkat();
-                break;
+                return jns.getketTingkat();
             }
         }
-        
-        return temp;
+        return "-";
     }
     
     public String getStatusnya(String id){
-        String temp = "-";
+        if(id==null){
+            return "-";
+        }
         for(BankumStatusTingkat status : dataStatusTingkat){
             if(status.getId().equals(id)){
-                temp = status.getKet();
-                break;
+                return status.getKet();
             }
-        }
-        
-        return temp;
+        }        
+        return "-";
     }
     
     public boolean tambahData(

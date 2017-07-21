@@ -22,6 +22,7 @@ public class TunDinas {
     private String Permasalahan;
     private ArrayList<TunDinasTingkat> tingkat;
     private Coordinate coor;
+    private String lastTingkat, lastStatus;
     
     public TunDinas(    
             String idTundinas,
@@ -79,4 +80,21 @@ public class TunDinas {
     public Coordinate getCoor(){
         return this.coor;
     }
+    
+    public void setLastTingkat(String s){
+        this.lastTingkat = s;
+    }
+    
+    public void setLastStatus(String s){
+        this.lastStatus = s;
+    }
+    
+    public String getLastTingkat(){
+        return this.lastTingkat;
+    }
+    
+    public String getLastStatus(){
+        return this.lastStatus;
+    }
 }
+

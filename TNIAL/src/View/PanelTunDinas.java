@@ -419,7 +419,6 @@ public class PanelTunDinas extends javax.swing.JPanel implements ActionListener 
                         txCoor.getText(),
                         this.currentRowDat.getidTundinas()))
                 {
-                    setIsiTable();
                     JOptionPane.showMessageDialog(null,"Berhasil disimpan!");
                     this.currentRowDat = new TunDinas(
                             this.currentRowDat.getidTundinas(), 
@@ -429,6 +428,7 @@ public class PanelTunDinas extends javax.swing.JPanel implements ActionListener 
                             new java.sql.Date(txDateField.getDate().getTime()),
                             txPermasalahan.getText());                    
                     this.currentRowDat.setCoor(Double.valueOf(coor[0]), Double.valueOf(coor[1]));
+                    setIsiTable();
                 }
             }
         }
@@ -541,8 +541,8 @@ public class PanelTunDinas extends javax.swing.JPanel implements ActionListener 
             TableTunDinas.setValueAt(data.get(i).getDasar(), i, 2);
             TableTunDinas.setValueAt(data.get(i).getnoSurat(), i, 3);
             TableTunDinas.setValueAt(data.get(i).getPermasalahan(), i, 4);
-            TableTunDinas.setValueAt(control.getKetTingkat(null), i, 5);
-            TableTunDinas.setValueAt(control.getStatusnya(null), i, 6);
+            TableTunDinas.setValueAt(control.getKetTingkat(data.get(i).getLastTingkat()), i, 5);
+            TableTunDinas.setValueAt(control.getStatusnya(data.get(i).getLastStatus()), i, 6);
             TableTunDinas.setValueAt("Detil", i, 7);
         }        
     }
