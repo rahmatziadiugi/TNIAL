@@ -5,13 +5,11 @@
  */
 package Controller;
 
-import Database.DB4MySQL;
 import Database.DB4SQLServer;
 import Model.BankumJnsTingkat;
 import Model.BankumStatus;
 import Model.TunDinas;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

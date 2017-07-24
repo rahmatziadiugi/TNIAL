@@ -48,7 +48,7 @@ public class ControlGenerateReport {
     private ResultSet rs = null;
     
     private ArrayList<TunDinas> kasus = new ArrayList<>();    
-    String idKasus="", idTingkat="";
+    
     
     public ControlGenerateReport(){
         
@@ -91,9 +91,10 @@ public class ControlGenerateReport {
             
             ResultSet rs = st.executeQuery();
             
+            String idKasus="-", idTingkat="-";
 //            rs.beforeFirst();
             int n=-1, m=-1;
-            while(rs.next()){     
+            while(rs.next()){
                 if(!idKasus.equals(rs.getString("bankum_tundinas idTundinas"))){                    
                     idKasus = rs.getString("bankum_tundinas idTundinas");
                     kasus.add(new TunDinas(
@@ -105,6 +106,7 @@ public class ControlGenerateReport {
                             rs.getString("Permasalahan")));
                     n++;
                     m=-1;
+                    idTingkat="-";
                 }
                 //tambah tingkat
                 if(!idTingkat.equals(rs.getString("bankum_tundinastingkat kdTingkat"))){
@@ -119,7 +121,8 @@ public class ControlGenerateReport {
                     m++;
                 }
                 //tambah proses
-                kasus.get(n).getTingkat().get(m).addProses(new TunDinasProses(
+                kasus.get(n).getTingkat().
+                        get(m).addProses(new TunDinasProses(
                     0, 0, 
                     rs.getString("proses"), 
                     null, 

@@ -5,7 +5,6 @@
  */
 package Controller;
 
-import Database.DB4MySQL;
 import Database.DB4SQLServer;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -34,8 +33,8 @@ public class ControlTunDinasDataTingkatProsesSidang {
         //db.connect();
         
         try{
-            Connection con = DriverManager.getConnection(db.getURL());
-            PreparedStatement st = con.prepareStatement("INSERT INTO bankum_tundinasproses VALUES "
+            con = DriverManager.getConnection(db.getURL());
+            st = con.prepareStatement("INSERT INTO bankum_tundinasproses VALUES "
                     + "('" + idr + "', '" +
                     (new java.sql.Date(tgl))+ "', '" +
                     proses + "', '" +

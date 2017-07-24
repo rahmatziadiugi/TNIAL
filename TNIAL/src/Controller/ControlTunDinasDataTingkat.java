@@ -5,13 +5,8 @@
  */
 package Controller;
 
-import Database.DB4MySQL;
 import Database.DB4SQLServer;
-import Model.BankumJnsTingkat;
-import Model.BankumStatus;
-import Model.BankumStatusTingkat;
 import Model.TunDinasTingkat;
-import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -36,12 +31,12 @@ public class ControlTunDinasDataTingkat {
         ArrayList<TunDinasTingkat> temp = new ArrayList<>();
         //this.dataDinasTingkat.clear();
         try {
-            Connection con = DriverManager.getConnection(db.getURL());
-            PreparedStatement st = con.prepareStatement("SELECT tt.idR, tt.idTundinas, jt.ketTingkat, s.ketStatus, tt.Keterangan, tt.file_lampiran" +
+            con = DriverManager.getConnection(db.getURL());
+            st = con.prepareStatement("SELECT tt.idR, tt.idTundinas, jt.ketTingkat, s.ketStatus, tt.Keterangan, tt.file_lampiran" +
             " FROM bankum_tundinastingkat tt" +
             " JOIN bankum_status s ON tt.idStatus = s.idStatus" +
             " JOIN bankum_jenistingkat jt ON tt.kdTingkat = jt.kdTingkat WHERE tt.idTundinas = '"+ id + "'");
-            ResultSet rs = st.executeQuery();
+            rs = st.executeQuery();
             
 //            rs.beforeFirst();
             while(rs.next()){
@@ -59,9 +54,7 @@ public class ControlTunDinasDataTingkat {
         } catch (SQLException ex) {
             Logger.getLogger(TunDinasTingkat.class.getName()).log(Level.SEVERE, null, ex);
         }   finally {
-                try { rs.close(); } catch (Exception e) { /* ignored */ }
-                try { st.close(); } catch (Exception e) { /* ignored */ }
-                try { con.close(); } catch (Exception e) { /* ignored */ }
+                try { rs.close(); st.close(); con.close(); } catch (Exception e) { /* ignored */ }
         }
         
         this.dataDinasTingkat = temp;
