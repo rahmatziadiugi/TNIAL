@@ -184,7 +184,7 @@ public class ControlMaps extends JPanel implements JMapViewerEventListener {
             }
         };
         map().setDisplayPosition(to, 5);
-    }    
+    }
 
     public JMapViewer map() {
         return treeMap.getViewer();
