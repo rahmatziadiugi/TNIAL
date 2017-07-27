@@ -6,7 +6,6 @@
 package Model;
 
 import java.io.File;
-import java.sql.Date;
 import java.util.ArrayList;
 
 /**
@@ -20,7 +19,7 @@ public class TunDinasTingkat {
     private String ketStatus;
     private String ket;
     private File lampiran;
-    private ArrayList<TunDinasProses> proses;
+    private ArrayList<TunDinasProses> proses; //setiap tingkat ada prosesnya
             
     public TunDinasTingkat(
             long idR,

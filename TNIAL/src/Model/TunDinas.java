@@ -20,10 +20,10 @@ public class TunDinas {
     private String noSurat;
     private Date tglDasar;
     private String Permasalahan;
-    private ArrayList<TunDinasTingkat> tingkat;
+    private ArrayList<TunDinasTingkat> tingkat; //setiap kasus ada tingkatnya
     private Coordinate coor;
     private String lastTingkat, lastStatus;
-    
+        
     public TunDinas(    
             String idTundinas,
             String LokasiDT,

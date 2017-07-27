@@ -6,10 +6,7 @@ package Driver;
  * and open the template in the editor.
  */
 
-import View.MDI;
-import Controller.ControlGenerateReport;
 import View.Login;
-import java.awt.event.ActionEvent;
 
 /**
  *
@@ -17,16 +14,13 @@ import java.awt.event.ActionEvent;
  */
 public class Main{    
     public static void main(String[] args) {
+        /*
+        ketika project di run, maka dia akan menjalankan class ini,
+        saat dijalankan, harus login dulu        
+        */
         
         Login log = new Login();
         log.setVisible(true);
-       // log.setVisible(true);
-        
-        
-//        MDI mdi = new MDI();
-//        mdi.setVisible(true);        
-    
-//        ControlGenerateReport createpdf = new ControlGenerateReport();
         
     }
 }

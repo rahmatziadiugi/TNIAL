@@ -62,7 +62,7 @@ public class FormProsesTingkat extends javax.swing.JFrame {
         control.getDataDB();
         ArrayList<TunDinasProses> data = control.getDatanya();
         
-        
+        //field proses sidang cuma untuk menampilkan saja
         int i = 1;
         for(TunDinasProses dat : data){
             temp += i + ". " + dat.getDate().toString()+ " - " + dat.getProses() + "\n";
@@ -70,7 +70,7 @@ public class FormProsesTingkat extends javax.swing.JFrame {
         }
         
         txProsesSidang.setText(temp);
-        txProsesSidang.setEditable(false);
+        txProsesSidang.setEditable(false);//supaya tidak bisa diedit
     }
 
     /**

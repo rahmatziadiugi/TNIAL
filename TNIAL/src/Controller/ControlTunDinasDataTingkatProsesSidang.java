@@ -30,8 +30,6 @@ public class ControlTunDinasDataTingkatProsesSidang {
     ){
         boolean sukses = false;
         
-        //db.connect();
-        
         try{
             con = DriverManager.getConnection(db.getURL());
             st = con.prepareStatement("INSERT INTO bankum_tundinasproses VALUES "
@@ -39,7 +37,7 @@ public class ControlTunDinasDataTingkatProsesSidang {
                     (new java.sql.Date(tgl))+ "', '" +
                     proses + "', '" +
                      stat + "');");
-//            ResultSet rs = st.executeQuery();
+            
             if(st.executeUpdate() > 0)
             {
                 JOptionPane.showMessageDialog(null,"Berhasil menambahkan data!");

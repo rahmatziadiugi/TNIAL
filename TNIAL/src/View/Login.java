@@ -6,23 +6,17 @@
 package View;
 
 import Database.DB4SQLServer;
-import static com.sun.glass.ui.Cursor.setVisible;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JPasswordField;
 
 /**
  *
@@ -40,6 +34,7 @@ public class Login extends javax.swing.JFrame {
         setResizable(false);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
+//        //ketika kolom password di klik akan langsung clear
 //        password.addMouseListener(new MouseAdapter(){
 //            @Override
 //            public void mouseClicked(MouseEvent e){

@@ -27,6 +27,7 @@ public class ReportTunDinasTriwulan extends javax.swing.JFrame {
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
         setResizable(false);
+        //set pilihan tahun awal itu adalah thaun sekarang
         DateFormat dateFormat = new SimpleDateFormat("yyyy");
         String utilDate = dateFormat.format(new java.util.Date());
         txTahun.setValue(Integer.valueOf(utilDate));
@@ -169,7 +170,6 @@ public class ReportTunDinasTriwulan extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        this.setVisible(false);
         this.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
 

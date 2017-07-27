@@ -35,16 +35,13 @@ public class ControlTunDinasDataTingkatProses {
     
     public void getDataDB(){
         ArrayList<TunDinasProses> temp = new ArrayList<>();
-        //db.connect();
-
+        
         try {
-            Connection con = DriverManager.getConnection(db.getURL());
-            PreparedStatement st = con.prepareStatement("SELECT * FROM bankum_tundinasproses WHERE idR = '"+
+            con = DriverManager.getConnection(db.getURL());
+            st = con.prepareStatement("SELECT * FROM bankum_tundinasproses WHERE idR = '"+
                         this.idR + "' ORDER BY tgl ASC");
-            ResultSet rs = st.executeQuery();
-//            rs.beforeFirst();
-            while(rs.next()){
-                
+            rs = st.executeQuery();
+            while(rs.next()){                
                 temp.add(new TunDinasProses(
                         rs.getLong("idRtundinas"),
                         rs.getLong("idR"),
@@ -61,11 +58,8 @@ public class ControlTunDinasDataTingkatProses {
                 try { rs.close(); } catch (Exception e) { /* ignored */ }
                 try { st.close(); } catch (Exception e) { /* ignored */ }
                 try { con.close(); } catch (Exception e) { /* ignored */ }
-        }
-        
+        }        
         this.data = temp;
-        
-        //db.disconnect();
     }
     
     public ArrayList<TunDinasProses> getDatanya(){
@@ -75,17 +69,13 @@ public class ControlTunDinasDataTingkatProses {
     public void updateDataDB(
             String ket,
             long id
-    ){
-        //db.connect();
-        
-        try{
-            Connection con = DriverManager.getConnection(db.getURL());
-            PreparedStatement st = con.prepareStatement("UPDATE bankum_tundinastingkat SET Keterangan = '" +
+    ){try{
+            con = DriverManager.getConnection(db.getURL());
+            st = con.prepareStatement("UPDATE bankum_tundinastingkat SET Keterangan = '" +
                     ket + "' WHERE idR = " +
                     id + ";");
-//            ResultSet rs = st.executeQuery();
             if(st.executeUpdate() > 0){
-                //do something
+                //update berhasil, do something
                 JOptionPane.showMessageDialog(null,"Berhasil disimpan."); 
             }else{
                 JOptionPane.showMessageDialog(null,("Gagal!"));
@@ -101,13 +91,10 @@ public class ControlTunDinasDataTingkatProses {
     }
     
     public void deleteDataDB(long id){
-        //db.connect();
-        
         try{
-            Connection con = DriverManager.getConnection(db.getURL());
-            PreparedStatement st = con.prepareStatement("DELETE FROM bankum_tundinastingkat WHERE idR = " +
+            con = DriverManager.getConnection(db.getURL());
+            st = con.prepareStatement("DELETE FROM bankum_tundinastingkat WHERE idR = " +
                     id + "");
-            //ResultSet rs = st.executeQuery();
             if(st.executeUpdate() > 0){
                 //do something
             }else{

@@ -6,9 +6,6 @@
 package View;
 
 import Controller.ControlTunDinasDataTingkat;
-import Model.BankumJnsTingkat;
-import Model.BankumStatus;
-import Model.BankumStatusTingkat;
 import Model.TunDinasTingkat;
 import java.awt.Color;
 import java.awt.Component;
@@ -16,7 +13,6 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
@@ -53,7 +49,7 @@ public class FormTingkat extends javax.swing.JFrame {
         
         String[] lokasinya = lokasi.split("\n");
         String[] masalahnya = masalah.split("\n");
-        
+        //pada tipe label, supaya bisa ke baris baru, diubah jadi format html
         String lokasihtml = "<html>";        
         for(String s: lokasinya){
             lokasihtml += s + "<br />";

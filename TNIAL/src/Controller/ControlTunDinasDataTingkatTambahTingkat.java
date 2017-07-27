@@ -30,15 +30,12 @@ public class ControlTunDinasDataTingkatTambahTingkat {
     
     public void getDataDB(){
         ArrayList<BankumStatus> temp = new ArrayList<>();
-        //db.connect();
         
-        //ResultSet rs = db.get(
-              //  "SELECT * FROM `bankum_status` WHERE `kdPemilik` = '04'");
         try {
             Connection con = DriverManager.getConnection(db.getURL());
             PreparedStatement st = con.prepareStatement("SELECT * FROM bankum_status WHERE kdPemilik = '04'");
             ResultSet rs = st.executeQuery();
-            //rs.beforeFirst();
+            
             while(rs.next()){
                 temp.add(new BankumStatus(
                         rs.getString("idStatus"), 
@@ -49,26 +46,16 @@ public class ControlTunDinasDataTingkatTambahTingkat {
             rs.close();
         } catch (SQLException ex) {
             Logger.getLogger(BankumStatus.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
+        }        
         this.dataStatus = temp;
-        
-        //db.disconnect();
     }
     
     public void getDataDBDatajenis(){
-        
-        //db.connect();
-        
         this.dataJns.clear();
-        
-        //data jenis        
-        //ResultSet rs = db.get("SELECT * FROM `bankum_jenistingkat` WHERE `kdPemilik` = '04'");
         try {
             Connection con = DriverManager.getConnection(db.getURL());
             PreparedStatement st = con.prepareStatement("SELECT * FROM bankum_jenistingkat WHERE kdPemilik = '04'");
             ResultSet rs = st.executeQuery();
-            //rs.beforeFirst();
             while(rs.next()){
                 this.dataJns.add(new BankumJnsTingkat(
                         rs.getString("kdTingkat"), 
@@ -79,8 +66,6 @@ public class ControlTunDinasDataTingkatTambahTingkat {
         } catch (SQLException ex) {
             Logger.getLogger(TunDinas.class.getName()).log(Level.SEVERE, null, ex);
         }
-                
-        //db.disconnect();
     }
     
     public String[] getKetJns(){
@@ -110,10 +95,7 @@ public class ControlTunDinasDataTingkatTambahTingkat {
             int kdTingkat,
             int idStatus
     ){
-        boolean temp = false;
-        
-        //db.connect();
-        //'Mon Jun 19 08:25:31 ICT 2017', 'C0', 'C8', 'asfawfaw', NULL)
+        boolean temp = false;        
         try{
             Connection con = DriverManager.getConnection(db.getURL());
             PreparedStatement st = con.prepareStatement("INSERT INTO bankum_tundinastingkat VALUES "
@@ -129,15 +111,10 @@ public class ControlTunDinasDataTingkatTambahTingkat {
                 temp = true;
             } else{
                 JOptionPane.showMessageDialog(null,"Gagal menambahkan!");
-            }
-            
-            
+            }               
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null,"Gagal!");
         }
-        
-        //db.disconnect();
-        
         return temp;
     }
 }

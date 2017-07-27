@@ -17,35 +17,23 @@ public class MDI extends JFrame {
     /**
      * Creates new form MDI
      */
-    public MDI() {
-        initComponents();
-        setVisible(true);
-        
-        this.setTitle("Nama Aplikasi");
-        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        
-        //shortcut
-        InsertPanelHere.setVisible(false);
-        JPanel pane = new Maps();
-        InsertPanelHere.removeAll();        
-        InsertPanelHere.add(pane);
-        InsertPanelHere.setVisible(true);
-    }
-    
+    private final int role;
     public MDI(int i) {
         initComponents();
-        setVisible(true);
+        this.setVisible(true);
         
+        //kalau bukan admin, fitur tambah user dihilangkan
+        this.role = i;
         if (i!=0) {
             this.mFile.remove(this.NewUser);
         }
         
         this.setTitle("Nama Aplikasi");
-        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH); //ketika dijalankan otomatis langsung fullscreen
         
         //shortcut
         InsertPanelHere.setVisible(false);
-        JPanel pane = new Maps();
+        JPanel pane = new Maps();//halaman awalnya menampilkan peta, jadi panel kosonyan diiisi dengan ini
         InsertPanelHere.removeAll();        
         InsertPanelHere.add(pane);
         InsertPanelHere.setVisible(true);
@@ -186,7 +174,7 @@ public class MDI extends JFrame {
     private void TunDinasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TunDinasActionPerformed
         // TODO add your handling code here:
         InsertPanelHere.setVisible(false);
-        JPanel pane = new PanelTunDinas();
+        JPanel pane = new PanelTunDinas(this.role);//ganti panel kosongnya dengan panel ini
         InsertPanelHere.removeAll();        
         InsertPanelHere.add(pane);
         InsertPanelHere.setVisible(true);
@@ -214,15 +202,16 @@ public class MDI extends JFrame {
 
     private void PerTriwulanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PerTriwulanActionPerformed
         // TODO add your handling code here:
-        ReportTunDinasTriwulan reportTri = new ReportTunDinasTriwulan();
+        //munculkan form baru untuk memilih report
+        new ReportTunDinasTriwulan();
     }//GEN-LAST:event_PerTriwulanActionPerformed
 
     private void NewUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NewUserActionPerformed
         // TODO add your handling code here:
-        FormUserBaru fub = new FormUserBaru();
+        //tampilkan form untuk nmbah user
+        new FormUserBaru();
     }//GEN-LAST:event_NewUserActionPerformed
 
-    Login l = new Login();
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem Exit;
     private javax.swing.JPanel InsertPanelHere;

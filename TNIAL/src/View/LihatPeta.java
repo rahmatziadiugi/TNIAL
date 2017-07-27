@@ -5,8 +5,6 @@
  */
 package View;
 
-import Controller.ControlMaps;
-import Model.TunDinas;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -51,11 +49,13 @@ public class LihatPeta extends javax.swing.JFrame implements JMapViewerEventList
         
         this.ok = false;
         
+        //untuk mengatur posisi ketika form ini muncul
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width/2-this.getSize().width/2, 0);
         this.setTitle("Pilih Lokasi Kasus");
         
-        this.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);      
+        //ketika form ini diclose, maka hanya form ini saja, jika tidak, aplikasi akan terclose juga
+        this.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE); 
         
         setVisible(true);
         

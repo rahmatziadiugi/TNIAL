@@ -2,7 +2,6 @@ package Controller;
 
 import Model.TunDinas;
 import View.MarkedDetail;
-import com.sun.media.jfxmedia.events.MarkerEvent;
 import org.openstreetmap.gui.jmapviewer.JMapViewer;
 import org.openstreetmap.gui.jmapviewer.JMapViewerTree;
 import org.openstreetmap.gui.jmapviewer.MapMarkerDot;
@@ -11,21 +10,11 @@ import org.openstreetmap.gui.jmapviewer.events.JMVCommandEvent;
 import org.openstreetmap.gui.jmapviewer.interfaces.ICoordinate;
 import org.openstreetmap.gui.jmapviewer.interfaces.JMapViewerEventListener;
 import org.openstreetmap.gui.jmapviewer.tilesources.OsmTileSource;
-import org.openstreetmap.gui.jmapviewer.interfaces.MapMarker;
 
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import java.awt.List;
-import java.awt.Point;
-import java.awt.Stroke;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -33,19 +22,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.ActionMap;
-import javax.swing.event.MouseInputListener;
-import org.eclipse.persistence.internal.databaseaccess.DatabaseAccessor;
 import org.openstreetmap.gui.jmapviewer.Coordinate;
 import org.openstreetmap.gui.jmapviewer.DefaultMapController;
-import org.openstreetmap.gui.jmapviewer.Layer;
-import org.openstreetmap.gui.jmapviewer.LayerGroup;
-import org.openstreetmap.gui.jmapviewer.MapMarkerCircle;
-import org.openstreetmap.gui.jmapviewer.MapRectangleImpl;
 import org.openstreetmap.gui.jmapviewer.Style;
 
 
@@ -72,10 +52,7 @@ public class ControlMaps extends JPanel implements JMapViewerEventListener {
      * Setups the JFrame layout, sets some default options for the JMapViewerTree and displays a map in the window.
      */
     public ControlMaps() {
-        //super("JMapViewer Demo");
-        //setPreferredSize(new Dimension(100,100));
-        treeMap = new JMapViewerTree("Zones");                
-        //setupPanels();
+        treeMap = new JMapViewerTree("Zones");
         setupJFrame();
 
         // Listen to the map viewer for user operations so components will
@@ -87,13 +64,12 @@ public class ControlMaps extends JPanel implements JMapViewerEventListener {
         map().setTileLoader(new OsmTileLoader(map()));
         map().setMapMarkerVisible(true);
         map().setZoomContolsVisible(true);
-        addMarkTunDinas();
         
-        for(TunDinas i : dataTunDinas){                    
-            System.out.println(i.getCoor());
-        }                
-        System.out.println();
-        DefaultMapController mapControl = new DefaultMapController(map()){            
+        //panggil prosedur untuk menambahkan titik
+        addMarkTunDinas();
+                
+        //buat titik bisa diklik
+        DefaultMapController mapControl = new DefaultMapController(map()){
             @Override   
             public void mouseClicked(MouseEvent e) {
                 isPointValid(map.getPosition(e.getPoint()));
@@ -116,18 +92,15 @@ public class ControlMaps extends JPanel implements JMapViewerEventListener {
                     boolean inRangeLon = 
                             ((int)(i.getCoor().getLon()*zoom)) == (int)(p.getLon()*zoom);
                     if(inRangeLat && inRangeLon){
+                        //jika yang diklik itu berada dalam radius titik akan membuka frame untuk menampilkan detilnya
                         new MarkedDetail(i.getLokasiDT(), i.getDasar(), i.getPermasalahan());
                         return true;
                     }
                 }                
                 return temp;
             }
-        };
-        
+        };        
         add(treeMap, BorderLayout.CENTER);
-        
-        
-        
     }
     
     public ControlMaps(String x, String y){
@@ -139,23 +112,12 @@ public class ControlMaps extends JPanel implements JMapViewerEventListener {
         map().setMapMarkerVisible(true);
         map().setZoomContolsVisible(true);
         
-                
-        Style legend1 = new Style(Color.BLACK, Color.GREEN, null, null);
+        Style legend1 = new Style(Color.BLACK, Color.GREEN, null, null); //atur warna titik
         MapMarkerDot dadot = new MapMarkerDot(new Coordinate(Double.valueOf(y), Double.valueOf(x)));
         dadot.setStyle(legend1);
         map().addMapMarker(dadot);
         add(treeMap, BorderLayout.CENTER);
     }
-    
-//    public void setLocation(){
-//        double zoom = 5.5;
-//        int x = (int) 10;
-//        int y = (int) 1;
-//
-//        map().getBounds();
-//        //map().setDisplayPosition(x, y, (int) zoom);
-//        
-//    }
     
     private void setupJFrame() {
         setSize(600, 600);
@@ -206,9 +168,10 @@ public class ControlMaps extends JPanel implements JMapViewerEventListener {
         }
     }
     
+    //prsedur untuk menambahkan titik
     public void addMarkTunDinas(){
         Style legend1 = new Style(Color.BLACK, Color.GREEN, null, null);
-        getDataDBTunDinas();
+        getDataDBTunDinas(); //ambil datanya dulu
         ArrayList<MapMarkerDot> dotList = new ArrayList<>();
         
         for(int i=0; i< dataTunDinas.size(); i++){
@@ -218,13 +181,12 @@ public class ControlMaps extends JPanel implements JMapViewerEventListener {
         }        
     }
     
+    //ambil data
     public void getDataDBTunDinas(){
         try {
-            //Class.forName(driver);
             Connection con = DriverManager.getConnection(this.db.getURL());
             PreparedStatement st = con.prepareStatement("SELECT * FROM bankum_tundinas");
             ResultSet rs = st.executeQuery();
-            //rs.beforeFirst();
             int n = 0;            
             while(rs.next()){
                 this.dataTunDinas.add(new TunDinas(
@@ -246,6 +208,8 @@ public class ControlMaps extends JPanel implements JMapViewerEventListener {
                 n++;
             }                
             rs.close();
+            st.close();
+            con.close();
         } catch (SQLException ex) {
             Logger.getLogger(TunDinas.class.getName()).log(Level.SEVERE, null, ex);
         }

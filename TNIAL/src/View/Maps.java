@@ -6,12 +6,7 @@
 package View;
 
 import Controller.ControlMaps;
-import java.awt.Dimension;
-import java.awt.event.MouseEvent;
 import javax.swing.JPanel;
-import org.openstreetmap.gui.jmapviewer.DefaultMapController;
-import org.openstreetmap.gui.jmapviewer.JMapViewer;
-import org.openstreetmap.gui.jmapviewer.JMapViewerTree;
 
 /**
  *

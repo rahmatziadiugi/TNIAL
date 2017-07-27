@@ -34,6 +34,7 @@ public class FormProsesSidang extends javax.swing.JFrame {
         
         this.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         
+        //supaya cuma bisa pilih salah satu status
         buttonGroup1.add(btProses);
         buttonGroup1.add(btSelesai);
         buttonGroup1.setSelected(btProses.getModel(), true);
@@ -197,6 +198,7 @@ public class FormProsesSidang extends javax.swing.JFrame {
     }//GEN-LAST:event_btAddActionPerformed
 
     public String getTheChoosenOne(){
+        //menerjmahkan status mana yang terpilih menjadi kode untuk di database nanti
         String me = "00";
         
         if(btProses.isSelected()) me = "01";

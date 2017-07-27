@@ -12,10 +12,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -36,6 +32,9 @@ public class FormUserBaru extends javax.swing.JFrame {
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
         
+        buttonGroup1.add(zero); //zero = admin
+        buttonGroup1.add(one); // one = user
+        buttonGroup1.setSelected(one.getModel(), true);
     }
 
     /**
@@ -71,7 +70,7 @@ public class FormUserBaru extends javax.swing.JFrame {
 
         jLabel3.setText("password");
 
-        password.setText("contoh");
+        password.setText("password");
         password.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 passwordFocusGained(evt);

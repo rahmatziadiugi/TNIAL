@@ -9,20 +9,15 @@ import Controller.ControlTunDinas;
 import Model.TunDinas;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.Collections;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.UIManager;
@@ -38,9 +33,12 @@ public class PanelTunDinas extends javax.swing.JPanel implements ActionListener 
     /**
      * Creates new form TunDinas
      */
-    public PanelTunDinas() {
+    private final int role;
+    
+    public PanelTunDinas(int role) {
         initComponents();
         this.setVisible(true);
+        this.role = role;
         
         LabelAtas.setText("Tambah data");
         txDateField.setDate(new Date());
@@ -84,7 +82,7 @@ public class PanelTunDinas extends javax.swing.JPanel implements ActionListener 
                             "Peringatan!",  //judul
                             JOptionPane.YES_NO_OPTION);
                     if (reply == JOptionPane.YES_OPTION) {
-                        showRowData(row);
+                        showRowData(row); //menampilkan data dari row yang diklik ke panel di kiri
                     }
                     else {
                        //kembali aja, gak ngefek
@@ -491,18 +489,18 @@ public class PanelTunDinas extends javax.swing.JPanel implements ActionListener 
         // TODO add your handling code here:
         int pulang = JOptionPane.showConfirmDialog(null, "Anda yakin ingin ke halaman utama?", "Peringatan!", JOptionPane.YES_NO_OPTION);
         if (pulang == 0) { //The ISSUE is here
-        MDI mdi = new MDI();
+        MDI mdi = new MDI(this.role);
         mdi.setVisible(true);
         }
     }//GEN-LAST:event_pulangActionPerformed
 
     private void btDataTingkatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btDataTingkatActionPerformed
         // TODO add your handling code here:
-        FormTingkat tingkatnya = new FormTingkat(
-                        this.currentRowDat.getLokasiDT(), 
-                        this.currentRowDat.getPermasalahan(),
-                        this.currentRowDat.getidTundinas()
-                );
+        new FormTingkat(
+                this.currentRowDat.getLokasiDT(), 
+                this.currentRowDat.getPermasalahan(),
+                this.currentRowDat.getidTundinas()
+        );
     }//GEN-LAST:event_btDataTingkatActionPerformed
 
     private void txCoorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txCoorActionPerformed
@@ -511,12 +509,13 @@ public class PanelTunDinas extends javax.swing.JPanel implements ActionListener 
 
     private void btPetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btPetaActionPerformed
         // TODO add your handling code here:
-        pickCoor = new LihatPeta(txCoor.getText());    
+        pickCoor = new LihatPeta(txCoor.getText()); //ngeset posisi titik di lihat peta, berguna untuk mau update lokasi, jadi setidaknya udah tau titik awalnya dimana
         pickCoor.addListener(this);
     }//GEN-LAST:event_btPetaActionPerformed
 
     private LihatPeta pickCoor;
-    
+
+    //untuk mengambil titik yang dipilih tadi
     @Override
     public void actionPerformed(ActionEvent ae) {
         Object source = ae.getSource();
@@ -526,16 +525,17 @@ public class PanelTunDinas extends javax.swing.JPanel implements ActionListener 
     }
     
     public void setIsiTable(){
-        control.getDataDBTunDinas();
-        data = control.getDatanya();
-        Collections.reverse(data);
-        this.n = data.size();
+        control.getDataDBTunDinas(); //ambil data ke database
+        data = control.getDatanya(); //ambil data yang dari control
+        Collections.reverse(data); //karna data yang diambil urutannya ASC, ini membalikkan urutannya jadi DESC
+        this.n = data.size(); //menentukan jumlah data
         resetTable(this.n);
-        TableTunDinas.setModel(resetTable);  
+        TableTunDinas.setModel(resetTable);
         
         this.thisTableProperties();
         
         for(int i=0; i<this.n; i++){
+            //setValueAt(isi cell, row, col)
             TableTunDinas.setValueAt(i+1, i, 0);
             TableTunDinas.setValueAt(data.get(i).getLokasiDT(), i, 1);
             TableTunDinas.setValueAt(data.get(i).getDasar(), i, 2);
@@ -547,7 +547,8 @@ public class PanelTunDinas extends javax.swing.JPanel implements ActionListener 
         }        
     }
     
-    private void thisTableProperties(){        
+    private void thisTableProperties(){
+        //supaya kolom tidak bisa dipindah tempatkan
         TableTunDinas.getTableHeader().setReorderingAllowed(false);
         
         //set column width
@@ -569,8 +570,9 @@ public class PanelTunDinas extends javax.swing.JPanel implements ActionListener 
     }
     
     private void showRowData(int row){
+        //data dari row yang di klik akan mengisi field pada panel kiri
         this.currentRowDat = this.data.get(row);
-        this.editOrNotEdit = true;
+        this.editOrNotEdit = true; //tanda kalau panel di kiri itu sedang menampilkan data dari tabel untuk diedit atau delete
         
         txLokasiNTanah.setText(this.currentRowDat.getLokasiDT());
         txDasar.setText(this.currentRowDat.getDasar());
@@ -592,6 +594,7 @@ public class PanelTunDinas extends javax.swing.JPanel implements ActionListener 
     }
         
     public void resetField(){
+        //mengosongkan nilai pada semua field di panel kiri
         txLokasiNTanah.setText(null);
         txDasar.setText(null);
         txNoSurat.setText(null);
@@ -601,18 +604,23 @@ public class PanelTunDinas extends javax.swing.JPanel implements ActionListener 
     }
     
     public void resetTable(int i){
-        String[] header = {"No","Lokasi & Data Tanah","Dasar","No Surat","Permasalahan","Tingkat","Status","Data Tingkat"};
+        //untuk header dari tabel
+        String[] header = {
+            "No",
+            "Lokasi & Data Tanah",
+            "Dasar",
+            "No Surat",
+            "Permasalahan",
+            "Tingkat",
+            "Status",
+            "Data Tingkat"};
         resetTable = new DefaultTableModel(null, header){
             public boolean isCellEditable(int row, int column)      //override isCellEditable
-                //PRE:  row > 0, column > 0
-                //POST: FCTVAL == false always
             {
-                return column==7; //kolom 6 editable
+                return column==7; //kolom 7 akan diubah jadi button
             }
-            
-            
         };
-        resetTable.setRowCount(i);        
+        resetTable.setRowCount(i);//jumlah row pada tabel
     }
     
     private boolean editOrNotEdit = false;

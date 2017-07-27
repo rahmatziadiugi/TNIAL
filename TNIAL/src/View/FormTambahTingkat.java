@@ -36,7 +36,7 @@ public class FormTambahTingkat extends javax.swing.JFrame {
         
         control.getDataDB();
         control.getDataDBDatajenis();
-        
+        //mengatur apa saja pilihan pada combo box tingkat dan status
         cmboTingkat.setModel(new DefaultComboBoxModel<String>(control.getKetJns()));
         wmboStatus.setModel(new DefaultComboBoxModel<String>(control.getKetStat()));        
     }

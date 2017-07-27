@@ -11,7 +11,6 @@ import Model.BankumStatus;
 import Model.BankumStatusTingkat;
 import Model.TunDinas;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -28,7 +27,6 @@ import javax.swing.JOptionPane;
  * @author Someone
  */
 public class ControlTunDinas {
-    //DB4SQLServer db = new DB4SQLServer();
     private ArrayList<TunDinas> data = new ArrayList<>();
     private ArrayList<BankumJnsTingkat> dataJns = new ArrayList<>();
     private ArrayList<BankumStatusTingkat> dataStatusTingkat = new ArrayList<>();
@@ -41,27 +39,26 @@ public class ControlTunDinas {
     public void getDataDBTunDinas(){
         this.data.clear();
         try {
-            //Class.forName(driver);
-            Connection con = DriverManager.getConnection(this.db.getURL());
-            PreparedStatement st = con.prepareStatement("SELECT t.idTundinas, lokasiDT, Dasar, noSurat, tglDasar, Permasalahan, Koordinat, MAX(tt.kdTingkat) AS tingkat " +
+            con = DriverManager.getConnection(this.db.getURL());
+            st = con.prepareStatement("SELECT t.idTundinas, lokasiDT, Dasar, noSurat, tglDasar, Permasalahan, Koordinat, MAX(tt.kdTingkat) AS tingkat " +
                     "FROM bankum_tundinas t " +
                     "LEFT OUTER JOIN bankum_tundinastingkat tt on t.idTundinas=tt.idTundinas " +
                     "GROUP by t.idTundinas, lokasiDT, Dasar, noSurat, tglDasar, Permasalahan, Koordinat");
-            ResultSet rs = st.executeQuery();
-            //rs.beforeFirst();
+            rs = st.executeQuery();
             int n = 0;
-            while(rs.next()){
+            //default kursor pada ResultSet adalah pada row paling atas
+            while(rs.next()){//selama masih ada row selanjutnya
                 this.data.add(new TunDinas(
-                        rs.getString("idTundinas"),
+                        rs.getString("idTundinas"), //ambil nilai dari row dengan nama kolom idTundinas
                         rs.getString("lokasiDT"),
                         rs.getString("Dasar"),
                         rs.getString("noSurat"),
                         rs.getDate("tglDasar"),
                         rs.getString("Permasalahan")
                 ));
-                String[] coor = new String[2];
+                String[] coor = new String[2];//untuk menampung koordinat latitude dan longitudenya, di database, tipe data untuk koordinat adalah string dengan format lat,lon
                 if(rs.getString("Koordinat")!=null){
-                    coor = rs.getString("Koordinat").split(",");
+                    coor = rs.getString("Koordinat").split(","); //lat dan lon nya dipisahkan dengan ,
                 }else{
                     coor[0] = "0";
                     coor[1] = "0";
@@ -73,6 +70,7 @@ public class ControlTunDinas {
             rs.close();
             st.close();
             
+            //menentukan status terakhir dari tingkat terakhir untuk setiap kasus
             for(int i=0; i<this.data.size(); i++){
                 if(this.data.get(i).getLastTingkat()!=null){
                     st = con.prepareStatement("SELECT TOP 1 TP.id_status_tingkat " +
@@ -99,6 +97,7 @@ public class ControlTunDinas {
     }
     
     private int getIdIdx(String id){
+        //untuk menentukan index dari idTundinas dalam arraylist data
         int n = 0;
         for(TunDinas i : data){
             if(i.getidTundinas().equals(id)){
@@ -110,18 +109,14 @@ public class ControlTunDinas {
     }
 
     public void getDataDBDatajenis(){
-        
-    //    db.connect();
-        
+        //ambil data dari bankum_jenistingkat
         this.dataJns.clear();
         
         //data jenis        
-        //ResultSet rs = db.get("SELECT * FROM `bankum_jenistingkat` WHERE `kdPemilik` = '04'");
         try {
-            Connection con = DriverManager.getConnection(db.getURL());
-            PreparedStatement st = con.prepareStatement("SELECT * FROM bankum_jenistingkat");
-            ResultSet rs = st.executeQuery();            
-//            rs.beforeFirst();
+            con = DriverManager.getConnection(db.getURL());
+            st = con.prepareStatement("SELECT * FROM bankum_jenistingkat");
+            rs = st.executeQuery();            
             while(rs.next()){
                 this.dataJns.add(new BankumJnsTingkat(
                         rs.getString("kdTingkat"), 
@@ -139,15 +134,13 @@ public class ControlTunDinas {
     }
     
     public void getDataDBDataStatusTingkat(){
-        //db.connect();
-        
+        //menambil data untuk status tingkat
         this.dataStatusTingkat.clear();
         
-        //ResultSet rs = db.get("SELECT * FROM `bankum_statustingkat`");
         try {
-            Connection con = DriverManager.getConnection(db.getURL());
-            PreparedStatement st = con.prepareStatement("SELECT * FROM bankum_statustingkat");
-            ResultSet rs = st.executeQuery();
+            con = DriverManager.getConnection(db.getURL());
+            st = con.prepareStatement("SELECT * FROM bankum_statustingkat");
+            rs = st.executeQuery();
 //            rs.beforeFirst();
             while(rs.next()){
                 this.dataStatusTingkat.add(new BankumStatusTingkat(
@@ -166,16 +159,13 @@ public class ControlTunDinas {
     }
     
     public void getDataDBDataStatus(){
-        //db.connect();
-        
+        //mengambil keterangan status dengan pemilik TunDinas
         this.dataStatus.clear();
         
-        //ResultSet rs = db.get("SELECT * FROM `bankum_status` WHERE `kdPemilik` = '04' ");
         try {
-            Connection con = DriverManager.getConnection(db.getURL());
-            PreparedStatement st = con.prepareStatement("SELECT * FROM bankum_status");
-            ResultSet rs = st.executeQuery();
-//            rs.beforeFirst();
+            con = DriverManager.getConnection(db.getURL());
+            st = con.prepareStatement("SELECT * FROM bankum_status WHERE kdPemilik='04'");
+            rs = st.executeQuery();
             while(rs.next()){
                 this.dataStatus.add(new BankumStatus(
                         rs.getString("idStatus"), 
@@ -209,6 +199,7 @@ public class ControlTunDinas {
     }
     
     public String getKetTingkat(String kd){
+        //menerjemahkan kdTingkat->ketTingkat, jika belum ada tingkat maka akan return "-"
         if(kd==null){
             return "-";
         }
@@ -221,6 +212,7 @@ public class ControlTunDinas {
     }
     
     public String getStatusnya(String id){
+        //menerjemahkan status tingkatnya
         if(id==null){
             return "-";
         }
@@ -242,17 +234,17 @@ public class ControlTunDinas {
     ){
         boolean berhasil = false;
         
-        //db.connect();
-        
         try{
-            Connection con = DriverManager.getConnection(db.getURL());
+            con = DriverManager.getConnection(db.getURL());
+            //id kasus ditentukan oleh waktu dia input, untuk mempermudah menentukan kasus terbaru,
+            //format tanggalnya diubah supaya hasil sortingnya nanti sesuai
             java.sql.Date sqlDate = new java.sql.Date(tgl);
             DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
             String utilDate = dateFormat.format(new java.util.Date());
 
-            PreparedStatement st = con.prepareStatement("INSERT INTO bankum_tundinas"
+            st = con.prepareStatement("INSERT INTO bankum_tundinas"
                     + "(idTundinas,lokasiDT,Dasar,noSurat,tglDasar,Permasalahan,Koordinat)"
-                    + "values(?,?,?,?,?,?,?)");
+                    + "values(?,?,?,?,?,?,?)");            
             st.setString(1, utilDate);
             st.setString(2, lokasi);
             st.setString(3, dasar);
@@ -280,10 +272,9 @@ public class ControlTunDinas {
     }
     
     public void deleteDisRow(String id){
-        //db.connect();
         try{
-            Connection con = DriverManager.getConnection(db.getURL());
-            PreparedStatement st = con.prepareStatement("DELETE FROM bankum_tundinas WHERE idTundinas = '" +id+ "';");
+            con = DriverManager.getConnection(db.getURL());
+            st = con.prepareStatement("DELETE FROM bankum_tundinas WHERE idTundinas = '" +id+ "';");
             st.executeUpdate();
             st.close();
             {
@@ -310,13 +301,11 @@ public class ControlTunDinas {
     ){
         boolean berhasil = true;
         
-        //db.connect();
-        
         try{
-            Connection con = DriverManager.getConnection(db.getURL());
+            con = DriverManager.getConnection(db.getURL());
             java.sql.Date sqlDate = new java.sql.Date(tgl);
 
-            PreparedStatement st = con.prepareStatement("UPDATE bankum_tundinas SET "
+            st = con.prepareStatement("UPDATE bankum_tundinas SET "
                     + "lokasiDT = '" + lokasi + "', "
                     + "Dasar = '" + dasar + "', "
                     + "noSurat = '" + noSurat + "', "

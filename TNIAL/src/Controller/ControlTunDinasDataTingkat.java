@@ -29,7 +29,6 @@ public class ControlTunDinasDataTingkat {
     
     public void getDataDB(String id){
         ArrayList<TunDinasTingkat> temp = new ArrayList<>();
-        //this.dataDinasTingkat.clear();
         try {
             con = DriverManager.getConnection(db.getURL());
             st = con.prepareStatement("SELECT tt.idR, tt.idTundinas, jt.ketTingkat, s.ketStatus, tt.Keterangan, tt.file_lampiran" +
@@ -38,7 +37,6 @@ public class ControlTunDinasDataTingkat {
             " JOIN bankum_jenistingkat jt ON tt.kdTingkat = jt.kdTingkat WHERE tt.idTundinas = '"+ id + "'");
             rs = st.executeQuery();
             
-//            rs.beforeFirst();
             while(rs.next()){
                 temp.add(new TunDinasTingkat(
                         rs.getLong("idR"),
@@ -54,12 +52,12 @@ public class ControlTunDinasDataTingkat {
         } catch (SQLException ex) {
             Logger.getLogger(TunDinasTingkat.class.getName()).log(Level.SEVERE, null, ex);
         }   finally {
-                try { rs.close(); st.close(); con.close(); } catch (Exception e) { /* ignored */ }
+                try { rs.close(); } catch (Exception e) { /* ignored */ }
+                try { st.close(); } catch (Exception e) { /* ignored */ }
+                try { con.close(); } catch (Exception e) { /* ignored */ }
         }
         
         this.dataDinasTingkat = temp;
-        
-//        db.disconnect();
     }
     
     public ArrayList<TunDinasTingkat> getDatanya(){
