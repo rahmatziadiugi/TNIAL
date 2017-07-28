@@ -48,7 +48,6 @@ public class ControlGenerateReport {
     private ResultSet rs;
     
     private ArrayList<TunDinas> kasus = new ArrayList<>(); //ArrayList untuk menampung model TunDinas
-    String idKasus="", idTingkat="";
     
     public void getDataTriwulan(String triwulan, String tahun){
         this.triwulan = triwulan;
@@ -90,7 +89,9 @@ public class ControlGenerateReport {
             ID2_______|kd0______|proses2.0.1
             ID2_______|kd1______|proses2.1.1
             */
-            int n=-1, m=-1; //n untuk nomor idTundinas, m untuk nomor kdTIngkat dari nomor n idTundinas
+            int n=-1, m=-1; //n untuk nomor idTundinas, m untuk nomor kdTIngkat dari nomor n idTundinas            
+            String idKasus="-", idTingkat="-";
+            
             while(rs.next()){
                 //tambah kasus
                 /*jika arraylist kasus masih kosong atau udah ganti ke idTunDinas berikutnya, 
@@ -107,6 +108,7 @@ public class ControlGenerateReport {
                             rs.getString("Permasalahan")));
                     n++; //karna memasukkan kasus baru, maka ke nomor berikutnya
                     m=-1; //karna ganti kasus, berarti untuk tingkatnya ulang lagi
+                    idTingkat="-";
                 }
                 //tambah tingkat
                 /*
